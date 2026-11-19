@@ -191,6 +191,7 @@ for (const [scriptId, script] of Object.entries(config.chatScripts || {})) {
   }
 }
 assert(/"Iya\.\.\. aku juga mau": "Iya\.\.\. saya juga mau"/.test(appSource) && /"Next time jangan bikin saya nemenin lembur": "Next time jangan bikin aku nemenin lembur"/.test(appSource), "Pesan tersimpan belum dimigrasikan mengikuti perubahan saya ke aku");
+assert(/message\.storyDate === "2026-12-05" && message\.text === "I'm downstairs"/.test(appSource), "Jam pertemuan 5 Desember pada progress lama belum diperbaiki");
 assert(config.xApp?.posts?.some((post) => post.availableAfter === "dirga_work_night" && post.text?.includes("voluntarily staying late")), "Tweet setelah menemani Dirga kerja belum tersedia");
 assert((config.xApp?.posts || []).filter((post) => post.availableAfter === "dirga_work_night").length >= 3, "Tweet fase lembur belum cukup natural");
 assert((config.xApp?.posts || []).filter((post) => post.availableAfter === "dirga_after_work_personal").length >= 3, "Tweet fase chat warm belum cukup natural");

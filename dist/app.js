@@ -356,6 +356,7 @@
       };
       Object.values(loaded.messages || {}).flat().forEach((message) => {
         if (messageTextMigrations[message.text]) message.text = messageTextMigrations[message.text];
+        if (message.storyDate === "2026-12-05" && message.text === "I'm downstairs") message.time = "18:09";
       });
       const petraMessages = loaded.messages?.petra || [];
       petraMessages.forEach((message) => {

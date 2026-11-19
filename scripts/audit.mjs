@@ -30,6 +30,7 @@ const sandbox = { window: {} };
 vm.runInNewContext(storySource, sandbox, { filename: "story.js" });
 const config = sandbox.window.STORY_CONFIG;
 assert(config && typeof config === "object", "STORY_CONFIG tidak terbentuk");
+assert((storySource.match(/😭/g) || []).length <= 1, "Emoji menangis masih terlalu sering dipakai");
 
 const threads = config.threads || [];
 const rawThreadIds = threads.map((thread) => thread.id);

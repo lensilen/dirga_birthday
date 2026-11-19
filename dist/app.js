@@ -76,6 +76,22 @@
         pinVisible: false,
         pinInput: ""
       };
+      const messageTextMigrations = {
+        "Harusnya bisaa, gue cek kerjaan dulu ya 😭": "Harusnya bisaa, gue cek kerjaan dulu yaa",
+        "Ya jangan aneh aneh 😭": "Ya jangan aneh aneh...",
+        "Pet... gue barusan diajak dinner sama Pak Dirga 😭": "Pet... gue barusan diajak dinner sama Pak Dirga",
+        "Gue juga masih proses 😭": "Gue juga masih proses ini...",
+        "Belum, baru jalan": "Belum... baru jalan",
+        "I will": "I willl",
+        "Dramatis banget Pak, baru juga jalan": "Dramatis banget Pak... aku baru telat ngabarin dikit",
+        "I remembered eventually 😭": "I remembered eventually... technically",
+        "You too... makasih buat hari ini": "You too... makasih yaa buat hari ini",
+        "Iya... nice": "Iya... nice banget malah",
+        "Enggaaa 😭": "Enggaaa, bukan gitu maksudnya"
+      };
+      Object.values(loaded.messages || {}).flat().forEach((message) => {
+        if (messageTextMigrations[message.text]) message.text = messageTextMigrations[message.text];
+      });
       const petraMessages = loaded.messages?.petra || [];
       petraMessages.forEach((message) => {
         if (message.text === "Lo mau ngopi sore gak?") message.text = "Lo free Sabtu gak? Ngopi yuk";
@@ -116,23 +132,23 @@
         "Eight minutes is not that early": "15:53",
         "Take your time": "15:53",
         "Home yet?": "18:42",
-        "Belum, baru jalan": "18:42",
+        "Belum... baru jalan": "18:42",
         "Alright": "18:43",
         "Let me know when you get home": "18:43",
-        "I will": "18:44",
+        "I willl": "18:44",
         "Still on the road?": "19:17",
         "Baru sampeee": "19:17",
         "I was about to call": "19:18",
         "Says the person who promised to text": "19:20",
-        "I remembered eventually 😭": "19:20",
+        "I remembered eventually... technically": "19:20",
         "Barely": "19:21",
         "Get some rest": "19:21",
-        "You too... makasih buat hari ini": "19:22",
+        "You too... makasih yaa buat hari ini": "19:22",
         "I should be thanking you": "19:22",
         "Today was nice": "19:23",
-        "Iya... nice": "19:23",
+        "Iya... nice banget malah": "19:23",
         "That sounded reluctant": "19:24",
-        "Enggaaa 😭": "19:24",
+        "Enggaaa, bukan gitu maksudnya": "19:24",
         "Because I was hoping we could do it again": "19:25"
       };
       (loaded.messages?.dirga || []).forEach((message) => {

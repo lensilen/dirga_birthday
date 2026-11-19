@@ -513,7 +513,8 @@ window.STORY_CONFIG = {
     { id: "photo-12", title: "14 February 2026", caption: "14 February 2026 · 8:41 PM", src: "assets/photos/gallery/831899362455754011.jpg", albums: ["favorites"] },
     { id: "photo-17", title: "22 November 2025", caption: "22 November 2025 · 4:03 PM", src: "assets/photos/gallery/Office.jpg", albums: ["work"] },
     { id: "photo-18", title: "18 November 2025", caption: "18 November 2025 · 10:36 AM", src: "assets/photos/gallery/when in San Francisco 🧺🌁✨🌙🌿☁ just some….jpg", albums: ["places"] },
-    { id: "photo-19", title: "17 November 2026", caption: "17 November 2026 · 8:56 PM", src: "assets/photos/gallery/dinner-17-first.jpg", albums: [], availableAfter: "dirga_after_dinner" }
+    { id: "photo-19", title: "17 November 2026", caption: "17 November 2026 · 8:56 PM", src: "assets/photos/gallery/dinner-17-first.jpg", albums: [], availableAfter: "dirga_after_dinner" },
+    { id: "photo-20", title: "21 November 2026", caption: "21 November 2026 · 5:38 PM", src: "assets/photos/gallery/coffee-date.jpg", albums: [], availableAfter: "dirga_coffee_arrival" }
   ],
 
   storyChatMedia: [
@@ -525,7 +526,35 @@ window.STORY_CONFIG = {
       time: "18:14",
       text: "You asked for proof that I do take breaks",
       imageSrc: "assets/photos/gallery/917467755359088838.jpg",
-      imageAlt: "Dirga holding a cup of coffee"
+      imageAlt: "Dirga holding a cup of coffee",
+      storyUse: "Dirga sends a casual photo"
+    }
+  ],
+
+  reservedStoryMedia: [
+    {
+      id: "second-meeting-photo",
+      placement: "gallery_after_scene",
+      scene: "second_meeting",
+      imageSrc: "assets/photos/gallery/Dion Windsor _ The unwanted marriage.jpg"
+    },
+    {
+      id: "mc-accompanies-dirga-working",
+      placement: "mc_chat_trigger",
+      scene: "accompany_dirga_working",
+      imageSrc: "assets/photos/gallery/alex volkov _ twisted love _ aesthetic _ boy….jpg"
+    },
+    {
+      id: "more-personal-moment",
+      placement: "gallery_after_scene",
+      scene: "personal_moment",
+      imageSrc: "assets/photos/gallery/782852347766237811.jpg"
+    },
+    {
+      id: "final-dinner-photo",
+      placement: "gallery_after_scene",
+      scene: "final_dinner",
+      imageSrc: "assets/photos/gallery/dinner-17-second.jpg"
     }
   ],
 

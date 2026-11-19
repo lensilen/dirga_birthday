@@ -468,6 +468,18 @@ window.STORY_CONFIG = {
     petra_wrong_send: {
       threadId: "petra",
       active: false,
+      onComplete: {
+        id: "late-revision-from-maria",
+        threadId: "maria",
+        notificationTitle: "Maria Marketing Team",
+        text: "Kak, legal copy yang terakhir masih ditunggu malam ini ya",
+        storyDate: "2026-11-30",
+        time: "20:56",
+        afterMs: 5500,
+        requireAppExit: true,
+        delayAfterExit: true,
+        activateChatScript: "maria_late_revision"
+      },
       steps: [
         { type: "mc", text: "PET", time: "22:52", waitBefore: 500 },
         { type: "mc", text: "GUE SALAH KIRIM", time: "22:52", waitBefore: 350 },
@@ -477,6 +489,54 @@ window.STORY_CONFIG = {
         { type: "mc", text: "GUE SERIUS INI GIMANA", time: "22:54", waitBefore: 550 },
         { type: "them", text: "Yaudah sekalian bilang lo suka", time: "22:55", waitBefore: 1500, typingMs: 1200 },
         { type: "mc", text: "Gue block lo ya", time: "22:55", waitBefore: 650 }
+      ]
+    },
+    maria_late_revision: {
+      threadId: "maria",
+      active: false,
+      onComplete: {
+        activateChatOnExit: "dirga_work_night"
+      },
+      steps: [
+        { type: "mc", text: "Okee, aku cek ke Pak Dirga dulu ya", time: "20:56", waitBefore: 600 },
+        { type: "them", text: "Siap Kak", time: "20:57", waitBefore: 1400, typingMs: 800 }
+      ]
+    },
+    dirga_work_night: {
+      threadId: "dirga",
+      active: false,
+      onComplete: {
+        activateChatOnExit: "dirga_after_work_personal"
+      },
+      steps: [
+        { type: "mc", text: "Pak masih di kantor?", storyDate: "2026-11-30", time: "20:58", waitBefore: 650 },
+        { type: "them", text: "Unfortunately", time: "20:58", waitBefore: 1500, typingMs: 850 },
+        { type: "mc", text: "Masih lama?", time: "20:59", waitBefore: 600 },
+        { type: "them", text: "An hour", time: "20:59", waitBefore: 1400, typingMs: 700 },
+        { type: "them", text: "Maybe two", time: "21:00", waitBefore: 450, typingMs: 700 },
+        { type: "mc", text: "Aku temenin deh", time: "21:00", waitBefore: 700 },
+        { type: "them", text: "You don't have to", time: "21:01", waitBefore: 1700, typingMs: 1100 },
+        { type: "mc", text: "I know... tapi aku mau", time: "21:01", waitBefore: 700 },
+        { type: "them", text: "Then stay", time: "21:02", waitBefore: 1700, typingMs: 900 }
+      ]
+    },
+    dirga_after_work_personal: {
+      threadId: "dirga",
+      active: false,
+      steps: [
+        { type: "mc", text: "Makasih tadi, Pak", storyDate: "2026-11-30", time: "23:36", waitBefore: 750 },
+        { type: "them", text: "For what?", time: "23:36", waitBefore: 1500, typingMs: 800 },
+        { type: "mc", text: "Benerin sepatu saya...", time: "23:37", waitBefore: 700 },
+        { type: "them", text: "You would've tripped", time: "23:37", waitBefore: 1600, typingMs: 1100 },
+        { type: "mc", text: "Tetep aja... makasih", time: "23:38", waitBefore: 650 },
+        { type: "them", text: "You're welcome", time: "23:38", waitBefore: 1400, typingMs: 850 },
+        { type: "them", text: "Next time wear sensible shoes", time: "23:39", waitBefore: 500, typingMs: 1200 },
+        { type: "mc", text: "Next time jangan bikin saya nemenin lembur", time: "23:39", waitBefore: 700 },
+        { type: "them", text: "You offered", time: "23:40", waitBefore: 1500, typingMs: 750 },
+        { type: "mc", text: "I know...", time: "23:40", waitBefore: 650 },
+        { type: "them", text: "And you'd do it again", time: "23:41", waitBefore: 1600, typingMs: 1100 },
+        { type: "mc", text: "Jangan pede dulu", time: "23:41", waitBefore: 650 },
+        { type: "them", text: "Too late", time: "23:42", waitBefore: 1400, typingMs: 750 }
       ]
     }
   },
@@ -684,7 +744,9 @@ window.STORY_CONFIG = {
     { id: "photo-18", title: "18 November 2025", caption: "18 November 2025 · 10:36 AM", src: "assets/photos/gallery/when in San Francisco 🧺🌁✨🌙🌿☁ just some….jpg", albums: ["places"] },
     { id: "photo-19", title: "17 November 2026", caption: "17 November 2026 · 8:56 PM", src: "assets/photos/gallery/dinner-17-first.jpg", albums: [], availableAfter: "dirga_after_dinner" },
     { id: "photo-20", title: "21 November 2026", caption: "21 November 2026 · 5:38 PM", src: "assets/photos/gallery/coffee-date.jpg", albums: [], availableAfter: "dirga_coffee_arrival" },
-    { id: "photo-21", title: "28 November 2026", caption: "28 November 2026 · 8:42 PM", src: "assets/photos/gallery/Dion Windsor _ The unwanted marriage.jpg", albums: [], availableAfter: "dirga_wrong_send" }
+    { id: "photo-21", title: "28 November 2026", caption: "28 November 2026 · 8:42 PM", src: "assets/photos/gallery/Dion Windsor _ The unwanted marriage.jpg", albums: [], availableAfter: "dirga_wrong_send" },
+    { id: "photo-22", title: "30 November 2026", caption: "30 November 2026 · 9:34 PM", src: "assets/photos/gallery/alex volkov _ twisted love _ aesthetic _ boy….jpg", albums: [], availableAfter: "dirga_work_night" },
+    { id: "photo-23", title: "30 November 2026", caption: "30 November 2026 · 11:18 PM", src: "assets/photos/gallery/782852347766237811.jpg", albums: [], availableAfter: "dirga_after_work_personal" }
   ],
 
   storyChatMedia: [
@@ -702,18 +764,6 @@ window.STORY_CONFIG = {
   ],
 
   reservedStoryMedia: [
-    {
-      id: "mc-accompanies-dirga-working",
-      placement: "mc_chat_trigger",
-      scene: "accompany_dirga_working",
-      imageSrc: "assets/photos/gallery/alex volkov _ twisted love _ aesthetic _ boy….jpg"
-    },
-    {
-      id: "more-personal-moment",
-      placement: "gallery_after_scene",
-      scene: "personal_moment",
-      imageSrc: "assets/photos/gallery/782852347766237811.jpg"
-    },
     {
       id: "final-dinner-photo",
       placement: "gallery_after_scene",
@@ -995,7 +1045,16 @@ no. absolutely not.`
     },
     posts: [
       {
-        time: "now",
+        time: "30 Nov",
+        text: "voluntarily staying late because one specific man is still working... career low point",
+        replies: 0,
+        reposts: 0,
+        likes: 0,
+        views: 2,
+        availableAfter: "dirga_work_night"
+      },
+      {
+        time: "28 Nov",
         text: "GOBLOKKKKKKKKK",
         replies: 0,
         reposts: 0,

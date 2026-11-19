@@ -1,0 +1,113 @@
+import fs from "node:fs";
+import path from "node:path";
+import vm from "node:vm";
+
+const root = path.resolve(import.meta.dirname, "..");
+const dist = path.join(root, "dist");
+const failures = [];
+const notes = [];
+
+function assert(condition, message) {
+  if (!condition) failures.push(message);
+}
+
+function unique(items, label) {
+  const seen = new Set();
+  for (const item of items) {
+    if (seen.has(item)) failures.push(`${label} duplikat: ${item}`);
+    seen.add(item);
+  }
+}
+
+const storySource = fs.readFileSync(path.join(dist, "story.js"), "utf8");
+const appSource = fs.readFileSync(path.join(dist, "app.js"), "utf8");
+const cssSource = fs.readFileSync(path.join(dist, "styles.css"), "utf8");
+const htmlSource = fs.readFileSync(path.join(dist, "index.html"), "utf8");
+
+new vm.Script(storySource, { filename: "story.js" });
+new vm.Script(appSource, { filename: "app.js" });
+const sandbox = { window: {} };
+vm.runInNewContext(storySource, sandbox, { filename: "story.js" });
+const config = sandbox.window.STORY_CONFIG;
+assert(config && typeof config === "object", "STORY_CONFIG tidak terbentuk");
+
+const threads = config.threads || [];
+const rawThreadIds = threads.map((thread) => thread.id);
+const threadIds = new Set(rawThreadIds);
+unique(rawThreadIds, "ID thread");
+unique((config.apps || []).map((app) => app.id), "ID aplikasi");
+unique((config.dockApps || []).map((app) => app.id), "ID aplikasi dock");
+unique((config.photos || []).map((photo) => photo.id), "ID foto");
+unique((config.photoAlbums || []).map((album) => album.id), "ID album");
+unique((config.notes || []).map((note) => note.title), "Judul Notes");
+unique((config.gmail?.emails || []).map((email) => email.id), "ID email");
+
+const validStepTypes = new Set(["mc", "them", "missed_call"]);
+const triggerIds = [];
+for (const [scriptId, script] of Object.entries(config.chatScripts || {})) {
+  const target = script.threadId || scriptId;
+  assert(threadIds.has(target), `Chat script ${scriptId} mengarah ke thread yang tidak ada: ${target}`);
+  assert(Array.isArray(script.steps) && script.steps.length > 0, `Chat script ${scriptId} tidak memiliki langkah`);
+  for (const [index, step] of (script.steps || []).entries()) {
+    assert(validStepTypes.has(step.type), `Tipe langkah ${scriptId}[${index}] tidak valid: ${step.type}`);
+    if (step.type !== "missed_call") assert(typeof step.text === "string" && step.text.length > 0, `Teks ${scriptId}[${index}] kosong`);
+    assert(Number.isFinite(step.waitBefore) && step.waitBefore >= 0, `waitBefore ${scriptId}[${index}] tidak valid`);
+  }
+  const completion = script.onComplete;
+  if (completion?.id) triggerIds.push(completion.id);
+  if (completion?.threadId) assert(threadIds.has(completion.threadId), `Trigger ${completion.id} memakai thread yang tidak ada`);
+  if (completion?.activateChatScript) assert(Boolean(config.chatScripts[completion.activateChatScript]), `Trigger ${completion.id} mengaktifkan script yang tidak ada`);
+  for (const event of completion?.calendarEvents || []) {
+    assert(/^2026-\d{2}-\d{2}$/.test(event.date), `Tanggal event ${event.id} tidak valid`);
+    if (event.trigger) {
+      triggerIds.push(event.trigger.id);
+      assert(threadIds.has(event.trigger.threadId), `Trigger kalender ${event.trigger.id} memakai thread yang tidak ada`);
+      assert(Boolean(config.chatScripts[event.trigger.activateChatScript]), `Trigger kalender ${event.trigger.id} mengaktifkan script yang tidak ada`);
+    }
+  }
+}
+unique(triggerIds, "ID trigger cerita");
+
+for (const event of config.timeline || []) {
+  assert(threadIds.has(event.threadId), `Timeline ${event.id} memakai thread yang tidak ada`);
+}
+
+const assetRefs = new Set();
+function collectAssets(value) {
+  if (typeof value === "string") {
+    if (value.startsWith("assets/")) assetRefs.add(value);
+    else {
+      const match = value.match(/assets\/[^'"`)]+/g);
+      for (const item of match || []) assetRefs.add(item);
+    }
+    return;
+  }
+  if (Array.isArray(value)) return value.forEach(collectAssets);
+  if (value && typeof value === "object") Object.values(value).forEach(collectAssets);
+}
+collectAssets(config);
+for (const source of [cssSource, htmlSource, appSource]) collectAssets(source);
+for (const ref of assetRefs) {
+  assert(fs.existsSync(path.join(dist, ...ref.split("/"))), `Aset tidak ditemukan: ${ref}`);
+}
+
+assert(/<meta name="viewport"/.test(htmlSource), "Meta viewport tidak ada");
+assert(/lang="id"/.test(htmlSource), "Bahasa dokumen bukan id");
+assert(!/TODO|FIXME|debugger|console\.log/.test(`${storySource}\n${appSource}`), "Kode debug/TODO masih tertinggal");
+assert(!/127\.0\.0\.1|localhost/.test(`${storySource}\n${appSource}\n${htmlSource}\n${cssSource}`), "URL lokal tertanam di hasil deploy");
+assert(fs.existsSync(path.join(dist, "index.html")), "dist/index.html tidak ada");
+
+notes.push(`${threads.length} thread WhatsApp`);
+notes.push(`${Object.keys(config.chatScripts || {}).length} fase chat interaktif`);
+notes.push(`${triggerIds.length} trigger cerita`);
+notes.push(`${assetRefs.size} referensi aset terverifikasi`);
+notes.push(`${(config.photos || []).length} foto dan ${(config.notes || []).length} catatan`);
+
+if (failures.length) {
+  console.error("AUDIT GAGAL");
+  failures.forEach((failure) => console.error(`- ${failure}`));
+  process.exit(1);
+}
+
+console.log("AUDIT LULUS");
+notes.forEach((note) => console.log(`- ${note}`));

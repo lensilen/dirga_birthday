@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="Your Phone — interactive phone story.">
+  <title>Your Phone</title>
+  <link rel="stylesheet" href="styles.css?v=79">
+  <script src="story.js?v=79" defer></script>
+  <script src="app.js?v=79" defer></script>
+</head>
+<body>
+  <main class="page-shell">
+    <section class="device" id="device" aria-label="Pratinjau ponsel cerita">
+      <div class="device__camera" aria-hidden="true"></div>
+      <div class="status-bar" aria-hidden="true">
+        <time id="status-time">09:41</time>
+        <div class="status-icons">
+          <span class="status-cellular"><i></i><i></i><i></i><i></i></span>
+          <svg class="status-wifi" viewBox="0 0 18 13" focusable="false">
+            <path d="M1.5 4.2C5.8.4 12.2.4 16.5 4.2M4.4 7.2c2.6-2.2 6.6-2.2 9.2 0M7.4 10.1c.9-.8 2.3-.8 3.2 0"/>
+            <circle cx="9" cy="11.5" r="1"/>
+          </svg>
+          <span class="status-battery"><i></i><b>93</b></span>
+        </div>
+      </div>
+
+      <div class="screen" id="screen" aria-live="polite"></div>
+      <div class="toast-region" id="toast-region" aria-live="assertive"></div>
+
+      <button class="home-indicator" id="home-button" type="button" aria-label="Kembali ke layar utama">
+        <span></span>
+      </button>
+    </section>
+  </main>
+
+  <noscript>Template ini membutuhkan JavaScript untuk menjalankan cerita interaktif.</noscript>
+</body>
+</html>

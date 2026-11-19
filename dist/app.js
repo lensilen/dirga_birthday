@@ -120,7 +120,7 @@
         "Alright": "18:43",
         "Let me know when you get home": "18:43",
         "I will": "18:44",
-        "You home yet or should I start worrying": "19:17",
+        "Still on the road?": "19:17",
         "Baru sampeee": "19:17",
         "I was about to call": "19:18",
         "Says the person who promised to text": "19:20",
@@ -136,6 +136,7 @@
         "Because I was hoping we could do it again": "19:25"
       };
       (loaded.messages?.dirga || []).forEach((message) => {
+        if (message.text === "You home yet or should I start worrying") message.text = "Still on the road?";
         if (dirgaStoryTimes[message.text]) message.time = dirgaStoryTimes[message.text];
       });
       (loaded.pendingNotifications || []).forEach((event) => {

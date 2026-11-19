@@ -273,7 +273,7 @@ window.STORY_CONFIG = {
         id: "home-arrival-follow-up",
         threadId: "dirga",
         notificationTitle: "?",
-        text: "You home yet or should I start worrying",
+        text: "Still on the road?",
         storyDate: "2026-11-21",
         time: "19:17",
         afterMs: 5500,

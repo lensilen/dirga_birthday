@@ -93,7 +93,7 @@ assert(afterCoffee?.requireAppExit === true, "Trigger setelah coffee tidak menun
 assert(afterCoffee?.delayAfterExit === true, "Timer setelah coffee tidak dimulai sesudah keluar WhatsApp");
 assert(afterCoffee?.activateChatScript === "dirga_after_coffee", "Trigger setelah coffee tidak membuka percakapan lanjutan");
 const afterIWill = config.chatScripts?.dirga_after_coffee?.onComplete;
-assert(afterIWill?.text === "You home yet or should I start worrying", "Trigger setelah I will belum tersedia");
+assert(afterIWill?.text === "Still on the road?", "Trigger setelah I will belum memakai follow-up yang berbeda");
 assert(afterIWill?.afterMs >= 5000 && afterIWill?.afterMs <= 6000, "Jeda trigger setelah I will bukan 5–6 detik");
 assert(afterIWill?.requireAppExit === true && afterIWill?.delayAfterExit === true, "Trigger setelah I will tidak menunggu pemain keluar WhatsApp");
 assert(afterIWill?.activateChatScript === "dirga_home_arrival", "Trigger setelah I will tidak membuka percakapan pulang");

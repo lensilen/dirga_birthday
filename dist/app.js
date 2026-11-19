@@ -154,6 +154,17 @@
     if (lockClock) lockClock.textContent = statusTime.textContent;
   }
 
+  function updateDeviceScale() {
+    if (!window.matchMedia("(max-width: 760px)").matches) {
+      document.documentElement.style.setProperty("--device-scale", "1");
+      return;
+    }
+    const horizontalRoom = Math.max(240, window.innerWidth - 24);
+    const verticalRoom = Math.max(480, window.innerHeight - 24);
+    const scale = Math.min(1, horizontalRoom / 390, verticalRoom / 844);
+    document.documentElement.style.setProperty("--device-scale", String(scale));
+  }
+
   function render() {
     document.body.dataset.view = state.view;
     if (!state.unlocked || state.view === "lock") renderLock();
@@ -1699,6 +1710,9 @@
     if (event.key === "Backspace") deletePin();
   });
 
+  window.addEventListener("resize", updateDeviceScale, { passive: true });
+  window.addEventListener("orientationchange", updateDeviceScale, { passive: true });
+  updateDeviceScale();
   setInterval(updateClock, 1000);
   reconcileCompletedChatTriggers();
   if (repairStoryTriggers()) reconcileCompletedChatTriggers();

@@ -1140,9 +1140,17 @@
   }
 
   function getAlbumPhotos(albumId) {
-    const visiblePhotos = config.photos.filter((photo) => storyCheckpointReached(photo.availableAfter) && storyDateReached(photo.availableAfterDate));
+    const visiblePhotos = config.photos
+      .filter((photo) => storyCheckpointReached(photo.availableAfter) && storyDateReached(photo.availableAfterDate))
+      .sort((first, second) => photoTimestamp(second) - photoTimestamp(first));
     if (albumId === "recents") return visiblePhotos;
     return visiblePhotos.filter((photo) => photo.albums?.includes(albumId));
+  }
+
+  function photoTimestamp(photo) {
+    const [dateText, timeText = "12:00 PM"] = String(photo.caption || "").split(" · ");
+    const timestamp = Date.parse(`${dateText} ${timeText}`);
+    return Number.isNaN(timestamp) ? 0 : timestamp;
   }
 
   function groupPhotosByMonth(photos) {

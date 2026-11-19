@@ -78,7 +78,9 @@ for (const post of gatedXPosts) {
 assert(/function storyCheckpointReached\(checkpoint\)/.test(appSource), "Progress cerita belum memiliki pemeriksa checkpoint bersama");
 assert(/message\.text === "Take your time"/.test(appSource), "Progress lama tidak dapat membuka tweet setelah coffee");
 const gatedPhotos = (config.photos || []).filter((photo) => photo.availableAfter || photo.availableAfterDate);
-assert(gatedPhotos.length === 0, "Foto Dirga lama masih disiapkan untuk muncul kembali di galeri");
+assert(gatedPhotos.length === 2, "Jumlah foto baru setelah pertemuan tidak sesuai");
+assert(gatedPhotos.some((photo) => photo.availableAfter === "dirga_after_dinner" && photo.src?.includes("dinner-17-first")), "Foto setelah dinner belum memiliki trigger");
+assert(gatedPhotos.some((photo) => photo.availableAfter === "dirga_after_coffee" && photo.src?.includes("dinner-17-second")), "Foto setelah coffee belum memiliki trigger");
 const removedGalleryAssets = ["1140747780608893244", "782852347766237811", "987343918331237220", "alex volkov", "Dion Windsor", "917467755359088838"];
 assert(removedGalleryAssets.every((asset) => !(config.photos || []).some((photo) => photo.src?.includes(asset))), "Masih ada foto yang diminta dihapus dalam galeri");
 assert((config.storyChatMedia || []).some((media) => media.imageSrc?.includes("917467755359088838") && media.threadId === "dirga"), "Foto Januari belum dipindahkan ke chat Dirga");

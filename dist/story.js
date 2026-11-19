@@ -513,8 +513,7 @@ window.STORY_CONFIG = {
     { id: "photo-12", title: "14 February 2026", caption: "14 February 2026 · 8:41 PM", src: "assets/photos/gallery/831899362455754011.jpg", albums: ["favorites"] },
     { id: "photo-17", title: "22 November 2025", caption: "22 November 2025 · 4:03 PM", src: "assets/photos/gallery/Office.jpg", albums: ["work"] },
     { id: "photo-18", title: "18 November 2025", caption: "18 November 2025 · 10:36 AM", src: "assets/photos/gallery/when in San Francisco 🧺🌁✨🌙🌿☁ just some….jpg", albums: ["places"] },
-    { id: "photo-19", title: "17 November 2026", caption: "17 November 2026 · 8:56 PM", src: "assets/photos/gallery/dinner-17-first.jpg", albums: [], availableAfter: "dirga_after_dinner" },
-    { id: "photo-20", title: "21 November 2026", caption: "21 November 2026 · 5:38 PM", src: "assets/photos/gallery/dinner-17-second.jpg", albums: [], availableAfter: "dirga_after_coffee" }
+    { id: "photo-19", title: "17 November 2026", caption: "17 November 2026 · 8:56 PM", src: "assets/photos/gallery/dinner-17-first.jpg", albums: [], availableAfter: "dirga_after_dinner" }
   ],
 
   storyChatMedia: [

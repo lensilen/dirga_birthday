@@ -358,8 +358,10 @@
         if (messageTextMigrations[message.text]) message.text = messageTextMigrations[message.text];
         if (message.storyDate === "2026-12-05" && message.text === "I'm downstairs") message.time = "18:09";
       });
-      (loaded.messages?.dirga || []).forEach((message, index, messages) => {
-        if (message.text === "I'm downstairs" && messages[index + 1]?.text === "KOK GAK BILANG DULU") {
+      let downstairsCount = 0;
+      (loaded.messages?.dirga || []).forEach((message) => {
+        if (message.text === "I'm downstairs") downstairsCount += 1;
+        if (message.text === "I'm downstairs" && downstairsCount >= 2) {
           message.storyDate = "2026-12-05";
           message.time = "18:09";
         }

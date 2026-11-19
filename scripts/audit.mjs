@@ -153,6 +153,19 @@ const dropPakIndex = personalChat?.steps?.findIndex((step) => step.text === "You
 const photoCallbackIndex = personalChat?.steps?.findIndex((step) => step.text === "You sent me a photo with ‘GANTENG BANGET’ written under it");
 assert(dropPakIndex >= 0 && photoCallbackIndex > dropPakIndex, "Dirga belum meminta MC melepas panggilan Pak sebelum mengungkit foto");
 assert(personalChat?.steps?.some((step) => step.type === "mc" && step.text === "...Dirga"), "MC belum mencoba memanggil Dirga tanpa Pak");
+const morningCheck = config.chatScripts?.dirga_morning_check;
+assert(personalChat?.onComplete?.text === "Morning" && personalChat?.onComplete?.storyDate === "2026-12-01", "Trigger morning check belum tersedia");
+assert(personalChat?.onComplete?.afterMs >= 5000 && personalChat?.onComplete?.afterMs <= 6000, "Jeda menuju morning check bukan 5–6 detik");
+assert(morningCheck?.steps?.some((step) => step.text === "Morning, Dirga"), "MC belum berlatih memanggil Dirga tanpa Pak");
+const decemberMeetup = config.chatScripts?.dirga_december_meetup;
+assert(morningCheck?.onComplete?.text === "Done with work?" && morningCheck?.onComplete?.storyDate === "2026-12-05", "Trigger pertemuan 5 Desember belum tersedia");
+assert(morningCheck?.onComplete?.calendarEvents?.some((event) => event.title === "Us?" && event.date === "2026-12-05"), "Event Us? belum muncul melalui alur cerita");
+assert(decemberMeetup?.steps?.some((step) => step.text === "KOK GAK BILANG DULU"), "Respons CAPS LOCK MC belum tersedia");
+const decemberClarity = config.chatScripts?.dirga_december_clarity;
+assert(decemberMeetup?.onComplete?.text === "Home?" && decemberMeetup?.onComplete?.activateChatScript === "dirga_december_clarity", "Trigger confession setelah pertemuan belum tersedia");
+assert(decemberClarity?.steps?.some((step) => step.text === "I'm pursuing you, yes"), "Pengakuan Dirga belum tersedia");
+assert(decemberClarity?.steps?.some((step) => step.text === "Aku gak bilang jangan"), "Jawaban MC setelah pengakuan belum tersedia");
+const warmDirgaScripts = new Set(["dirga_after_work_personal", "dirga_morning_check", "dirga_december_meetup", "dirga_december_clarity"]);
 for (const [scriptId, script] of Object.entries(config.chatScripts || {})) {
   if ((script.threadId || scriptId) !== "dirga") continue;
   const mcSteps = (script.steps || []).filter((step) => step.type === "mc");
@@ -160,7 +173,7 @@ for (const [scriptId, script] of Object.entries(config.chatScripts || {})) {
     const formalSteps = (script.steps || []).slice(0, dropPakIndex + 1).filter((step) => step.type === "mc");
     assert(formalSteps.every((step) => !/\baku\b/i.test(step.text)), "MC memakai aku sebelum Dirga meminta panggilan Pak dilepas");
     assert((script.steps || []).slice(dropPakIndex + 1).some((step) => step.type === "mc" && /\baku\b/i.test(step.text)), "MC belum beralih ke aku setelah hubungan menghangat");
-  } else {
+  } else if (!warmDirgaScripts.has(scriptId)) {
     assert(mcSteps.every((step) => !/\baku\b/i.test(step.text)), `MC memakai aku terlalu awal pada fase ${scriptId}`);
   }
 }
@@ -168,6 +181,8 @@ assert(/"Iya\.\.\. aku juga mau": "Iya\.\.\. saya juga mau"/.test(appSource) && 
 assert(config.xApp?.posts?.some((post) => post.availableAfter === "dirga_work_night" && post.text?.includes("voluntarily staying late")), "Tweet setelah menemani Dirga kerja belum tersedia");
 assert((config.xApp?.posts || []).filter((post) => post.availableAfter === "dirga_work_night").length >= 3, "Tweet fase lembur belum cukup natural");
 assert((config.xApp?.posts || []).filter((post) => post.availableAfter === "dirga_after_work_personal").length >= 3, "Tweet fase chat warm belum cukup natural");
+assert((config.xApp?.posts || []).filter((post) => post.availableAfter === "dirga_december_clarity").length >= 3, "Tweet setelah confession belum cukup heboh");
+assert((config.calendar?.events || []).every((event) => event.title !== "Us?"), "Event Us? masih muncul sebelum trigger cerita");
 assert((config.gmail?.emails || []).some((email) => email.id === "legal-copy-tonight" && email.availableAfter === "maria_late_revision"), "Email revisi malam belum terhubung ke cerita");
 assert((config.gmail?.emails || []).some((email) => email.id === "legal-copy-cleared" && email.availableAfter === "dirga_work_night"), "Email clearance legal belum terhubung ke cerita");
 assert((config.notes || []).some((note) => note.title === "MINGGU DEPAN" && note.availableAfter === "dirga_wrong_send"), "Notes rencana setelah pertemuan kedua belum tersedia");

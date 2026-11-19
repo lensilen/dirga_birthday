@@ -544,6 +544,18 @@ window.STORY_CONFIG = {
       threadId: "dirga",
       storyDate: "2026-11-30",
       active: false,
+      onComplete: {
+        id: "morning-after-work",
+        threadId: "dirga",
+        notificationTitle: "?",
+        text: "Morning",
+        storyDate: "2026-12-01",
+        time: "08:12",
+        afterMs: 5500,
+        requireAppExit: true,
+        delayAfterExit: true,
+        activateChatScript: "dirga_morning_check"
+      },
       steps: [
         { type: "mc", text: "Makasih tadi, Pak", storyDate: "2026-11-30", time: "23:36", waitBefore: 750 },
         { type: "them", text: "For what?", time: "23:36", waitBefore: 1500, typingMs: 800 },
@@ -566,6 +578,83 @@ window.STORY_CONFIG = {
         { type: "them", text: "And you'd do it again", time: "23:45", waitBefore: 1600, typingMs: 1100 },
         { type: "mc", text: "Jangan pede dulu", time: "23:45", waitBefore: 650 },
         { type: "them", text: "Too late", time: "23:46", waitBefore: 1400, typingMs: 750 }
+      ]
+    },
+    dirga_morning_check: {
+      threadId: "dirga",
+      storyDate: "2026-12-01",
+      active: false,
+      onComplete: {
+        id: "december-meetup-opening",
+        threadId: "dirga",
+        notificationTitle: "?",
+        text: "Done with work?",
+        storyDate: "2026-12-05",
+        time: "18:08",
+        afterMs: 5500,
+        requireAppExit: true,
+        delayAfterExit: true,
+        activateChatScript: "dirga_december_meetup",
+        calendarEvents: [
+          { id: "us-dirga-5-dec", date: "2026-12-05", title: "Us?", time: "6:30 PM", color: "#ff375f", type: "romantic" }
+        ]
+      },
+      steps: [
+        { type: "mc", text: "Morning", time: "08:12", waitBefore: 550 },
+        { type: "them", text: "How's your ankle?", time: "08:13", waitBefore: 1400, typingMs: 850 },
+        { type: "mc", text: "Masih utuh kok", time: "08:13", waitBefore: 600 },
+        { type: "them", text: "That's not what I asked", time: "08:14", waitBefore: 1500, typingMs: 1000 },
+        { type: "mc", text: "Masih agak sakit dikit", time: "08:14", waitBefore: 650 },
+        { type: "them", text: "Ice it after work", time: "08:15", waitBefore: 1400, typingMs: 850 },
+        { type: "mc", text: "Siap, Pak", time: "08:15", waitBefore: 600 },
+        { type: "them", text: "I thought we settled this last night", time: "08:16", waitBefore: 1600, typingMs: 1200 },
+        { type: "mc", text: "Morning, Dirga", time: "08:16", waitBefore: 700 },
+        { type: "them", text: "Better", time: "08:17", waitBefore: 1400, typingMs: 700 }
+      ]
+    },
+    dirga_december_meetup: {
+      threadId: "dirga",
+      storyDate: "2026-12-05",
+      active: false,
+      onComplete: {
+        id: "december-meetup-home-check",
+        threadId: "dirga",
+        notificationTitle: "?",
+        text: "Home?",
+        storyDate: "2026-12-05",
+        time: "22:14",
+        afterMs: 5500,
+        requireAppExit: true,
+        delayAfterExit: true,
+        activateChatScript: "dirga_december_clarity"
+      },
+      steps: [
+        { type: "mc", text: "Baru selesai", time: "18:08", waitBefore: 600 },
+        { type: "them", text: "Good", time: "18:09", waitBefore: 1400, typingMs: 700 },
+        { type: "them", text: "I'm downstairs", time: "18:09", waitBefore: 450, typingMs: 900 },
+        { type: "mc", text: "KOK GAK BILANG DULU", time: "18:10", waitBefore: 650 },
+        { type: "them", text: "You would've said you were busy", time: "18:10", waitBefore: 1500, typingMs: 1200 },
+        { type: "mc", text: "Karena emang sibuk", time: "18:11", waitBefore: 600 },
+        { type: "them", text: "And yet you're still coming down", time: "18:11", waitBefore: 1500, typingMs: 1100 }
+      ]
+    },
+    dirga_december_clarity: {
+      threadId: "dirga",
+      storyDate: "2026-12-05",
+      active: false,
+      steps: [
+        { type: "mc", text: "Udah", time: "22:14", waitBefore: 600 },
+        { type: "mc", text: "Dirga", time: "22:15", waitBefore: 450 },
+        { type: "them", text: "Yes?", time: "22:15", waitBefore: 1500, typingMs: 700 },
+        { type: "mc", text: "Kamu emang selalu sebaik ini ke semua orang?", time: "22:16", waitBefore: 700 },
+        { type: "them", text: "No", time: "22:16", waitBefore: 1700, typingMs: 700 },
+        { type: "them", text: "I don't remember everyone's coffee order or wait downstairs for everyone", time: "22:17", waitBefore: 500, typingMs: 1900 },
+        { type: "them", text: "I've been trying to make this obvious without making you uncomfortable", time: "22:18", waitBefore: 650, typingMs: 2000 },
+        { type: "mc", text: "Jadi kamu...", time: "22:18", waitBefore: 800 },
+        { type: "them", text: "I'm pursuing you, yes", time: "22:19", waitBefore: 1800, typingMs: 1100 },
+        { type: "them", text: "Slowly, if you'll let me", time: "22:19", waitBefore: 500, typingMs: 1100 },
+        { type: "mc", text: "Aku gak bilang jangan", time: "22:20", waitBefore: 850 },
+        { type: "them", text: "Good", time: "22:20", waitBefore: 1600, typingMs: 700 }
       ]
     }
   },
@@ -779,7 +868,6 @@ window.STORY_CONFIG = {
       { date: "2026-11-10", title: "Hari Pahlawan", time: "all-day", color: "#bf5af2", type: "national" },
       { date: "2026-11-17", title: "Birthday Pak Dirga", time: "all-day", color: "#ff9f0a", type: "birthday" },
       { date: "2026-11-18", title: "Shade teaser embargo lifts", time: "10:00 AM", color: "#0a84ff", type: "work" },
-      { date: "2026-12-05", title: "Us?", time: "6:30 PM", color: "#ff375f", type: "romantic" },
       { date: "2026-12-17", title: "Year-end campaign review", time: "1:30 PM", color: "#0a84ff", type: "work" },
       { date: "2026-12-22", title: "Hari Ibu", time: "all-day", color: "#bf5af2", type: "national" },
       { date: "2026-12-25", title: "Christmas Day", time: "all-day", color: "#30d158", type: "national" },
@@ -1129,6 +1217,51 @@ no. absolutely not.`
       followers: 0
     },
     posts: [
+      {
+        time: "5 Dec",
+        text: "aku jawab aku gak bilang jangan\n\nself preservation resmi mengundurkan diri",
+        replies: 0,
+        reposts: 0,
+        likes: 0,
+        views: 3,
+        availableAfter: "dirga_december_clarity"
+      },
+      {
+        time: "5 Dec",
+        text: "slowly if you'll let me\n\nSIAPA YANG NGAJARIN LAWYER NGOMONG BEGINI",
+        replies: 0,
+        reposts: 0,
+        likes: 0,
+        views: 4,
+        availableAfter: "dirga_december_clarity"
+      },
+      {
+        time: "5 Dec",
+        text: "DIA BILANG I'M PURSUING YOU TERUS GUE HARUS GIMANA",
+        replies: 0,
+        reposts: 0,
+        likes: 0,
+        views: 5,
+        availableAfter: "dirga_december_clarity"
+      },
+      {
+        time: "5 Dec",
+        text: "dia udah di bawah kantor dan gue bahkan belum sempat pura-pura sibuk",
+        replies: 0,
+        reposts: 0,
+        likes: 0,
+        views: 2,
+        availableAfter: "dirga_december_meetup"
+      },
+      {
+        time: "1 Dec",
+        text: "baru jam 8 pagi udah disuruh latihan manggil nama\n\nsantai banget ya hidup orang",
+        replies: 0,
+        reposts: 0,
+        likes: 0,
+        views: 2,
+        availableAfter: "dirga_morning_check"
+      },
       {
         time: "30 Nov",
         text: "besok di kantor harus manggil Pak lagi\n\nnormal professional definitely fine",

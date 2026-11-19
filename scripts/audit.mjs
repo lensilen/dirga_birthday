@@ -38,6 +38,7 @@ unique(rawThreadIds, "ID thread");
 unique((config.apps || []).map((app) => app.id), "ID aplikasi");
 unique((config.dockApps || []).map((app) => app.id), "ID aplikasi dock");
 unique((config.photos || []).map((photo) => photo.id), "ID foto");
+unique((config.storyChatMedia || []).map((media) => media.id), "ID media chat cerita");
 unique((config.photoAlbums || []).map((album) => album.id), "ID album");
 unique((config.notes || []).map((note) => note.title), "Judul Notes");
 unique((config.gmail?.emails || []).map((email) => email.id), "ID email");
@@ -73,8 +74,15 @@ assert(gatedXPosts.length >= 4, "Tweet baru setelah coffee belum lengkap");
 for (const post of gatedXPosts) {
   assert(Boolean(config.chatScripts?.[post.availableAfter]), `Tweet X memakai fase yang tidak ada: ${post.availableAfter}`);
 }
-assert(/completedChats\.has\(post\.availableAfter\)/.test(appSource), "Tweet bertahap tidak membaca progress chat");
+assert(/function storyCheckpointReached\(checkpoint\)/.test(appSource), "Progress cerita belum memiliki pemeriksa checkpoint bersama");
 assert(/message\.text === "Take your time"/.test(appSource), "Progress lama tidak dapat membuka tweet setelah coffee");
+const gatedPhotos = (config.photos || []).filter((photo) => photo.availableAfter || photo.availableAfterDate);
+assert(gatedPhotos.length === 5, "Jumlah foto timeline Dirga tidak sesuai");
+assert(gatedPhotos.every((photo) => !/2025|2026-0[1-9]/.test(`${photo.title} ${photo.availableAfterDate || ""}`)), "Masih ada foto Dirga sebelum timeline utama");
+assert(!(config.photos || []).some((photo) => photo.src?.includes("917467755359088838")), "Foto Januari masih berada di galeri");
+assert((config.storyChatMedia || []).some((media) => media.imageSrc?.includes("917467755359088838") && media.threadId === "dirga"), "Foto Januari belum dipindahkan ke chat Dirga");
+assert(/storyCheckpointReached\(photo\.availableAfter\)/.test(appSource), "Galeri belum memfilter foto berdasarkan pertemuan");
+assert(/class="wa-message-image"/.test(appSource), "WhatsApp belum mendukung foto di dalam chat");
 assert(config.chatScripts?.petra?.onComplete?.storyDate === "2026-11-17", "Trigger setelah dinner tidak memakai tanggal cerita 17 November");
 assert(config.chatScripts?.dirga_after_dinner?.onComplete?.calendarEvents?.[0]?.trigger?.storyDate === "2026-11-21", "Trigger coffee tidak memakai tanggal cerita 21 November");
 assert(/storyDate:\s*"2026-11-17"/.test(appSource), "State awal tidak memiliki tanggal cerita");

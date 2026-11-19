@@ -237,6 +237,40 @@
     return state.storyTime;
   }
 
+  function storyCheckpointReached(checkpoint) {
+    if (!checkpoint) return true;
+    if ((state.completedChats || []).includes(checkpoint)) return true;
+    if (checkpoint === "dirga_coffee_arrival") {
+      return (state.messages?.dirga || []).some((message) => message.text === "Take your time");
+    }
+    return false;
+  }
+
+  function storyDateReached(date) {
+    return !date || String(state.storyDate || "") >= String(date);
+  }
+
+  function reconcileStoryChatMedia() {
+    let changed = false;
+    (config.storyChatMedia || []).forEach((media) => {
+      if (state.deliveredEvents.includes(media.id) || !storyDateReached(media.availableAfterDate) || !storyCheckpointReached(media.availableAfter)) return;
+      if (!state.messages[media.threadId]) state.messages[media.threadId] = [];
+      state.messages[media.threadId].push({
+        from: media.from || "them",
+        text: media.text || "Photo",
+        time: media.time || state.storyTime,
+        imageSrc: media.imageSrc,
+        imageAlt: media.imageAlt || "Photo"
+      });
+      state.deliveredEvents.push(media.id);
+      if (!(state.view === "thread" && state.activeThreadId === media.threadId)) {
+        state.unread[media.threadId] = (state.unread[media.threadId] || 0) + 1;
+      }
+      changed = true;
+    });
+    if (changed) saveState();
+  }
+
   function updateDeviceScale() {
     if (!window.matchMedia("(max-width: 760px)").matches) {
       document.documentElement.style.setProperty("--device-scale", "1");
@@ -249,6 +283,7 @@
   }
 
   function render() {
+    reconcileStoryChatMedia();
     document.body.dataset.view = state.view;
     if (!state.unlocked || state.view === "lock") renderLock();
     else if (state.view === "home") renderHome();
@@ -598,8 +633,9 @@
               <span><strong>Missed voice call</strong><small>${escapeHtml(message.time || currentTime())}</small></span>
             </div>` : `
             <div class="bubble-row bubble-row--${message.from}">
-              <div class="wa-bubble">
-                <span class="wa-message-text">${escapeHtml(message.text).replaceAll("\n", "<br>")}</span>
+              <div class="wa-bubble ${message.imageSrc ? "wa-bubble--image" : ""}">
+                ${message.imageSrc ? `<img class="wa-message-image" src="${escapeAttribute(message.imageSrc)}" alt="${escapeAttribute(message.imageAlt || "Photo")}">` : ""}
+                ${message.text ? `<span class="wa-message-text">${escapeHtml(message.text).replaceAll("\n", "<br>")}</span>` : ""}
                 <span class="wa-message-meta"><time>${escapeHtml(message.time || currentTime())}</time>${message.from === "me" ? `<b aria-label="Dibaca">✓✓</b>` : ""}</span>
               </div>
             </div>`).join("")}
@@ -1093,8 +1129,9 @@
   }
 
   function getAlbumPhotos(albumId) {
-    if (albumId === "recents") return config.photos;
-    return config.photos.filter((photo) => photo.albums?.includes(albumId));
+    const visiblePhotos = config.photos.filter((photo) => storyCheckpointReached(photo.availableAfter) && storyDateReached(photo.availableAfterDate));
+    if (albumId === "recents") return visiblePhotos;
+    return visiblePhotos.filter((photo) => photo.albums?.includes(albumId));
   }
 
   function groupPhotosByMonth(photos) {
@@ -1553,14 +1590,9 @@
   function renderX() {
     const x = config.xApp || {};
     const profile = x.profile || {};
-    const completedChats = new Set(state.completedChats || []);
     const posts = (x.posts || []).filter((post) => {
       if (!post.availableAfter) return true;
-      if (completedChats.has(post.availableAfter)) return true;
-      if (post.availableAfter === "dirga_coffee_arrival") {
-        return (state.messages?.dirga || []).some((message) => message.text === "Take your time");
-      }
-      return false;
+      return storyCheckpointReached(post.availableAfter);
     });
     screen.innerHTML = `
       <section class="view app-view x-view">

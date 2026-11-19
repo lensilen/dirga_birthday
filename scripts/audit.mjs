@@ -92,6 +92,7 @@ assert(reservedMedia.some((media) => media.scene === "personal_moment" && media.
 assert(reservedMedia.some((media) => media.scene === "final_dinner" && media.imageSrc?.includes("dinner-17-second")), "Foto dinner terakhir belum disiapkan");
 assert(/storyCheckpointReached\(photo\.availableAfter\)/.test(appSource), "Galeri belum memfilter foto berdasarkan pertemuan");
 assert(/\.sort\(\(first, second\) => photoTimestamp\(second\) - photoTimestamp\(first\)\)/.test(appSource), "Galeri belum diurutkan dari foto paling baru");
+assert(/album\.id === "recents"\s*\? albumPhotos\[0\]/.test(appSource), "Cover Recents belum mengikuti foto terbaru yang terbuka");
 assert(/class="wa-message-image"/.test(appSource), "WhatsApp belum mendukung foto di dalam chat");
 assert(config.chatScripts?.petra?.onComplete?.storyDate === "2026-11-17", "Trigger setelah dinner tidak memakai tanggal cerita 17 November");
 assert(config.chatScripts?.dirga_after_dinner?.onComplete?.calendarEvents?.[0]?.trigger?.storyDate === "2026-11-21", "Trigger coffee tidak memakai tanggal cerita 21 November");

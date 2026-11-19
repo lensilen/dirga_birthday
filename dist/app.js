@@ -1108,8 +1108,11 @@
 
   function renderPhotos() {
     const albumCards = config.photoAlbums.map((album) => {
-      const cover = config.photos.find((photo) => photo.id === album.coverId) || config.photos[0];
-      const count = getAlbumPhotos(album.id).length;
+      const albumPhotos = getAlbumPhotos(album.id);
+      const cover = album.id === "recents"
+        ? albumPhotos[0]
+        : albumPhotos.find((photo) => photo.id === album.coverId) || albumPhotos[0] || config.photos[0];
+      const count = albumPhotos.length;
       return `<button type="button" class="album-card" data-album="${album.id}" aria-label="Buka album ${escapeHtml(album.title)}">
         <span class="album-cover">${photoVisual(cover)}${album.id === "favorites" ? `<b aria-hidden="true">♥</b>` : ""}</span>
         <strong>${escapeHtml(album.title)}</strong>

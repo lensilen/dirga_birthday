@@ -137,6 +137,7 @@ assert(wrongSendScript?.onComplete?.afterMs >= 5000 && wrongSendScript?.onComple
 assert(wrongSendScript?.onComplete?.activateChatScript === "petra_wrong_send", "Trigger salah kirim tidak membuka chat Petra");
 assert(config.chatScripts?.petra_wrong_send?.steps?.some((step) => step.text === "KE ORANGNYA LANGSUNG"), "Percakapan panik dengan Petra belum lengkap");
 assert((config.xApp?.posts || []).filter((post) => post.availableAfter === "dirga_wrong_send").length >= 2, "Tweet setelah salah kirim belum lengkap");
+assert(config.xApp?.posts?.some((post) => post.text === "GOBLOKKKKKKKKK" && post.time === "now" && post.availableAfter === "dirga_wrong_send"), "Tweet spontan setelah salah kirim belum tersedia");
 assert(/storyRevision:\s*3/.test(appSource) && /extendedScriptId = "dirga_home_arrival"/.test(appSource) && /reorderedScripts/.test(appSource), "Progress lama belum dimigrasikan ke urutan Petra lebih dulu");
 assert(/imageSrc:\s*step\.imageSrc/.test(appSource) && /wa-draft-image/.test(appSource), "Composer WhatsApp belum mendukung draft foto interaktif");
 assert(/event\.exitDelayStarted = true/.test(appSource), "Runtime belum memulai timer saat WhatsApp ditutup");

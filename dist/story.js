@@ -995,6 +995,15 @@ no. absolutely not.`
     },
     posts: [
       {
+        time: "now",
+        text: "GOBLOKKKKKKKKK",
+        replies: 0,
+        reposts: 0,
+        likes: 0,
+        views: 1,
+        availableAfter: "dirga_wrong_send"
+      },
+      {
         time: "28 Nov",
         text: "ternyata ‘only to me’ bisa bikin orang mendadak lupa cara tidur",
         replies: 0,

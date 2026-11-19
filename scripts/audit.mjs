@@ -61,12 +61,17 @@ for (const [scriptId, script] of Object.entries(config.chatScripts || {})) {
     assert(/^2026-\d{2}-\d{2}$/.test(event.date), `Tanggal event ${event.id} tidak valid`);
     if (event.trigger) {
       triggerIds.push(event.trigger.id);
+      assert(/^2026-\d{2}-\d{2}$/.test(event.trigger.storyDate), `Tanggal cerita trigger kalender ${event.trigger.id} tidak valid`);
       assert(threadIds.has(event.trigger.threadId), `Trigger kalender ${event.trigger.id} memakai thread yang tidak ada`);
       assert(Boolean(config.chatScripts[event.trigger.activateChatScript]), `Trigger kalender ${event.trigger.id} mengaktifkan script yang tidak ada`);
     }
   }
 }
 unique(triggerIds, "ID trigger cerita");
+assert(config.chatScripts?.petra?.onComplete?.storyDate === "2026-11-17", "Trigger setelah dinner tidak memakai tanggal cerita 17 November");
+assert(config.chatScripts?.dirga_after_dinner?.onComplete?.calendarEvents?.[0]?.trigger?.storyDate === "2026-11-21", "Trigger coffee tidak memakai tanggal cerita 21 November");
+assert(/storyDate:\s*"2026-11-17"/.test(appSource), "State awal tidak memiliki tanggal cerita");
+assert(!/function currentTime\(\)\s*{\s*return new Date/.test(appSource), "Jam chat masih mengikuti waktu perangkat");
 
 for (const event of config.timeline || []) {
   assert(threadIds.has(event.threadId), `Timeline ${event.id} memakai thread yang tidak ada`);

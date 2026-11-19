@@ -16,6 +16,8 @@
     pinVisible: false,
     view: "lock",
     pinInput: "",
+    storyDate: "2026-11-17",
+    storyTime: "10:26",
     activeThreadId: config.threads[0]?.id || null,
     messages: Object.fromEntries(config.threads.map((thread) => [thread.id, [...thread.initialMessages]])),
     unread: {},
@@ -121,6 +123,33 @@
         if (event.id === "chapter-3-dirga-home") event.time = "22:41";
         if (event.id === "coffee-dirga-arrival") event.time = "15:52";
       });
+      if (!Object.prototype.hasOwnProperty.call(saved, "storyDate") || !Object.prototype.hasOwnProperty.call(saved, "storyTime")) {
+        const dirgaMessages = loaded.messages?.dirga || [];
+        const hasCoffeeScene = loaded.deliveredEvents?.includes("coffee-dirga-arrival")
+          || (loaded.chatProgress?.dirga_coffee_arrival || 0) > 0
+          || loaded.completedChats?.includes("dirga_coffee_arrival")
+          || dirgaMessages.some((message) => ["I'm downstairs", "You said four", "It is 3:52", "Exactly", "Eight minutes is not that early", "Take your time"].includes(message.text));
+        const hasDinnerScene = loaded.deliveredEvents?.includes("chapter-3-dirga-home")
+          || (loaded.chatProgress?.dirga_after_dinner || 0) > 0
+          || loaded.completedChats?.includes("dirga_after_dinner")
+          || dirgaMessages.some((message) => ["Sudah masuk?", "Udah... baru masuk", "Good", "Thank you for tonight", "Saya memilih dengar bagian yang saya suka"].includes(message.text));
+
+        if (hasCoffeeScene) {
+          loaded.storyDate = "2026-11-21";
+          loaded.storyTime = dirgaMessages.some((message) => ["Exactly", "Eight minutes is not that early", "Take your time"].includes(message.text)) ? "15:53" : "15:52";
+        } else if (hasDinnerScene) {
+          loaded.storyDate = "2026-11-17";
+          const dinnerTimes = dirgaMessages
+            .map((message) => dirgaStoryTimes[message.text])
+            .filter((time) => time?.startsWith("22:"));
+          loaded.storyTime = dinnerTimes.sort().at(-1) || "22:41";
+        } else {
+          loaded.storyDate = "2026-11-17";
+          loaded.storyTime = "10:26";
+        }
+        loaded.calendarMonth = Number(loaded.storyDate.slice(5, 7)) - 1;
+        loaded.selectedDate = loaded.storyDate;
+      }
       return loaded;
     } catch (_) {
       return defaultState();
@@ -148,10 +177,64 @@
   }
 
   function updateClock() {
-    const now = new Date();
-    statusTime.textContent = now.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }).replace(".", ":");
+    statusTime.textContent = normalizeStoryTime(state.storyTime);
     const lockClock = document.querySelector("#lock-clock");
     if (lockClock) lockClock.textContent = statusTime.textContent;
+    const lockDate = document.querySelector("#lock-date");
+    if (lockDate) lockDate.textContent = formatStoryDate();
+  }
+
+  function normalizeStoryTime(value) {
+    const match = String(value || "").match(/^(\d{1,2}):(\d{2})$/);
+    if (!match) return "10:26";
+    return `${String(Math.min(23, Number(match[1]))).padStart(2, "0")}:${String(Math.min(59, Number(match[2]))).padStart(2, "0")}`;
+  }
+
+  function storyDateObject(date = state.storyDate, time = state.storyTime) {
+    const safeDate = /^\d{4}-\d{2}-\d{2}$/.test(String(date)) ? date : "2026-11-17";
+    return new Date(`${safeDate}T${normalizeStoryTime(time)}:00`);
+  }
+
+  function formatStoryDate() {
+    return new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric" }).format(storyDateObject());
+  }
+
+  function storyCalendarParts() {
+    const date = storyDateObject();
+    return {
+      weekday: new Intl.DateTimeFormat("en-US", { weekday: "short" }).format(date),
+      month: new Intl.DateTimeFormat("en-US", { month: "short" }).format(date),
+      day: date.getDate()
+    };
+  }
+
+  function setStoryClock(date, time, options = {}) {
+    const nextDate = /^\d{4}-\d{2}-\d{2}$/.test(String(date)) ? date : state.storyDate;
+    const dateChanged = nextDate !== state.storyDate;
+    state.storyDate = nextDate;
+    state.storyTime = normalizeStoryTime(time || state.storyTime);
+    if (dateChanged && options.syncCalendar !== false) {
+      state.calendarMonth = Number(nextDate.slice(5, 7)) - 1;
+      state.selectedDate = nextDate;
+    }
+    updateClock();
+  }
+
+  function advanceStoryMinutes(minutes = 1) {
+    const date = storyDateObject();
+    date.setMinutes(date.getMinutes() + Math.max(0, Number(minutes) || 0));
+    const nextDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+    const nextTime = `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+    setStoryClock(nextDate, nextTime);
+  }
+
+  function timeForStoryStep(step) {
+    if (step.storyDate || step.time) {
+      setStoryClock(step.storyDate || state.storyDate, step.time || state.storyTime);
+    } else {
+      advanceStoryMinutes(step.advanceMinutes ?? 1);
+    }
+    return state.storyTime;
   }
 
   function updateDeviceScale() {
@@ -203,7 +286,7 @@
     screen.innerHTML = `
       <section class="view lock-screen" aria-label="Lock Screen">
         <div class="lock-screen__shade"></div>
-        <p class="lock-screen__date">${escapeHtml(config.meta.dateLabel)}</p>
+        <p class="lock-screen__date" id="lock-date">${escapeHtml(formatStoryDate())}</p>
         <time class="lock-screen__time" id="lock-clock">${statusTime.textContent}</time>
         ${state.pinVisible ? pinPanel(filled) : `
           <button class="unlock-button" id="unlock-button" type="button">
@@ -297,13 +380,14 @@
 
   function renderHome() {
     const unreadTotal = Object.values(state.unread).reduce((sum, value) => sum + value, 0);
+    const storyCalendar = storyCalendarParts();
     screen.innerHTML = `
       <section class="view home-screen" aria-label="Home Screen">
         <div class="home-widgets" aria-label="Home screen widgets">
           <button class="home-widget" type="button" data-app="calendar" aria-label="Buka Calendar">
             <span class="widget-card calendar-widget">
-              <span class="calendar-widget__heading"><b>Tue</b><em>Nov</em></span>
-              <strong>17</strong>
+              <span class="calendar-widget__heading"><b>${escapeHtml(storyCalendar.weekday)}</b><em>${escapeHtml(storyCalendar.month)}</em></span>
+              <strong>${storyCalendar.day}</strong>
             </span>
             <small>Calendar</small>
           </button>
@@ -722,6 +806,7 @@
     if (notificationIsBlocked(state.pendingNotifications[index])) return;
     const [event] = state.pendingNotifications.splice(index, 1);
     state.deliveredEvents.push(eventId);
+    setStoryClock(event.storyDate || state.storyDate, event.time || state.storyTime);
     if (event.activateChatScript && !state.activeChatScripts.includes(event.activateChatScript) && !state.completedChats.includes(event.activateChatScript)) {
       state.activeChatScripts.push(event.activateChatScript);
     }
@@ -729,7 +814,7 @@
     addMessage(event.threadId, {
       from: "them",
       text: event.text,
-      time: event.time || currentTime()
+      time: state.storyTime
     }, !isOpen);
     if (!isOpen) showToast(event);
     if (isOpen || ["home", "whatsapp", "thread"].includes(state.view)) render();
@@ -776,7 +861,7 @@
   function sendScriptedMessage(threadId) {
     const step = getChatScriptStep(threadId);
     if (step?.type !== "mc" || !chatRuntime.draftReady.has(threadId)) return;
-    addMessage(threadId, { from: "me", text: step.text, time: step.time || currentTime() }, false);
+    addMessage(threadId, { from: "me", text: step.text, time: timeForStoryStep(step) }, false);
     advanceChatScript(threadId);
     render();
   }
@@ -812,7 +897,7 @@
         if (state.view === "thread" && state.activeThreadId === threadId) render();
         timers.push(setTimeout(() => {
           const isOpen = state.view === "thread" && state.activeThreadId === threadId;
-          addMessage(threadId, { from: "them", text: step.text, time: step.time || currentTime() }, !isOpen);
+          addMessage(threadId, { from: "them", text: step.text, time: timeForStoryStep(step) }, !isOpen);
           advanceChatScript(threadId);
           if (!isOpen) showToast({ threadId, text: step.text, notificationTitle: getThread(threadId)?.name });
           if (isOpen || ["home", "whatsapp"].includes(state.view)) render();
@@ -826,7 +911,7 @@
       chatRuntime.scheduled.add(threadId);
       timers.push(setTimeout(() => {
         const isOpen = state.view === "thread" && state.activeThreadId === threadId;
-        addMessage(threadId, { from: "system", type: "missed_call", text: "Missed voice call", time: step.time || currentTime() }, !isOpen);
+        addMessage(threadId, { from: "system", type: "missed_call", text: "Missed voice call", time: timeForStoryStep(step) }, !isOpen);
         advanceChatScript(threadId);
         if (!isOpen) showToast({ threadId, text: "Missed voice call", notificationTitle: getThread(threadId)?.name });
         if (isOpen || ["home", "whatsapp"].includes(state.view)) render();
@@ -886,7 +971,7 @@
       const dateKey = currentMonth ? `${year}-${String(month + 1).padStart(2, "0")}-${String(displayDay).padStart(2, "0")}` : "";
       const events = dateKey ? calendarEvents.filter((event) => event.date === dateKey) : [];
       const selected = dateKey === state.selectedDate;
-      const today = dateKey === calendar.selectedDate;
+      const today = dateKey === state.storyDate;
       cells.push(`<button type="button" class="calendar-day ${currentMonth ? "" : "is-outside"} ${selected ? "is-selected" : ""} ${today ? "is-today" : ""}" ${dateKey ? `data-calendar-date="${dateKey}"` : "disabled"}>
         <span>${displayDay}</span>
         ${events.length ? `<i>${events.slice(0, 3).map((event) => `<b style="--event-color:${escapeAttribute(event.color)}"></b>`).join("")}</i>` : ""}
@@ -934,8 +1019,8 @@
       });
     });
     document.querySelector("#calendar-today")?.addEventListener("click", () => {
-      state.calendarMonth = calendar.initialMonth;
-      state.selectedDate = calendar.selectedDate;
+      state.calendarMonth = Number(state.storyDate.slice(5, 7)) - 1;
+      state.selectedDate = state.storyDate;
       saveState();
       render();
     });
@@ -1677,7 +1762,7 @@
   }
 
   function currentTime() {
-    return new Date().toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }).replace(".", ":");
+    return state.storyTime;
   }
 
   function escapeHtml(value) {
@@ -1713,7 +1798,6 @@
   window.addEventListener("resize", updateDeviceScale, { passive: true });
   window.addEventListener("orientationchange", updateDeviceScale, { passive: true });
   updateDeviceScale();
-  setInterval(updateClock, 1000);
   reconcileCompletedChatTriggers();
   if (repairStoryTriggers()) reconcileCompletedChatTriggers();
   render();

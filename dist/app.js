@@ -12,7 +12,7 @@
   const demoPin = document.querySelector("#demo-pin");
 
   const defaultState = () => ({
-    storyRevision: 5,
+    storyRevision: 6,
     unlocked: false,
     pinVisible: false,
     view: "lock",
@@ -204,6 +204,33 @@
           });
         });
         loaded.storyRevision = 5;
+      }
+      if ((saved.storyRevision || 0) < 6) {
+        const redateThread = (threadId, initialDate, transitions = {}) => {
+          let activeDate = initialDate;
+          (loaded.messages?.[threadId] || []).forEach((message) => {
+            if (transitions[message.text]) activeDate = transitions[message.text];
+            else if (message.storyDate && message.storyDate > activeDate) activeDate = message.storyDate;
+            message.storyDate = activeDate;
+          });
+        };
+        redateThread("dirga", "2026-11-17", {
+          "I'm downstairs": "2026-11-21",
+          "How attached are you to your Saturday plans?": "2026-11-26",
+          "I'm here": "2026-11-28",
+          "Pak masih di kantor?": "2026-11-30"
+        });
+        redateThread("petra", "2026-11-17", {
+          "Udah kelar jalannya?": "2026-11-28"
+        });
+        redateThread("maria", "2026-11-17", {
+          "Kak, legal copy yang terakhir masih ditunggu malam ini ya": "2026-11-30"
+        });
+        redateThread("bintang", "2026-11-17");
+        redateThread("adelina", "2026-11-17");
+        redateThread("mama", "2026-11-17");
+        redateThread("satrio", "2026-11-15");
+        loaded.storyRevision = 6;
       }
       const messageTextMigrations = {
         "Harusnya bisaa, gue cek kerjaan dulu ya 😭": "Harusnya bisaa, gue cek kerjaan dulu yaa",

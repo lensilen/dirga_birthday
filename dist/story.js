@@ -290,6 +290,18 @@ window.STORY_CONFIG = {
     },
     dirga_home_arrival: {
       threadId: "dirga",
+      onComplete: {
+        id: "second-meeting-plan-check",
+        threadId: "dirga",
+        notificationTitle: "?",
+        text: "How attached are you to your Saturday plans?",
+        storyDate: "2026-11-26",
+        time: "20:14",
+        afterMs: 5500,
+        requireAppExit: true,
+        delayAfterExit: true,
+        activateChatScript: "dirga_second_meeting_invite"
+      },
       active: false,
       steps: [
         { type: "mc", text: "Baru sampeee", time: "19:17", waitBefore: 550 },
@@ -307,7 +319,87 @@ window.STORY_CONFIG = {
         { type: "them", text: "That sounded reluctant", time: "19:24", waitBefore: 1350, typingMs: 1050 },
         { type: "mc", text: "Enggaaa, bukan gitu maksudnya", time: "19:24", waitBefore: 550 },
         { type: "them", text: "Good", time: "19:25", waitBefore: 1200, typingMs: 650 },
-        { type: "them", text: "Because I was hoping we could do it again", time: "19:25", waitBefore: 500, typingMs: 1700 }
+        { type: "them", text: "Because I was hoping we could do it again", time: "19:25", waitBefore: 500, typingMs: 1700 },
+        { type: "mc", text: "Oh...", time: "19:26", waitBefore: 700 },
+        { type: "mc", text: "Iya... aku juga mau", time: "19:26", waitBefore: 450 },
+        { type: "them", text: "Good, then", time: "19:27", waitBefore: 1600, typingMs: 900 },
+        { type: "them", text: "Then don't make plans for next Saturday evening", time: "19:27", waitBefore: 550, typingMs: 1800 },
+        { type: "mc", text: "Itu ngajak atau nyuruh sih", time: "19:28", waitBefore: 650 },
+        { type: "them", text: "Whichever gets you there", time: "19:29", waitBefore: 1700, typingMs: 1300 }
+      ]
+    },
+    dirga_second_meeting_invite: {
+      threadId: "dirga",
+      active: false,
+      onComplete: {
+        id: "second-meeting-arrival",
+        threadId: "dirga",
+        notificationTitle: "?",
+        text: "I'm here",
+        storyDate: "2026-11-28",
+        time: "17:54",
+        afterMs: 5500,
+        requireAppExit: true,
+        delayAfterExit: true,
+        blockedViews: ["whatsapp", "thread", "calendar"],
+        activateChatScript: "dirga_second_meeting_arrival",
+        calendarEvents: [
+          { id: "second-meeting-dirga-28-nov", date: "2026-11-28", title: "Dinner with ?", time: "6:00 PM", color: "#ff375f", type: "personal" }
+        ]
+      },
+      steps: [
+        { type: "mc", text: "Depends... kenapa?", time: "20:14", waitBefore: 650 },
+        { type: "them", text: "I may have found somewhere", time: "20:15", waitBefore: 1700, typingMs: 1400 },
+        { type: "them", text: "Saturday, six", time: "20:15", waitBefore: 500, typingMs: 900 },
+        { type: "mc", text: "Pak ini ngajak atau ngasih jadwal sih", time: "20:16", waitBefore: 650 },
+        { type: "them", text: "Does it matter if you're saying yes?", time: "20:16", waitBefore: 1700, typingMs: 1500 },
+        { type: "mc", text: "Yaudah... yes", time: "20:17", waitBefore: 700 },
+        { type: "them", text: "Good choice", time: "20:17", waitBefore: 1400, typingMs: 800 },
+        { type: "them", text: "I'll pick you up", time: "20:18", waitBefore: 450, typingMs: 1000 }
+      ]
+    },
+    dirga_second_meeting_arrival: {
+      threadId: "dirga",
+      active: false,
+      onComplete: {
+        id: "after-second-meeting-home-check",
+        threadId: "dirga",
+        notificationTitle: "?",
+        text: "Home safe?",
+        storyDate: "2026-11-28",
+        time: "22:36",
+        afterMs: 5500,
+        requireAppExit: true,
+        delayAfterExit: true,
+        activateChatScript: "dirga_after_second_meeting"
+      },
+      steps: [
+        { type: "mc", text: "Six means six, Pak", time: "17:54", waitBefore: 550 },
+        { type: "them", text: "It is 5:54", time: "17:54", waitBefore: 1400, typingMs: 850 },
+        { type: "mc", text: "You did this last time", time: "17:55", waitBefore: 600 },
+        { type: "them", text: "And you still came down late", time: "17:55", waitBefore: 1600, typingMs: 1300 },
+        { type: "mc", text: "Aku baru mau turun...", time: "17:56", waitBefore: 650 },
+        { type: "them", text: "Take your time, I'll wait", time: "17:56", waitBefore: 1400, typingMs: 1100 }
+      ]
+    },
+    dirga_after_second_meeting: {
+      threadId: "dirga",
+      active: false,
+      steps: [
+        { type: "mc", text: "Udah... baru masuk", time: "22:36", waitBefore: 600 },
+        { type: "them", text: "That's good", time: "22:37", waitBefore: 1400, typingMs: 750 },
+        { type: "them", text: "Thank you for tonight", time: "22:37", waitBefore: 500, typingMs: 1200 },
+        { type: "mc", text: "Harusnya aku yang bilang makasih...", time: "22:38", waitBefore: 650 },
+        { type: "them", text: "You looked like you needed a night away from work", time: "22:39", waitBefore: 1700, typingMs: 1700 },
+        { type: "mc", text: "Kelihatan banget yaa", time: "22:39", waitBefore: 650 },
+        { type: "them", text: "Only to me", time: "22:40", waitBefore: 1700, typingMs: 950 },
+        { type: "mc", text: "...", time: "22:40", waitBefore: 850 },
+        { type: "them", text: "Was that too honest?", time: "22:41", waitBefore: 1800, typingMs: 1250 },
+        { type: "mc", text: "Sedikit...", time: "22:41", waitBefore: 700 },
+        { type: "them", text: "Do you want me to take it back?", time: "22:42", waitBefore: 1600, typingMs: 1400 },
+        { type: "mc", text: "Engga", time: "22:42", waitBefore: 750 },
+        { type: "them", text: "Good", time: "22:43", waitBefore: 1500, typingMs: 700 },
+        { type: "them", text: "Because I meant it", time: "22:43", waitBefore: 500, typingMs: 1100 }
       ]
     }
   },
@@ -514,7 +606,8 @@ window.STORY_CONFIG = {
     { id: "photo-17", title: "22 November 2025", caption: "22 November 2025 · 4:03 PM", src: "assets/photos/gallery/Office.jpg", albums: ["work"] },
     { id: "photo-18", title: "18 November 2025", caption: "18 November 2025 · 10:36 AM", src: "assets/photos/gallery/when in San Francisco 🧺🌁✨🌙🌿☁ just some….jpg", albums: ["places"] },
     { id: "photo-19", title: "17 November 2026", caption: "17 November 2026 · 8:56 PM", src: "assets/photos/gallery/dinner-17-first.jpg", albums: [], availableAfter: "dirga_after_dinner" },
-    { id: "photo-20", title: "21 November 2026", caption: "21 November 2026 · 5:38 PM", src: "assets/photos/gallery/coffee-date.jpg", albums: [], availableAfter: "dirga_coffee_arrival" }
+    { id: "photo-20", title: "21 November 2026", caption: "21 November 2026 · 5:38 PM", src: "assets/photos/gallery/coffee-date.jpg", albums: [], availableAfter: "dirga_coffee_arrival" },
+    { id: "photo-21", title: "28 November 2026", caption: "28 November 2026 · 8:42 PM", src: "assets/photos/gallery/Dion Windsor _ The unwanted marriage.jpg", albums: [], availableAfter: "dirga_after_second_meeting" }
   ],
 
   storyChatMedia: [
@@ -532,12 +625,6 @@ window.STORY_CONFIG = {
   ],
 
   reservedStoryMedia: [
-    {
-      id: "second-meeting-photo",
-      placement: "gallery_after_scene",
-      scene: "second_meeting",
-      imageSrc: "assets/photos/gallery/Dion Windsor _ The unwanted marriage.jpg"
-    },
     {
       id: "mc-accompanies-dirga-working",
       placement: "mc_chat_trigger",
@@ -830,6 +917,24 @@ no. absolutely not.`
       followers: 0
     },
     posts: [
+      {
+        time: "28 Nov",
+        text: "ternyata ‘only to me’ bisa bikin orang mendadak lupa cara tidur",
+        replies: 0,
+        reposts: 0,
+        likes: 0,
+        views: 2,
+        availableAfter: "dirga_after_second_meeting"
+      },
+      {
+        time: "28 Nov",
+        text: "second meeting and somehow this is getting less professional",
+        replies: 0,
+        reposts: 0,
+        likes: 0,
+        views: 3,
+        availableAfter: "dirga_after_second_meeting"
+      },
       {
         time: "21 Nov",
         text: "coffee was supposed to wake me up, not make me think about someone all evening",

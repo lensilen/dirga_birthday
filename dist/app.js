@@ -12,6 +12,7 @@
   const demoPin = document.querySelector("#demo-pin");
 
   const defaultState = () => ({
+    storyRevision: 1,
     unlocked: false,
     pinVisible: false,
     view: "lock",
@@ -76,6 +77,16 @@
         pinVisible: false,
         pinInput: ""
       };
+      if ((saved.storyRevision || 0) < 1) {
+        const extendedScriptId = "dirga_home_arrival";
+        const extendedProgress = loaded.chatProgress?.[extendedScriptId] || 0;
+        const extendedLength = config.chatScripts?.[extendedScriptId]?.steps?.length || 0;
+        if (extendedProgress < extendedLength) {
+          loaded.completedChats = (loaded.completedChats || []).filter((scriptId) => scriptId !== extendedScriptId);
+          if (!loaded.activeChatScripts.includes(extendedScriptId)) loaded.activeChatScripts.push(extendedScriptId);
+        }
+        loaded.storyRevision = 1;
+      }
       const messageTextMigrations = {
         "Harusnya bisaa, gue cek kerjaan dulu ya 😭": "Harusnya bisaa, gue cek kerjaan dulu yaa",
         "Ya jangan aneh aneh 😭": "Ya jangan aneh aneh...",

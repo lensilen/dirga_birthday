@@ -424,7 +424,8 @@
       };
       (loaded.messages?.dirga || []).forEach((message) => {
         if (message.text === "You home yet or should I start worrying") message.text = "Still on the road?";
-        if (dirgaStoryTimes[message.text]) message.time = dirgaStoryTimes[message.text];
+        if (message.storyDate === "2026-12-05" && message.text === "I'm downstairs") message.time = "18:09";
+        else if (dirgaStoryTimes[message.text]) message.time = dirgaStoryTimes[message.text];
       });
       (loaded.pendingNotifications || []).forEach((event) => {
         if (event.id === "chapter-3-dirga-home") event.time = "22:41";

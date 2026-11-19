@@ -386,16 +386,16 @@ window.STORY_CONFIG = {
       threadId: "dirga",
       active: false,
       onComplete: {
-        id: "wrong-send-petra-follow-up",
+        id: "second-meeting-petra-checkin",
         threadId: "petra",
         notificationTitle: "Petra",
-        text: "Mana fotonya woy",
+        text: "Udah kelar jalannya?",
         storyDate: "2026-11-28",
-        time: "22:48",
+        time: "22:44",
         afterMs: 5500,
         requireAppExit: true,
         delayAfterExit: true,
-        activateChatScript: "petra_wrong_send"
+        activateChatScript: "petra_second_meeting_report"
       },
       steps: [
         { type: "mc", text: "Udah... baru masuk", time: "22:36", waitBefore: 600 },
@@ -411,33 +411,72 @@ window.STORY_CONFIG = {
         { type: "them", text: "Do you want me to take it back?", time: "22:42", waitBefore: 1600, typingMs: 1400 },
         { type: "mc", text: "Engga", time: "22:42", waitBefore: 750 },
         { type: "them", text: "Good", time: "22:43", waitBefore: 1500, typingMs: 700 },
-        { type: "them", text: "Because I meant it", time: "22:43", waitBefore: 500, typingMs: 1100 },
-        { type: "mc", text: "GANTENG BANGET???", imageSrc: "assets/photos/gallery/Dion Windsor _ The unwanted marriage.jpg", imageAlt: "Photo of Dirga during the second meeting", time: "22:44", waitBefore: 1200 },
-        { type: "them", text: "I'm going to assume that wasn't meant for me", time: "22:44", waitBefore: 1900, typingMs: 1700 },
-        { type: "mc", text: "...", time: "22:45", waitBefore: 850 },
-        { type: "mc", text: "Pak", time: "22:45", waitBefore: 350 },
-        { type: "mc", text: "Tolong hapus dari ingatan", time: "22:45", waitBefore: 450 },
-        { type: "them", text: "I don't think I can", time: "22:46", waitBefore: 1700, typingMs: 1000 },
-        { type: "mc", text: "Itu buat Petra...", time: "22:46", waitBefore: 650 },
-        { type: "them", text: "I figured", time: "22:47", waitBefore: 1500, typingMs: 800 },
-        { type: "them", text: "For what it's worth", time: "22:47", waitBefore: 450, typingMs: 1000 },
-        { type: "them", text: "I was hoping you thought so", time: "22:47", waitBefore: 450, typingMs: 1300 },
-        { type: "mc", text: "Aku gak akan buka WhatsApp lagi", time: "22:48", waitBefore: 750 },
-        { type: "them", text: "You will", time: "22:48", waitBefore: 1400, typingMs: 700 }
+        { type: "them", text: "Because I meant it", time: "22:43", waitBefore: 500, typingMs: 1100 }
+      ]
+    },
+    petra_second_meeting_report: {
+      threadId: "petra",
+      active: false,
+      onComplete: {
+        id: "wrong-chat-dirga-opening",
+        threadId: "dirga",
+        notificationTitle: "?",
+        text: "Still awake?",
+        storyDate: "2026-11-28",
+        time: "22:47",
+        afterMs: 5500,
+        requireAppExit: true,
+        delayAfterExit: true,
+        activateChatScript: "dirga_wrong_send"
+      },
+      steps: [
+        { type: "mc", text: "Udah... baru sampe", time: "22:44", waitBefore: 550 },
+        { type: "them", text: "Terus gimanaaa", time: "22:45", waitBefore: 1400, typingMs: 850 },
+        { type: "mc", text: "Bentar gue kirim fotonya", time: "22:45", waitBefore: 650 }
+      ]
+    },
+    dirga_wrong_send: {
+      threadId: "dirga",
+      active: false,
+      onComplete: {
+        id: "wrong-send-petra-follow-up",
+        threadId: "petra",
+        notificationTitle: "Petra",
+        text: "Mana fotonya woy",
+        storyDate: "2026-11-28",
+        time: "22:52",
+        afterMs: 5500,
+        requireAppExit: true,
+        delayAfterExit: true,
+        activateChatScript: "petra_wrong_send"
+      },
+      steps: [
+        { type: "mc", text: "GANTENG BANGET???", imageSrc: "assets/photos/gallery/Dion Windsor _ The unwanted marriage.jpg", imageAlt: "Photo of Dirga during the second meeting", time: "22:47", waitBefore: 1200 },
+        { type: "them", text: "I'm going to assume that wasn't meant for me", time: "22:48", waitBefore: 1900, typingMs: 1700 },
+        { type: "mc", text: "...", time: "22:48", waitBefore: 850 },
+        { type: "mc", text: "Pak", time: "22:48", waitBefore: 350 },
+        { type: "mc", text: "Tolong hapus dari ingatan", time: "22:49", waitBefore: 450 },
+        { type: "them", text: "I don't think I can", time: "22:49", waitBefore: 1700, typingMs: 1000 },
+        { type: "mc", text: "Itu buat Petra...", time: "22:50", waitBefore: 650 },
+        { type: "them", text: "I figured", time: "22:50", waitBefore: 1500, typingMs: 800 },
+        { type: "them", text: "For what it's worth", time: "22:50", waitBefore: 450, typingMs: 1000 },
+        { type: "them", text: "I was hoping you thought so", time: "22:51", waitBefore: 450, typingMs: 1300 },
+        { type: "mc", text: "Aku gak akan buka WhatsApp lagi", time: "22:51", waitBefore: 750 },
+        { type: "them", text: "You will", time: "22:51", waitBefore: 1400, typingMs: 700 }
       ]
     },
     petra_wrong_send: {
       threadId: "petra",
       active: false,
       steps: [
-        { type: "mc", text: "PET", time: "22:48", waitBefore: 500 },
-        { type: "mc", text: "GUE SALAH KIRIM", time: "22:48", waitBefore: 350 },
-        { type: "them", text: "KE SIAPA", time: "22:49", waitBefore: 1300, typingMs: 700 },
-        { type: "mc", text: "KE ORANGNYA LANGSUNG", time: "22:49", waitBefore: 500 },
-        { type: "them", text: "HAHAHAHAHAH", time: "22:50", waitBefore: 1300, typingMs: 800 },
-        { type: "mc", text: "GUE SERIUS INI GIMANA", time: "22:50", waitBefore: 550 },
-        { type: "them", text: "Yaudah sekalian bilang lo suka", time: "22:51", waitBefore: 1500, typingMs: 1200 },
-        { type: "mc", text: "Gue block lo ya", time: "22:51", waitBefore: 650 }
+        { type: "mc", text: "PET", time: "22:52", waitBefore: 500 },
+        { type: "mc", text: "GUE SALAH KIRIM", time: "22:52", waitBefore: 350 },
+        { type: "them", text: "KE SIAPA", time: "22:53", waitBefore: 1300, typingMs: 700 },
+        { type: "mc", text: "KE ORANGNYA LANGSUNG", time: "22:53", waitBefore: 500 },
+        { type: "them", text: "HAHAHAHAHAH", time: "22:54", waitBefore: 1300, typingMs: 800 },
+        { type: "mc", text: "GUE SERIUS INI GIMANA", time: "22:54", waitBefore: 550 },
+        { type: "them", text: "Yaudah sekalian bilang lo suka", time: "22:55", waitBefore: 1500, typingMs: 1200 },
+        { type: "mc", text: "Gue block lo ya", time: "22:55", waitBefore: 650 }
       ]
     }
   },
@@ -645,7 +684,7 @@ window.STORY_CONFIG = {
     { id: "photo-18", title: "18 November 2025", caption: "18 November 2025 · 10:36 AM", src: "assets/photos/gallery/when in San Francisco 🧺🌁✨🌙🌿☁ just some….jpg", albums: ["places"] },
     { id: "photo-19", title: "17 November 2026", caption: "17 November 2026 · 8:56 PM", src: "assets/photos/gallery/dinner-17-first.jpg", albums: [], availableAfter: "dirga_after_dinner" },
     { id: "photo-20", title: "21 November 2026", caption: "21 November 2026 · 5:38 PM", src: "assets/photos/gallery/coffee-date.jpg", albums: [], availableAfter: "dirga_coffee_arrival" },
-    { id: "photo-21", title: "28 November 2026", caption: "28 November 2026 · 8:42 PM", src: "assets/photos/gallery/Dion Windsor _ The unwanted marriage.jpg", albums: [], availableAfter: "dirga_after_second_meeting" }
+    { id: "photo-21", title: "28 November 2026", caption: "28 November 2026 · 8:42 PM", src: "assets/photos/gallery/Dion Windsor _ The unwanted marriage.jpg", albums: [], availableAfter: "dirga_wrong_send" }
   ],
 
   storyChatMedia: [
@@ -962,7 +1001,7 @@ no. absolutely not.`
         reposts: 0,
         likes: 0,
         views: 2,
-        availableAfter: "dirga_after_second_meeting"
+        availableAfter: "dirga_wrong_send"
       },
       {
         time: "28 Nov",
@@ -971,7 +1010,7 @@ no. absolutely not.`
         reposts: 0,
         likes: 0,
         views: 3,
-        availableAfter: "dirga_after_second_meeting"
+        availableAfter: "dirga_wrong_send"
       },
       {
         time: "21 Nov",

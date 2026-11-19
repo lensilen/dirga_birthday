@@ -12,7 +12,7 @@
   const demoPin = document.querySelector("#demo-pin");
 
   const defaultState = () => ({
-    storyRevision: 2,
+    storyRevision: 3,
     unlocked: false,
     pinVisible: false,
     view: "lock",
@@ -96,6 +96,54 @@
           if (!loaded.activeChatScripts.includes(extendedScriptId)) loaded.activeChatScripts.push(extendedScriptId);
         }
         loaded.storyRevision = 2;
+      }
+      if ((saved.storyRevision || 0) < 3) {
+        const oldWrongSendTexts = new Set([
+          "GANTENG BANGET???",
+          "I'm going to assume that wasn't meant for me",
+          "Pak",
+          "Tolong hapus dari ingatan",
+          "I don't think I can",
+          "Itu buat Petra...",
+          "I figured",
+          "For what it's worth",
+          "I was hoping you thought so",
+          "Aku gak akan buka WhatsApp lagi",
+          "You will"
+        ]);
+        const oldPetraWrongSendTexts = new Set([
+          "Mana fotonya woy",
+          "PET",
+          "GUE SALAH KIRIM",
+          "KE SIAPA",
+          "KE ORANGNYA LANGSUNG",
+          "HAHAHAHAHAH",
+          "GUE SERIUS INI GIMANA",
+          "Yaudah sekalian bilang lo suka",
+          "Gue block lo ya"
+        ]);
+        const hadOldWrongSend = (loaded.messages?.dirga || []).some((message) => oldWrongSendTexts.has(message.text))
+          || (loaded.messages?.petra || []).some((message) => oldPetraWrongSendTexts.has(message.text));
+        loaded.messages.dirga = (loaded.messages?.dirga || []).filter((message) => !oldWrongSendTexts.has(message.text) && !(message.text === "..." && ["22:45", "22:48"].includes(message.time)));
+        loaded.messages.petra = (loaded.messages?.petra || []).filter((message) => !oldPetraWrongSendTexts.has(message.text));
+        loaded.chatProgress.dirga_after_second_meeting = Math.min(loaded.chatProgress?.dirga_after_second_meeting || 0, config.chatScripts?.dirga_after_second_meeting?.steps?.length || 0);
+        ["petra_second_meeting_report", "dirga_wrong_send", "petra_wrong_send"].forEach((scriptId) => {
+          loaded.chatProgress[scriptId] = 0;
+        });
+        const reorderedScripts = new Set(["dirga_after_second_meeting", "petra_second_meeting_report", "dirga_wrong_send", "petra_wrong_send"]);
+        loaded.completedChats = (loaded.completedChats || []).filter((scriptId) => !reorderedScripts.has(scriptId));
+        loaded.activeChatScripts = (loaded.activeChatScripts || []).filter((scriptId) => !["petra_second_meeting_report", "dirga_wrong_send", "petra_wrong_send"].includes(scriptId));
+        if (!loaded.activeChatScripts.includes("dirga_after_second_meeting")) loaded.activeChatScripts.push("dirga_after_second_meeting");
+        const reorderedEvents = new Set(["second-meeting-petra-checkin", "wrong-chat-dirga-opening", "wrong-send-petra-follow-up"]);
+        loaded.pendingNotifications = (loaded.pendingNotifications || []).filter((event) => !reorderedEvents.has(event.id));
+        loaded.deliveredEvents = (loaded.deliveredEvents || []).filter((eventId) => !reorderedEvents.has(eventId));
+        if (hadOldWrongSend) {
+          loaded.storyDate = "2026-11-28";
+          loaded.storyTime = "22:43";
+          loaded.calendarMonth = 10;
+          loaded.selectedDate = "2026-11-28";
+        }
+        loaded.storyRevision = 3;
       }
       const messageTextMigrations = {
         "Harusnya bisaa, gue cek kerjaan dulu ya 😭": "Harusnya bisaa, gue cek kerjaan dulu yaa",

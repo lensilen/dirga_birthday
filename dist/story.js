@@ -269,11 +269,45 @@ window.STORY_CONFIG = {
     dirga_after_coffee: {
       threadId: "dirga",
       active: false,
+      onComplete: {
+        id: "home-arrival-follow-up",
+        threadId: "dirga",
+        notificationTitle: "?",
+        text: "You home yet or should I start worrying",
+        storyDate: "2026-11-21",
+        time: "19:17",
+        afterMs: 5500,
+        requireAppExit: true,
+        delayAfterExit: true,
+        activateChatScript: "dirga_home_arrival"
+      },
       steps: [
         { type: "mc", text: "Belum, baru jalan", time: "18:42", waitBefore: 550 },
         { type: "them", text: "Alright", time: "18:43", waitBefore: 1500, typingMs: 750 },
         { type: "them", text: "Let me know when you get home", time: "18:43", waitBefore: 550, typingMs: 1500 },
         { type: "mc", text: "I will", time: "18:44", waitBefore: 650 }
+      ]
+    },
+    dirga_home_arrival: {
+      threadId: "dirga",
+      active: false,
+      steps: [
+        { type: "mc", text: "Baru sampeee", time: "19:17", waitBefore: 550 },
+        { type: "them", text: "Good", time: "19:18", waitBefore: 1300, typingMs: 650 },
+        { type: "them", text: "I was about to call", time: "19:18", waitBefore: 500, typingMs: 1100 },
+        { type: "mc", text: "Dramatis banget Pak, baru juga jalan", time: "19:19", waitBefore: 650 },
+        { type: "them", text: "Says the person who promised to text", time: "19:20", waitBefore: 1500, typingMs: 1450 },
+        { type: "mc", text: "I remembered eventually 😭", time: "19:20", waitBefore: 600 },
+        { type: "them", text: "Barely", time: "19:21", waitBefore: 1200, typingMs: 650 },
+        { type: "them", text: "Get some rest", time: "19:21", waitBefore: 450, typingMs: 850 },
+        { type: "mc", text: "You too... makasih buat hari ini", time: "19:22", waitBefore: 650 },
+        { type: "them", text: "I should be thanking you", time: "19:22", waitBefore: 1500, typingMs: 1150 },
+        { type: "them", text: "Today was nice", time: "19:23", waitBefore: 450, typingMs: 900 },
+        { type: "mc", text: "Iya... nice", time: "19:23", waitBefore: 600 },
+        { type: "them", text: "That sounded reluctant", time: "19:24", waitBefore: 1350, typingMs: 1050 },
+        { type: "mc", text: "Enggaaa 😭", time: "19:24", waitBefore: 550 },
+        { type: "them", text: "Good", time: "19:25", waitBefore: 1200, typingMs: 650 },
+        { type: "them", text: "Because I was hoping we could do it again", time: "19:25", waitBefore: 500, typingMs: 1700 }
       ]
     }
   },

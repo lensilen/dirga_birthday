@@ -119,7 +119,21 @@
         "Belum, baru jalan": "18:42",
         "Alright": "18:43",
         "Let me know when you get home": "18:43",
-        "I will": "18:44"
+        "I will": "18:44",
+        "You home yet or should I start worrying": "19:17",
+        "Baru sampeee": "19:17",
+        "I was about to call": "19:18",
+        "Says the person who promised to text": "19:20",
+        "I remembered eventually 😭": "19:20",
+        "Barely": "19:21",
+        "Get some rest": "19:21",
+        "You too... makasih buat hari ini": "19:22",
+        "I should be thanking you": "19:22",
+        "Today was nice": "19:23",
+        "Iya... nice": "19:23",
+        "That sounded reluctant": "19:24",
+        "Enggaaa 😭": "19:24",
+        "Because I was hoping we could do it again": "19:25"
       };
       (loaded.messages?.dirga || []).forEach((message) => {
         if (dirgaStoryTimes[message.text]) message.time = dirgaStoryTimes[message.text];
@@ -128,6 +142,7 @@
         if (event.id === "chapter-3-dirga-home") event.time = "22:41";
         if (event.id === "coffee-dirga-arrival") event.time = "15:52";
         if (event.id === "after-coffee-home-check") event.time = "18:42";
+        if (event.id === "home-arrival-follow-up") event.time = "19:17";
       });
       if (!Object.prototype.hasOwnProperty.call(saved, "storyDate") || !Object.prototype.hasOwnProperty.call(saved, "storyTime")) {
         const dirgaMessages = loaded.messages?.dirga || [];

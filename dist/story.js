@@ -180,7 +180,7 @@ window.STORY_CONFIG = {
         notificationTitle: "?",
         text: "Sudah masuk?",
         time: "22:41",
-        afterMs: 2800,
+        afterMs: 4000,
         requireAppExit: true,
         activateChatScript: "dirga_after_dinner",
         calendarEvents: [
@@ -188,7 +188,7 @@ window.STORY_CONFIG = {
         ]
       },
       steps: [
-        { type: "mc", text: "Pet... gue barusan diajak dinner sama Pak Dirga 😭", waitBefore: 350 },
+        { type: "mc", text: "Pet... gue barusan diajak dinner sama Pak Dirga 😭", waitBefore: 4000 },
         { type: "them", text: "HAH???", waitBefore: 1800, typingMs: 900, requireAppExit: true },
         { type: "mc", text: "Iya... katanya hadiah ulang tahun", waitBefore: 500 },
         { type: "them", text: "Gue perlu konteks yang jauh lebih lengkap dari ini", waitBefore: 1600, typingMs: 1400 },

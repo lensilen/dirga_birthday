@@ -600,15 +600,16 @@ window.STORY_CONFIG = {
         ]
       },
       steps: [
-        { type: "mc", text: "Morning", time: "08:12", waitBefore: 550 },
-        { type: "them", text: "How's your ankle?", time: "08:13", waitBefore: 1400, typingMs: 850 },
-        { type: "mc", text: "Masih utuh kok", time: "08:13", waitBefore: 600 },
-        { type: "them", text: "That's not what I asked", time: "08:14", waitBefore: 1500, typingMs: 1000 },
-        { type: "mc", text: "Masih agak sakit dikit", time: "08:14", waitBefore: 650 },
+        { type: "mc", text: "Morning(?)", time: "08:12", waitBefore: 550 },
+        { type: "mc", text: "Tumben Bapak pagi-pagi?", time: "08:13", waitBefore: 400 },
+        { type: "them", text: "Believe me, I don't like it either", time: "08:13", waitBefore: 1500, typingMs: 1100 },
+        { type: "them", text: "How's your ankle?", time: "08:14", waitBefore: 450, typingMs: 850 },
+        { type: "mc", text: "Masih agak sakit dikit, tapi aman kokk", time: "08:14", waitBefore: 650 },
         { type: "them", text: "Ice it after work", time: "08:15", waitBefore: 1400, typingMs: 850 },
         { type: "mc", text: "Siap, Pak", time: "08:15", waitBefore: 600 },
         { type: "them", text: "I thought we settled this last night", time: "08:16", waitBefore: 1600, typingMs: 1200 },
-        { type: "mc", text: "Morning, Dirga", time: "08:16", waitBefore: 700 },
+        { type: "mc", text: "Maaf, belum kebiasa", time: "08:16", waitBefore: 650 },
+        { type: "mc", text: "Siap... Dirga", time: "08:17", waitBefore: 450 },
         { type: "them", text: "Better", time: "08:17", waitBefore: 1400, typingMs: 700 }
       ]
     },

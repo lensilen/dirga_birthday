@@ -156,7 +156,13 @@ assert(personalChat?.steps?.some((step) => step.type === "mc" && step.text === "
 const morningCheck = config.chatScripts?.dirga_morning_check;
 assert(personalChat?.onComplete?.text === "Morning" && personalChat?.onComplete?.storyDate === "2026-12-01", "Trigger morning check belum tersedia");
 assert(personalChat?.onComplete?.afterMs >= 5000 && personalChat?.onComplete?.afterMs <= 6000, "Jeda menuju morning check bukan 5–6 detik");
-assert(morningCheck?.steps?.some((step) => step.text === "Morning, Dirga"), "MC belum berlatih memanggil Dirga tanpa Pak");
+assert(morningCheck?.steps?.[0]?.text === "Morning(?)", "Balasan pertama MC pada morning check masih terlalu kaku");
+assert(morningCheck?.steps?.some((step) => step.text === "Tumben Bapak pagi-pagi?"), "MC belum menyinggung kebiasaan tidur Dirga");
+assert(morningCheck?.steps?.some((step) => step.text === "Believe me, I don't like it either"), "Dirga belum menanggapi soal bangun pagi");
+const morningApologyIndex = morningCheck?.steps?.findIndex((step) => step.text === "Maaf, belum kebiasa");
+const morningNameIndex = morningCheck?.steps?.findIndex((step) => step.text === "Siap... Dirga");
+const morningBetterIndex = morningCheck?.steps?.findIndex((step) => step.text === "Better");
+assert(morningApologyIndex >= 0 && morningNameIndex > morningApologyIndex && morningBetterIndex > morningNameIndex, "Transisi panggilan Dirga pada morning check belum natural");
 const decemberMeetup = config.chatScripts?.dirga_december_meetup;
 assert(morningCheck?.onComplete?.text === "Done with work?" && morningCheck?.onComplete?.storyDate === "2026-12-05", "Trigger pertemuan 5 Desember belum tersedia");
 assert(morningCheck?.onComplete?.calendarEvents?.some((event) => event.title === "Us?" && event.date === "2026-12-05"), "Event Us? belum muncul melalui alur cerita");
@@ -195,7 +201,7 @@ assert(Object.values(config.chatScripts || {}).every((script) => /^2026-\d{2}-\d
 assert(/formatWhatsAppDay\(message\.storyDate/.test(appSource), "WhatsApp belum memisahkan percakapan berdasarkan hari");
 assert(/homeProfileIds[\s\S]*visibleInstagramPosts\(profile\)\[0\]/.test(appSource), "Home Instagram belum mengambil post terbaru tiap profil");
 assert(/storyDateReached\(postDate\)/.test(appSource), "X belum mengikuti tanggal cerita");
-assert(/storyRevision:\s*7/.test(appSource) && /extendedScriptId = "dirga_home_arrival"/.test(appSource) && /reorderedScripts/.test(appSource) && /personalScriptId = "dirga_after_work_personal"/.test(appSource) && /redateThread\("dirga"/.test(appSource) && /goodCountByDate/.test(appSource), "Progress lama belum dimigrasikan ke struktur cerita terbaru");
+assert(/storyRevision:\s*8/.test(appSource) && /extendedScriptId = "dirga_home_arrival"/.test(appSource) && /reorderedScripts/.test(appSource) && /personalScriptId = "dirga_after_work_personal"/.test(appSource) && /redateThread\("dirga"/.test(appSource) && /goodCountByDate/.test(appSource) && /morningWasComplete/.test(appSource), "Progress lama belum dimigrasikan ke struktur cerita terbaru");
 assert(/imageSrc:\s*step\.imageSrc/.test(appSource) && /wa-draft-image/.test(appSource), "Composer WhatsApp belum mendukung draft foto interaktif");
 assert(/wa-preview-draft/.test(appSource) && /scriptedDraft\.text/.test(appSource), "Daftar WhatsApp belum menampilkan draft chat MC");
 assert(/event\.exitDelayStarted = true/.test(appSource), "Runtime belum memulai timer saat WhatsApp ditutup");

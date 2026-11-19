@@ -12,7 +12,7 @@
   const demoPin = document.querySelector("#demo-pin");
 
   const defaultState = () => ({
-    storyRevision: 7,
+    storyRevision: 8,
     unlocked: false,
     pinVisible: false,
     view: "lock",
@@ -251,6 +251,37 @@
           }
         });
         loaded.storyRevision = 7;
+      }
+      if ((saved.storyRevision || 0) < 8) {
+        const morningScript = config.chatScripts?.dirga_morning_check;
+        const morningProgress = loaded.chatProgress?.dirga_morning_check || 0;
+        const morningWasComplete = (loaded.completedChats || []).includes("dirga_morning_check") || morningProgress >= 10;
+        const firstMorningIndex = (loaded.messages?.dirga || []).findIndex((message) => message.storyDate === "2026-12-01");
+        if (firstMorningIndex >= 0 || morningProgress > 0) {
+          const messages = loaded.messages?.dirga || [];
+          const insertionIndex = firstMorningIndex >= 0 ? firstMorningIndex : messages.length;
+          const beforeMorning = messages.slice(0, insertionIndex);
+          const afterMorning = messages.slice(insertionIndex).filter((message) => message.storyDate !== "2026-12-01");
+          const revisedMorning = [{ from: "them", text: "Morning", time: "08:12", storyDate: "2026-12-01" }];
+          if (morningWasComplete) {
+            revisedMorning.push(...(morningScript?.steps || []).map((step) => ({
+              from: step.type === "mc" ? "me" : "them",
+              text: step.text,
+              time: step.time,
+              storyDate: "2026-12-01"
+            })));
+            loaded.chatProgress.dirga_morning_check = morningScript?.steps?.length || 0;
+          } else {
+            loaded.chatProgress.dirga_morning_check = 0;
+            loaded.completedChats = (loaded.completedChats || []).filter((scriptId) => scriptId !== "dirga_morning_check");
+            if (!loaded.activeChatScripts.includes("dirga_morning_check")) loaded.activeChatScripts.push("dirga_morning_check");
+            loaded.pendingNotifications = (loaded.pendingNotifications || []).filter((event) => event.id !== "december-meetup-opening");
+            loaded.deliveredEvents = (loaded.deliveredEvents || []).filter((eventId) => eventId !== "december-meetup-opening");
+            loaded.storyCalendarEvents = (loaded.storyCalendarEvents || []).filter((event) => event.id !== "us-dirga-5-dec");
+          }
+          loaded.messages.dirga = [...beforeMorning, ...revisedMorning, ...afterMorning];
+        }
+        loaded.storyRevision = 8;
       }
       const messageTextMigrations = {
         "Harusnya bisaa, gue cek kerjaan dulu ya 😭": "Harusnya bisaa, gue cek kerjaan dulu yaa",

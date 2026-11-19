@@ -808,6 +808,7 @@ body[data-view="settings"] .home-indicator span { background: #fff; box-shadow: 
   border-top: 1px solid rgba(255,255,255,.09);
 }
 .wa-composer--draft { grid-template-columns: 38px minmax(0, 1fr) 38px; }
+.wa-composer--media { height: 82px; padding-top: 6px; }
 .wa-composer button { height: 36px; display: grid; place-items: center; border: 0; background: transparent; color: #0a84ff; cursor: pointer; }
 .wa-plus { font-size: 38px; line-height: 1; font-weight: 250; }
 .wa-input {
@@ -825,6 +826,20 @@ body[data-view="settings"] .home-indicator span { background: #fff; box-shadow: 
 }
 .wa-input span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .wa-input.is-draft { color: #f2f2f7; }
+.wa-input.has-media {
+  height: 56px;
+  gap: 8px;
+  padding: 6px 9px 6px 7px;
+  border-radius: 16px;
+}
+.wa-draft-image {
+  width: 42px;
+  height: 42px;
+  flex: none;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.wa-input.has-media .wa-sticker-icon { display: none; }
 .wa-sticker-icon {
   position: relative;
   width: 17px;

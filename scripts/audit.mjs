@@ -120,8 +120,16 @@ assert(secondMeetingArrival?.calendarEvents?.some((event) => event.id === "secon
 const afterSecondMeeting = config.chatScripts?.dirga_second_meeting_arrival?.onComplete;
 assert(afterSecondMeeting?.text === "Home safe?" && afterSecondMeeting?.activateChatScript === "dirga_after_second_meeting", "Follow-up setelah pertemuan kedua belum tersedia");
 assert(afterSecondMeeting?.afterMs >= 5000 && afterSecondMeeting?.afterMs <= 6000, "Jeda follow-up pertemuan kedua bukan 5–6 detik");
+const wrongSendScript = config.chatScripts?.dirga_after_second_meeting;
+const wrongSendPhoto = wrongSendScript?.steps?.find((step) => step.type === "mc" && step.imageSrc);
+assert(wrongSendPhoto?.text === "GANTENG BANGET???" && wrongSendPhoto?.imageSrc?.includes("Dion Windsor"), "Foto salah kirim ke Dirga belum tersedia");
+assert(wrongSendScript?.onComplete?.text === "Mana fotonya woy" && wrongSendScript?.onComplete?.threadId === "petra", "Trigger Petra setelah salah kirim belum tersedia");
+assert(wrongSendScript?.onComplete?.afterMs >= 5000 && wrongSendScript?.onComplete?.afterMs <= 6000, "Jeda notifikasi Petra bukan 5–6 detik");
+assert(wrongSendScript?.onComplete?.activateChatScript === "petra_wrong_send", "Trigger salah kirim tidak membuka chat Petra");
+assert(config.chatScripts?.petra_wrong_send?.steps?.some((step) => step.text === "KE ORANGNYA LANGSUNG"), "Percakapan panik dengan Petra belum lengkap");
 assert((config.xApp?.posts || []).filter((post) => post.availableAfter === "dirga_after_second_meeting").length >= 2, "Tweet setelah pertemuan kedua belum lengkap");
-assert(/storyRevision:\s*1/.test(appSource) && /extendedScriptId = "dirga_home_arrival"/.test(appSource), "Progress lama belum dimigrasikan ke lanjutan pertemuan kedua");
+assert(/storyRevision:\s*2/.test(appSource) && /extendedScriptId = "dirga_home_arrival"/.test(appSource) && /extendedScriptId = "dirga_after_second_meeting"/.test(appSource), "Progress lama belum dimigrasikan ke adegan salah kirim");
+assert(/imageSrc:\s*step\.imageSrc/.test(appSource) && /wa-draft-image/.test(appSource), "Composer WhatsApp belum mendukung draft foto interaktif");
 assert(/event\.exitDelayStarted = true/.test(appSource), "Runtime belum memulai timer saat WhatsApp ditutup");
 assert(/storyDate:\s*"2026-11-17"/.test(appSource), "State awal tidak memiliki tanggal cerita");
 assert(!/function currentTime\(\)\s*{\s*return new Date/.test(appSource), "Jam chat masih mengikuti waktu perangkat");

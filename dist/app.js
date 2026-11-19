@@ -12,7 +12,7 @@
   const demoPin = document.querySelector("#demo-pin");
 
   const defaultState = () => ({
-    storyRevision: 1,
+    storyRevision: 2,
     unlocked: false,
     pinVisible: false,
     view: "lock",
@@ -86,6 +86,16 @@
           if (!loaded.activeChatScripts.includes(extendedScriptId)) loaded.activeChatScripts.push(extendedScriptId);
         }
         loaded.storyRevision = 1;
+      }
+      if ((saved.storyRevision || 0) < 2) {
+        const extendedScriptId = "dirga_after_second_meeting";
+        const extendedProgress = loaded.chatProgress?.[extendedScriptId] || 0;
+        const extendedLength = config.chatScripts?.[extendedScriptId]?.steps?.length || 0;
+        if (extendedProgress < extendedLength) {
+          loaded.completedChats = (loaded.completedChats || []).filter((scriptId) => scriptId !== extendedScriptId);
+          if (!loaded.activeChatScripts.includes(extendedScriptId)) loaded.activeChatScripts.push(extendedScriptId);
+        }
+        loaded.storyRevision = 2;
       }
       const messageTextMigrations = {
         "Harusnya bisaa, gue cek kerjaan dulu ya 😭": "Harusnya bisaa, gue cek kerjaan dulu yaa",
@@ -656,6 +666,7 @@
     const node = state.currentNode ? config.branches[state.currentNode] : null;
     const scriptStep = getChatScriptStep(thread.id);
     const draftReady = scriptStep?.type === "mc" && chatRuntime.draftReady.has(thread.id);
+    const mediaDraftReady = draftReady && Boolean(scriptStep.imageSrc);
     const isTyping = chatRuntime.typing.has(thread.id);
     screen.innerHTML = `
       <section class="view app-view chat-view wa-chat-view">
@@ -697,9 +708,9 @@
               <p>${escapeHtml(node.prompt || "Pilih balasan")}</p>
               <div class="choice-list">${node.choices.map((choice, index) => `<button type="button" data-choice="${index}">${escapeHtml(choice.label)}</button>`).join("")}</div>
             </div>` : ""}
-          <div class="wa-composer ${draftReady ? "wa-composer--draft" : ""}">
+          <div class="wa-composer ${draftReady ? "wa-composer--draft" : ""} ${mediaDraftReady ? "wa-composer--media" : ""}">
             <button class="wa-plus" type="button" aria-label="Tambahkan lampiran">＋</button>
-            <div class="wa-input ${draftReady ? "is-draft" : ""}" aria-label="Message"><span>${escapeHtml(draftReady ? scriptStep.text : "Message")}</span><i class="wa-sticker-icon" aria-hidden="true"></i></div>
+            <div class="wa-input ${draftReady ? "is-draft" : ""} ${mediaDraftReady ? "has-media" : ""}" aria-label="Message">${mediaDraftReady ? `<img class="wa-draft-image" src="${escapeAttribute(scriptStep.imageSrc)}" alt="${escapeAttribute(scriptStep.imageAlt || "Photo")}">` : ""}<span>${escapeHtml(draftReady ? scriptStep.text : "Message")}</span><i class="wa-sticker-icon" aria-hidden="true"></i></div>
             ${draftReady ? `
               <button class="wa-send" id="wa-send" type="button" aria-label="Send message"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 4.5 16.5 10 4.5 15.5 6.8 10Z"></path></svg></button>` : `
               <button class="wa-camera" type="button" aria-label="Camera">
@@ -951,7 +962,13 @@
   function sendScriptedMessage(threadId) {
     const step = getChatScriptStep(threadId);
     if (step?.type !== "mc" || !chatRuntime.draftReady.has(threadId)) return;
-    addMessage(threadId, { from: "me", text: step.text, time: timeForStoryStep(step) }, false);
+    addMessage(threadId, {
+      from: "me",
+      text: step.text,
+      time: timeForStoryStep(step),
+      imageSrc: step.imageSrc,
+      imageAlt: step.imageAlt
+    }, false);
     advanceChatScript(threadId);
     render();
   }

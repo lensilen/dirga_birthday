@@ -114,7 +114,12 @@
         "It is 3:52": "15:52",
         "Exactly": "15:53",
         "Eight minutes is not that early": "15:53",
-        "Take your time": "15:53"
+        "Take your time": "15:53",
+        "Home yet?": "18:42",
+        "Belum, baru jalan": "18:42",
+        "Alright": "18:43",
+        "Let me know when you get home": "18:43",
+        "I will": "18:44"
       };
       (loaded.messages?.dirga || []).forEach((message) => {
         if (dirgaStoryTimes[message.text]) message.time = dirgaStoryTimes[message.text];
@@ -122,6 +127,7 @@
       (loaded.pendingNotifications || []).forEach((event) => {
         if (event.id === "chapter-3-dirga-home") event.time = "22:41";
         if (event.id === "coffee-dirga-arrival") event.time = "15:52";
+        if (event.id === "after-coffee-home-check") event.time = "18:42";
       });
       if (!Object.prototype.hasOwnProperty.call(saved, "storyDate") || !Object.prototype.hasOwnProperty.call(saved, "storyTime")) {
         const dirgaMessages = loaded.messages?.dirga || [];
@@ -830,6 +836,11 @@
     (state.pendingNotifications || []).forEach((event) => {
       if (state.deliveredEvents.includes(event.id) || storyRuntime.scheduledNotifications.has(event.id)) return;
       if (notificationIsBlocked(event)) return;
+      if (event.delayAfterExit && !event.exitDelayStarted) {
+        event.exitDelayStarted = true;
+        event.dueAt = Date.now() + Math.max(250, event.afterMs || 0);
+        saveState();
+      }
       storyRuntime.scheduledNotifications.add(event.id);
       timers.push(setTimeout(() => deliverPendingNotification(event.id), Math.max(80, event.dueAt - Date.now())));
     });

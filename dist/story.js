@@ -246,12 +246,34 @@ window.STORY_CONFIG = {
     dirga_coffee_arrival: {
       threadId: "dirga",
       active: false,
+      onComplete: {
+        id: "after-coffee-home-check",
+        threadId: "dirga",
+        notificationTitle: "?",
+        text: "Home yet?",
+        storyDate: "2026-11-21",
+        time: "18:42",
+        afterMs: 7000,
+        requireAppExit: true,
+        delayAfterExit: true,
+        activateChatScript: "dirga_after_coffee"
+      },
       steps: [
         { type: "mc", text: "You said four", time: "15:52", waitBefore: 450 },
         { type: "them", text: "It is 3:52", time: "15:52", waitBefore: 1500, typingMs: 900 },
         { type: "mc", text: "Exactly", time: "15:53", waitBefore: 550 },
         { type: "them", text: "Eight minutes is not that early", time: "15:53", waitBefore: 1700, typingMs: 1400 },
         { type: "them", text: "Take your time", time: "15:53", waitBefore: 500, typingMs: 900 }
+      ]
+    },
+    dirga_after_coffee: {
+      threadId: "dirga",
+      active: false,
+      steps: [
+        { type: "mc", text: "Belum, baru jalan", time: "18:42", waitBefore: 550 },
+        { type: "them", text: "Alright", time: "18:43", waitBefore: 1500, typingMs: 750 },
+        { type: "them", text: "Let me know when you get home", time: "18:43", waitBefore: 550, typingMs: 1500 },
+        { type: "mc", text: "I will", time: "18:44", waitBefore: 650 }
       ]
     }
   },

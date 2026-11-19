@@ -85,6 +85,13 @@ assert(/storyCheckpointReached\(photo\.availableAfter\)/.test(appSource), "Galer
 assert(/class="wa-message-image"/.test(appSource), "WhatsApp belum mendukung foto di dalam chat");
 assert(config.chatScripts?.petra?.onComplete?.storyDate === "2026-11-17", "Trigger setelah dinner tidak memakai tanggal cerita 17 November");
 assert(config.chatScripts?.dirga_after_dinner?.onComplete?.calendarEvents?.[0]?.trigger?.storyDate === "2026-11-21", "Trigger coffee tidak memakai tanggal cerita 21 November");
+const afterCoffee = config.chatScripts?.dirga_coffee_arrival?.onComplete;
+assert(afterCoffee?.text === "Home yet?", "Trigger setelah coffee belum tersedia");
+assert(afterCoffee?.afterMs >= 6000 && afterCoffee?.afterMs <= 8000, "Jeda trigger setelah coffee bukan 6–8 detik");
+assert(afterCoffee?.requireAppExit === true, "Trigger setelah coffee tidak menunggu pemain keluar WhatsApp");
+assert(afterCoffee?.delayAfterExit === true, "Timer setelah coffee tidak dimulai sesudah keluar WhatsApp");
+assert(afterCoffee?.activateChatScript === "dirga_after_coffee", "Trigger setelah coffee tidak membuka percakapan lanjutan");
+assert(/event\.exitDelayStarted = true/.test(appSource), "Runtime belum memulai timer saat WhatsApp ditutup");
 assert(/storyDate:\s*"2026-11-17"/.test(appSource), "State awal tidak memiliki tanggal cerita");
 assert(!/function currentTime\(\)\s*{\s*return new Date/.test(appSource), "Jam chat masih mengikuti waktu perangkat");
 

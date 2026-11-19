@@ -1553,7 +1553,15 @@
   function renderX() {
     const x = config.xApp || {};
     const profile = x.profile || {};
-    const posts = x.posts || [];
+    const completedChats = new Set(state.completedChats || []);
+    const posts = (x.posts || []).filter((post) => {
+      if (!post.availableAfter) return true;
+      if (completedChats.has(post.availableAfter)) return true;
+      if (post.availableAfter === "dirga_coffee_arrival") {
+        return (state.messages?.dirga || []).some((message) => message.text === "Take your time");
+      }
+      return false;
+    });
     screen.innerHTML = `
       <section class="view app-view x-view">
         <div class="x-profile-scroll">

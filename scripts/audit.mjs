@@ -68,6 +68,13 @@ for (const [scriptId, script] of Object.entries(config.chatScripts || {})) {
   }
 }
 unique(triggerIds, "ID trigger cerita");
+const gatedXPosts = (config.xApp?.posts || []).filter((post) => post.availableAfter);
+assert(gatedXPosts.length >= 4, "Tweet baru setelah coffee belum lengkap");
+for (const post of gatedXPosts) {
+  assert(Boolean(config.chatScripts?.[post.availableAfter]), `Tweet X memakai fase yang tidak ada: ${post.availableAfter}`);
+}
+assert(/completedChats\.has\(post\.availableAfter\)/.test(appSource), "Tweet bertahap tidak membaca progress chat");
+assert(/message\.text === "Take your time"/.test(appSource), "Progress lama tidak dapat membuka tweet setelah coffee");
 assert(config.chatScripts?.petra?.onComplete?.storyDate === "2026-11-17", "Trigger setelah dinner tidak memakai tanggal cerita 17 November");
 assert(config.chatScripts?.dirga_after_dinner?.onComplete?.calendarEvents?.[0]?.trigger?.storyDate === "2026-11-21", "Trigger coffee tidak memakai tanggal cerita 21 November");
 assert(/storyDate:\s*"2026-11-17"/.test(appSource), "State awal tidak memiliki tanggal cerita");

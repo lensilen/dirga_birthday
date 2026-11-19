@@ -738,6 +738,42 @@ no. absolutely not.`
     },
     posts: [
       {
+        time: "21 Nov",
+        text: "coffee was supposed to wake me up, not make me think about someone all evening",
+        replies: 0,
+        reposts: 0,
+        likes: 0,
+        views: 2,
+        availableAfter: "dirga_coffee_arrival"
+      },
+      {
+        time: "21 Nov",
+        text: "ternyata dia jauh lebih bahaya kalau nggak lagi ngomongin kerjaan",
+        replies: 0,
+        reposts: 0,
+        likes: 0,
+        views: 3,
+        availableAfter: "dirga_coffee_arrival"
+      },
+      {
+        time: "21 Nov",
+        text: "orang normal nggak datang delapan menit lebih awal terus bilang itu bukan early",
+        replies: 0,
+        reposts: 0,
+        likes: 0,
+        views: 1,
+        availableAfter: "dirga_coffee_arrival"
+      },
+      {
+        time: "21 Nov",
+        text: "gue mulai curiga Saturday coffee bukan keputusan yang profesional",
+        replies: 0,
+        reposts: 0,
+        likes: 0,
+        views: 2,
+        availableAfter: "dirga_coffee_arrival"
+      },
+      {
         time: "17 Nov",
         text: "kalau seseorang minta waktu lo buat hadiah ulang tahun… itu flirting atau gue yang kurang tidur",
         replies: 0,

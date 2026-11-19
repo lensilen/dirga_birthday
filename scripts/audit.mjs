@@ -143,7 +143,7 @@ assert(lateRevision?.activateChatScript === "maria_late_revision", "Trigger revi
 assert(config.chatScripts?.maria_late_revision?.onComplete?.activateChatOnExit === "dirga_work_night", "Chat Maria belum menyiapkan draft untuk Dirga");
 const workNight = config.chatScripts?.dirga_work_night;
 assert(workNight?.steps?.[0]?.text === "Pak masih di kantor?" && workNight?.steps?.[0]?.type === "mc", "MC belum memulai chat temani Dirga kerja");
-assert(workNight?.steps?.some((step) => step.text === "I know... tapi aku mau"), "Ajakan menemani Dirga kerja belum lengkap");
+assert(workNight?.steps?.some((step) => step.text === "I know... tapi saya mau"), "Ajakan menemani Dirga kerja belum lengkap");
 assert(workNight?.onComplete?.activateChatOnExit === "dirga_after_work_personal", "Bab kerja malam belum membuka chat momen personal");
 const personalChat = config.chatScripts?.dirga_after_work_personal;
 assert(personalChat?.steps?.[0]?.text === "Makasih tadi, Pak", "Chat setelah momen sepatu belum dimulai oleh MC");
@@ -153,7 +153,27 @@ const dropPakIndex = personalChat?.steps?.findIndex((step) => step.text === "You
 const photoCallbackIndex = personalChat?.steps?.findIndex((step) => step.text === "You sent me a photo with ‘GANTENG BANGET’ written under it");
 assert(dropPakIndex >= 0 && photoCallbackIndex > dropPakIndex, "Dirga belum meminta MC melepas panggilan Pak sebelum mengungkit foto");
 assert(personalChat?.steps?.some((step) => step.type === "mc" && step.text === "...Dirga"), "MC belum mencoba memanggil Dirga tanpa Pak");
+for (const [scriptId, script] of Object.entries(config.chatScripts || {})) {
+  if ((script.threadId || scriptId) !== "dirga") continue;
+  const mcSteps = (script.steps || []).filter((step) => step.type === "mc");
+  if (scriptId === "dirga_after_work_personal") {
+    const formalSteps = (script.steps || []).slice(0, dropPakIndex + 1).filter((step) => step.type === "mc");
+    assert(formalSteps.every((step) => !/\baku\b/i.test(step.text)), "MC memakai aku sebelum Dirga meminta panggilan Pak dilepas");
+    assert((script.steps || []).slice(dropPakIndex + 1).some((step) => step.type === "mc" && /\baku\b/i.test(step.text)), "MC belum beralih ke aku setelah hubungan menghangat");
+  } else {
+    assert(mcSteps.every((step) => !/\baku\b/i.test(step.text)), `MC memakai aku terlalu awal pada fase ${scriptId}`);
+  }
+}
+assert(/"Iya\.\.\. aku juga mau": "Iya\.\.\. saya juga mau"/.test(appSource) && /"Next time jangan bikin saya nemenin lembur": "Next time jangan bikin aku nemenin lembur"/.test(appSource), "Pesan tersimpan belum dimigrasikan mengikuti perubahan saya ke aku");
 assert(config.xApp?.posts?.some((post) => post.availableAfter === "dirga_work_night" && post.text?.includes("voluntarily staying late")), "Tweet setelah menemani Dirga kerja belum tersedia");
+assert((config.xApp?.posts || []).filter((post) => post.availableAfter === "dirga_work_night").length >= 3, "Tweet fase lembur belum cukup natural");
+assert((config.xApp?.posts || []).filter((post) => post.availableAfter === "dirga_after_work_personal").length >= 3, "Tweet fase chat warm belum cukup natural");
+assert((config.gmail?.emails || []).some((email) => email.id === "legal-copy-tonight" && email.availableAfter === "maria_late_revision"), "Email revisi malam belum terhubung ke cerita");
+assert((config.gmail?.emails || []).some((email) => email.id === "legal-copy-cleared" && email.availableAfter === "dirga_work_night"), "Email clearance legal belum terhubung ke cerita");
+assert((config.notes || []).some((note) => note.title === "jangan panik" && note.availableAfter === "dirga_wrong_send"), "Notes setelah salah kirim belum tersedia");
+assert((config.notes || []).some((note) => note.title === "Dirga" && note.availableAfter === "dirga_after_work_personal"), "Notes setelah hubungan menghangat belum tersedia");
+assert(/const visibleNotes = config\.notes[\s\S]*storyCheckpointReached\(item\.note\.availableAfter\)/.test(appSource), "Notes belum difilter berdasarkan checkpoint cerita");
+assert(/const emails = \(gmail\?\.emails \|\| \[\]\)\.filter\(\(email\) => storyCheckpointReached\(email\.availableAfter\)/.test(appSource), "Gmail belum difilter berdasarkan checkpoint cerita");
 assert((config.xApp?.posts || []).filter((post) => post.availableAfter === "dirga_wrong_send").length >= 2, "Tweet setelah salah kirim belum lengkap");
 assert(config.xApp?.posts?.some((post) => post.text === "GOBLOKKKKKKKKK" && post.time === "28 Nov" && post.availableAfter === "dirga_wrong_send"), "Tweet spontan setelah salah kirim belum tersedia");
 assert(/storyRevision:\s*4/.test(appSource) && /extendedScriptId = "dirga_home_arrival"/.test(appSource) && /reorderedScripts/.test(appSource) && /personalScriptId = "dirga_after_work_personal"/.test(appSource), "Progress lama belum dimigrasikan ke dialog tanpa panggilan Pak");

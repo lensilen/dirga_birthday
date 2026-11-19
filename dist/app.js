@@ -183,7 +183,15 @@
         "Gue juga masih proses 😭": "Gue juga masih proses ini...",
         "Belum, baru jalan": "Belum... baru jalan",
         "I will": "I willl",
-        "Dramatis banget Pak, baru juga jalan": "Dramatis banget Pak... aku baru telat ngabarin dikit",
+        "Dramatis banget Pak, baru juga jalan": "Dramatis banget Pak... saya baru telat ngabarin dikit",
+        "Dramatis banget Pak... aku baru telat ngabarin dikit": "Dramatis banget Pak... saya baru telat ngabarin dikit",
+        "Iya... aku juga mau": "Iya... saya juga mau",
+        "Aku baru mau turun...": "Saya baru mau turun...",
+        "Harusnya aku yang bilang makasih...": "Harusnya saya yang bilang makasih...",
+        "Aku gak akan buka WhatsApp lagi": "Saya gak akan buka WhatsApp lagi",
+        "Aku temenin deh": "Saya temenin deh",
+        "I know... tapi aku mau": "I know... tapi saya mau",
+        "Next time jangan bikin saya nemenin lembur": "Next time jangan bikin aku nemenin lembur",
         "I remembered eventually 😭": "I remembered eventually... technically",
         "You too... makasih buat hari ini": "You too... makasih yaa buat hari ini",
         "Iya... nice": "Iya... nice banget malah",
@@ -1361,9 +1369,12 @@
   }
 
   function renderNotes() {
-    const pinned = config.notes.map((note, index) => ({ note, index })).filter((item) => item.note.pinned);
-    const today = config.notes.map((note, index) => ({ note, index })).filter((item) => item.note.date === "17 November 2026" && !item.note.pinned);
-    const earlier = config.notes.map((note, index) => ({ note, index })).filter((item) => !item.note.pinned && item.note.date !== "17 November 2026");
+    const visibleNotes = config.notes
+      .map((note, index) => ({ note, index }))
+      .filter((item) => storyCheckpointReached(item.note.availableAfter) && storyDateReached(item.note.availableAfterDate));
+    const pinned = visibleNotes.filter((item) => item.note.pinned);
+    const today = visibleNotes.filter((item) => item.note.date === "17 November 2026" && !item.note.pinned);
+    const earlier = visibleNotes.filter((item) => !item.note.pinned && item.note.date !== "17 November 2026");
     screen.innerHTML = `
       <section class="view app-view notes-view ios-notes-list">
         <header class="notes-list-nav">
@@ -1372,7 +1383,7 @@
         </header>
         <div class="notes-scroll">
           <h1>Notes</h1>
-          <p class="notes-count">${config.notes.length} Notes</p>
+          <p class="notes-count">${visibleNotes.length} Notes</p>
           ${pinned.length ? `<section class="notes-section"><div class="notes-section-title"><h2>Pinned</h2></div><div class="notes-card">${pinned.map(noteListRow).join("")}</div></section>` : ""}
           ${today.length ? `<section class="notes-section"><div class="notes-section-title"><h2>Today</h2></div><div class="notes-card">${today.map(noteListRow).join("")}</div></section>` : ""}
           ${earlier.length ? `<section class="notes-section"><div class="notes-section-title"><h2>Previous 7 Days</h2></div><div class="notes-card">${earlier.map(noteListRow).join("")}</div></section>` : ""}
@@ -1471,7 +1482,7 @@
 
   function renderGmail() {
     const gmail = config.gmail;
-    const emails = gmail?.emails || [];
+    const emails = (gmail?.emails || []).filter((email) => storyCheckpointReached(email.availableAfter) && storyDateReached(email.availableAfterDate));
     const unreadCount = emails.filter((email) => email.unread).length;
     screen.innerHTML = `
       <section class="view app-view gmail-view gmail-inbox-view">
@@ -1517,7 +1528,8 @@
 
   function renderGmailEmail() {
     const gmail = config.gmail;
-    const email = gmail?.emails?.find((item) => item.id === state.activeEmailId) || gmail?.emails?.[0];
+    const visibleEmails = (gmail?.emails || []).filter((item) => storyCheckpointReached(item.availableAfter) && storyDateReached(item.availableAfterDate));
+    const email = visibleEmails.find((item) => item.id === state.activeEmailId) || visibleEmails[0];
     if (!email) {
       state.view = "gmail";
       render();

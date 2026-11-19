@@ -307,7 +307,7 @@ window.STORY_CONFIG = {
         { type: "mc", text: "Baru sampeee", time: "19:17", waitBefore: 550 },
         { type: "them", text: "Good", time: "19:18", waitBefore: 1300, typingMs: 650 },
         { type: "them", text: "I was about to call", time: "19:18", waitBefore: 500, typingMs: 1100 },
-        { type: "mc", text: "Dramatis banget Pak... aku baru telat ngabarin dikit", time: "19:19", waitBefore: 650 },
+        { type: "mc", text: "Dramatis banget Pak... saya baru telat ngabarin dikit", time: "19:19", waitBefore: 650 },
         { type: "them", text: "Says the person who promised to text", time: "19:20", waitBefore: 1500, typingMs: 1450 },
         { type: "mc", text: "I remembered eventually... technically", time: "19:20", waitBefore: 600 },
         { type: "them", text: "Barely", time: "19:21", waitBefore: 1200, typingMs: 650 },
@@ -321,7 +321,7 @@ window.STORY_CONFIG = {
         { type: "them", text: "Good", time: "19:25", waitBefore: 1200, typingMs: 650 },
         { type: "them", text: "Because I was hoping we could do it again", time: "19:25", waitBefore: 500, typingMs: 1700 },
         { type: "mc", text: "Oh...", time: "19:26", waitBefore: 700 },
-        { type: "mc", text: "Iya... aku juga mau", time: "19:26", waitBefore: 450 },
+        { type: "mc", text: "Iya... saya juga mau", time: "19:26", waitBefore: 450 },
         { type: "them", text: "Good, then", time: "19:27", waitBefore: 1600, typingMs: 900 },
         { type: "them", text: "Then don't make plans for next Saturday evening", time: "19:27", waitBefore: 550, typingMs: 1800 },
         { type: "mc", text: "Itu ngajak atau nyuruh sih", time: "19:28", waitBefore: 650 },
@@ -378,7 +378,7 @@ window.STORY_CONFIG = {
         { type: "them", text: "It is 5:54", time: "17:54", waitBefore: 1400, typingMs: 850 },
         { type: "mc", text: "You did this last time", time: "17:55", waitBefore: 600 },
         { type: "them", text: "And you still came down late", time: "17:55", waitBefore: 1600, typingMs: 1300 },
-        { type: "mc", text: "Aku baru mau turun...", time: "17:56", waitBefore: 650 },
+        { type: "mc", text: "Saya baru mau turun...", time: "17:56", waitBefore: 650 },
         { type: "them", text: "Take your time, I'll wait", time: "17:56", waitBefore: 1400, typingMs: 1100 }
       ]
     },
@@ -401,7 +401,7 @@ window.STORY_CONFIG = {
         { type: "mc", text: "Udah... baru masuk", time: "22:36", waitBefore: 600 },
         { type: "them", text: "That's good", time: "22:37", waitBefore: 1400, typingMs: 750 },
         { type: "them", text: "Thank you for tonight", time: "22:37", waitBefore: 500, typingMs: 1200 },
-        { type: "mc", text: "Harusnya aku yang bilang makasih...", time: "22:38", waitBefore: 650 },
+        { type: "mc", text: "Harusnya saya yang bilang makasih...", time: "22:38", waitBefore: 650 },
         { type: "them", text: "You looked like you needed a night away from work", time: "22:39", waitBefore: 1700, typingMs: 1700 },
         { type: "mc", text: "Kelihatan banget yaa", time: "22:39", waitBefore: 650 },
         { type: "them", text: "Only to me", time: "22:40", waitBefore: 1700, typingMs: 950 },
@@ -461,7 +461,7 @@ window.STORY_CONFIG = {
         { type: "them", text: "I figured", time: "22:50", waitBefore: 1500, typingMs: 800 },
         { type: "them", text: "For what it's worth", time: "22:50", waitBefore: 450, typingMs: 1000 },
         { type: "them", text: "I was hoping you thought so", time: "22:51", waitBefore: 450, typingMs: 1300 },
-        { type: "mc", text: "Aku gak akan buka WhatsApp lagi", time: "22:51", waitBefore: 750 },
+        { type: "mc", text: "Saya gak akan buka WhatsApp lagi", time: "22:51", waitBefore: 750 },
         { type: "them", text: "You will", time: "22:51", waitBefore: 1400, typingMs: 700 }
       ]
     },
@@ -514,9 +514,9 @@ window.STORY_CONFIG = {
         { type: "mc", text: "Masih lama?", time: "20:59", waitBefore: 600 },
         { type: "them", text: "An hour", time: "20:59", waitBefore: 1400, typingMs: 700 },
         { type: "them", text: "Maybe two", time: "21:00", waitBefore: 450, typingMs: 700 },
-        { type: "mc", text: "Aku temenin deh", time: "21:00", waitBefore: 700 },
+        { type: "mc", text: "Saya temenin deh", time: "21:00", waitBefore: 700 },
         { type: "them", text: "You don't have to", time: "21:01", waitBefore: 1700, typingMs: 1100 },
-        { type: "mc", text: "I know... tapi aku mau", time: "21:01", waitBefore: 700 },
+        { type: "mc", text: "I know... tapi saya mau", time: "21:01", waitBefore: 700 },
         { type: "them", text: "Then stay", time: "21:02", waitBefore: 1700, typingMs: 900 }
       ]
     },
@@ -539,7 +539,7 @@ window.STORY_CONFIG = {
         { type: "mc", text: "Tetep aja... makasih", time: "23:42", waitBefore: 650 },
         { type: "them", text: "You're welcome", time: "23:42", waitBefore: 1400, typingMs: 850 },
         { type: "them", text: "Next time wear sensible shoes", time: "23:43", waitBefore: 500, typingMs: 1200 },
-        { type: "mc", text: "Next time jangan bikin saya nemenin lembur", time: "23:43", waitBefore: 700 },
+        { type: "mc", text: "Next time jangan bikin aku nemenin lembur", time: "23:43", waitBefore: 700 },
         { type: "them", text: "You offered", time: "23:44", waitBefore: 1500, typingMs: 750 },
         { type: "mc", text: "I know...", time: "23:44", waitBefore: 650 },
         { type: "them", text: "And you'd do it again", time: "23:45", waitBefore: 1600, typingMs: 1100 },
@@ -583,6 +583,42 @@ window.STORY_CONFIG = {
     accountEmail: "lead.marketing@company.co.id",
     profileImage: "assets/wallpapers/icon.jpg",
     emails: [
+      {
+        id: "legal-copy-tonight",
+        sender: "Maria Marketing Team",
+        senderEmail: "maria@company.co.id",
+        avatar: "M",
+        color: "#e8710a",
+        subject: "Urgent: final legal copy malam ini",
+        snippet: "Versi terakhir masih menunggu pengecekan legal sebelum dikirim",
+        time: "8:49 PM",
+        unread: true,
+        availableAfter: "maria_late_revision",
+        body: [
+          "Kak,",
+          "Final copy untuk teaser sudah aku rapikan sesuai revisi terakhir, tapi versi ini masih menunggu pengecekan legal sebelum dikirim ke agency",
+          "Kalau memungkinkan kami butuh clearance malam ini supaya jadwal besok tidak bergeser",
+          "Thank you\nMaria"
+        ]
+      },
+      {
+        id: "legal-copy-cleared",
+        sender: "Dirga Legal",
+        senderEmail: "dirga@company.co.id",
+        avatar: "D",
+        color: "#5f6368",
+        subject: "Re: Final teaser copy cleared",
+        snippet: "Versi terakhir sudah aman dikirim ke agency",
+        time: "10:18 PM",
+        unread: false,
+        availableAfter: "dirga_work_night",
+        body: [
+          "Bu,",
+          "Final teaser copy sudah selesai saya review dan versi terakhir aman dikirim ke agency",
+          "Tidak ada catatan tambahan dari legal",
+          "Regards\nDirga"
+        ]
+      },
       {
         id: "final-kv",
         sender: "Nadia Northstar Agency",
@@ -847,6 +883,28 @@ But sometimes you say something completely normal and I keep thinking about it f
 I think maybe I—
 
 no. absolutely not.`
+    },
+    {
+      title: "jangan panik",
+      date: "28 November 2026",
+      availableAfter: "dirga_wrong_send",
+      body: `1. jangan salah kirim foto lagi
+2. jangan buka chat dia
+3. jangan buka X
+4. jangan dengarkan Petra
+5. pertimbangkan pindah negara`
+    },
+    {
+      title: "Dirga",
+      date: "30 November 2026",
+      availableAfter: "dirga_after_work_personal",
+      body: `dia bilang aku boleh berhenti manggil “Pak” kalau di luar kantor
+
+terus aku beneran manggil namanya
+
+dan dia bilang “better”
+
+kenapa satu kata bisa bikin aku segugup itu`
     }
   ],
 
@@ -1054,11 +1112,56 @@ no. absolutely not.`
     posts: [
       {
         time: "30 Nov",
+        text: "besok di kantor harus manggil Pak lagi\n\nnormal professional definitely fine",
+        replies: 0,
+        reposts: 0,
+        likes: 0,
+        views: 3,
+        availableAfter: "dirga_after_work_personal"
+      },
+      {
+        time: "30 Nov",
+        text: "ternyata nama orang bisa terasa lebih intimate dari seharusnya",
+        replies: 0,
+        reposts: 0,
+        likes: 0,
+        views: 2,
+        availableAfter: "dirga_after_work_personal"
+      },
+      {
+        time: "30 Nov",
+        text: "dia bilang drop the Pak terus satu kata ‘better’ berhasil merusak sistem saraf gue",
+        replies: 0,
+        reposts: 0,
+        likes: 0,
+        views: 4,
+        availableAfter: "dirga_after_work_personal"
+      },
+      {
+        time: "30 Nov",
         text: "voluntarily staying late because one specific man is still working... career low point",
         replies: 0,
         reposts: 0,
         likes: 0,
         views: 2,
+        availableAfter: "dirga_work_night"
+      },
+      {
+        time: "30 Nov",
+        text: "saya menawarkan diri untuk lembur\n\nvoluntary conscious no one forced me",
+        replies: 0,
+        reposts: 0,
+        likes: 0,
+        views: 2,
+        availableAfter: "dirga_work_night"
+      },
+      {
+        time: "30 Nov",
+        text: "someone take my access card away before I do this again",
+        replies: 0,
+        reposts: 0,
+        likes: 0,
+        views: 1,
         availableAfter: "dirga_work_night"
       },
       {

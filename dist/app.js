@@ -12,7 +12,7 @@
   const demoPin = document.querySelector("#demo-pin");
 
   const defaultState = () => ({
-    storyRevision: 6,
+    storyRevision: 7,
     unlocked: false,
     pinVisible: false,
     view: "lock",
@@ -232,6 +232,26 @@
         redateThread("satrio", "2026-11-15");
         loaded.storyRevision = 6;
       }
+      if ((saved.storyRevision || 0) < 7) {
+        const goodCountByDate = {};
+        (loaded.messages?.dirga || []).forEach((message) => {
+          if (message.text === "Udah... baru masuk") {
+            if (message.storyDate === "2026-11-17") message.time = "22:41";
+            if (message.storyDate === "2026-11-28") message.time = "22:36";
+          }
+          if (message.text === "Thank you for tonight") {
+            if (message.storyDate === "2026-11-17") message.time = "22:42";
+            if (message.storyDate === "2026-11-28") message.time = "22:37";
+          }
+          if (message.text === "Good") {
+            goodCountByDate[message.storyDate] = (goodCountByDate[message.storyDate] || 0) + 1;
+            if (message.storyDate === "2026-11-17") message.time = "22:41";
+            if (message.storyDate === "2026-11-21") message.time = goodCountByDate[message.storyDate] === 1 ? "19:18" : "19:25";
+            if (message.storyDate === "2026-11-28") message.time = "22:43";
+          }
+        });
+        loaded.storyRevision = 7;
+      }
       const messageTextMigrations = {
         "Harusnya bisaa, gue cek kerjaan dulu ya 😭": "Harusnya bisaa, gue cek kerjaan dulu yaa",
         "Ya jangan aneh aneh 😭": "Ya jangan aneh aneh...",
@@ -271,9 +291,6 @@
       });
       const dirgaStoryTimes = {
         "Sudah masuk?": "22:41",
-        "Udah... baru masuk": "22:41",
-        "Good": "22:41",
-        "Thank you for tonight": "22:42",
         "Sama samaa": "22:42",
         "I realized something": "22:43",
         "Apa?": "22:43",

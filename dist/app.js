@@ -12,7 +12,7 @@
   const demoPin = document.querySelector("#demo-pin");
 
   const defaultState = () => ({
-    storyRevision: 4,
+    storyRevision: 5,
     unlocked: false,
     pinVisible: false,
     view: "lock",
@@ -20,7 +20,10 @@
     storyDate: "2026-11-17",
     storyTime: "10:26",
     activeThreadId: config.threads[0]?.id || null,
-    messages: Object.fromEntries(config.threads.map((thread) => [thread.id, [...thread.initialMessages]])),
+    messages: Object.fromEntries(config.threads.map((thread) => [thread.id, thread.initialMessages.map((message) => ({
+      ...message,
+      storyDate: message.storyDate || thread.initialDate || "2026-11-17"
+    }))])),
     unread: {},
     chatProgress: Object.fromEntries(Object.keys(config.chatScripts || {}).map((threadId) => [threadId, 0])),
     activeChatScripts: Object.entries(config.chatScripts || {}).filter(([, script]) => script.active !== false).map(([threadId]) => threadId),
@@ -175,6 +178,32 @@
           loaded.selectedDate = "2026-11-30";
         }
         loaded.storyRevision = 4;
+      }
+      if ((saved.storyRevision || 0) < 5) {
+        const datedMessageKeys = new Map();
+        const ambiguousMessageKeys = new Set();
+        const rememberMessageDate = (text, time, date) => {
+          if (!text || !date) return;
+          const key = `${text}\u0000${time || ""}`;
+          if (datedMessageKeys.has(key) && datedMessageKeys.get(key) !== date) ambiguousMessageKeys.add(key);
+          else datedMessageKeys.set(key, date);
+        };
+        Object.entries(config.chatScripts || {}).forEach(([scriptId, script]) => {
+          const date = script.storyDate;
+          (script.steps || []).forEach((step) => rememberMessageDate(step.text, step.time, step.storyDate || date));
+          const completion = script.onComplete;
+          if (completion?.text) rememberMessageDate(completion.text, completion.time, completion.storyDate || date);
+        });
+        config.threads.forEach((thread) => {
+          (loaded.messages?.[thread.id] || []).forEach((message) => {
+            if (message.storyDate) return;
+            const key = `${message.text || ""}\u0000${message.time || ""}`;
+            message.storyDate = !ambiguousMessageKeys.has(key) && datedMessageKeys.get(key)
+              ? datedMessageKeys.get(key)
+              : thread.initialDate || "2026-11-17";
+          });
+        });
+        loaded.storyRevision = 5;
       }
       const messageTextMigrations = {
         "Harusnya bisaa, gue cek kerjaan dulu ya 😭": "Harusnya bisaa, gue cek kerjaan dulu yaa",
@@ -773,8 +802,9 @@
           </div>
         </header>
         <div class="chat-messages" id="chat-messages">
-          <p class="day-divider">${escapeHtml(thread.dayLabel || "TODAY")}</p>
-          ${messages.map((message) => message.type === "missed_call" ? `
+          ${messages.map((message, index) => `${index === 0 || messages[index - 1]?.storyDate !== message.storyDate
+            ? `<p class="day-divider">${escapeHtml(formatWhatsAppDay(message.storyDate, thread.dayLabel))}</p>`
+            : ""}${message.type === "missed_call" ? `
             <div class="wa-call-event" role="status" aria-label="Missed voice call from ${escapeAttribute(thread.name)}">
               <span class="wa-call-event__icon">☎</span>
               <span><strong>Missed voice call</strong><small>${escapeHtml(message.time || currentTime())}</small></span>
@@ -785,7 +815,7 @@
                 ${message.text ? `<span class="wa-message-text">${escapeHtml(message.text).replaceAll("\n", "<br>")}</span>` : ""}
                 <span class="wa-message-meta"><time>${escapeHtml(message.time || currentTime())}</time>${message.from === "me" ? `<b aria-label="Dibaca">✓✓</b>` : ""}</span>
               </div>
-            </div>`).join("")}
+            </div>`}`).join("")}
           ${isTyping ? `<div class="bubble-row bubble-row--them"><div class="wa-bubble wa-typing-bubble" aria-label="${escapeAttribute(thread.name)} sedang mengetik"><i></i><i></i><i></i></div></div>` : ""}
           ${state.ending ? `<div class="ending-card"><span>ENDING</span><strong>${escapeHtml(state.ending)}</strong><small>Cerita tersimpan di perangkat ini.</small></div>` : ""}
         </div>
@@ -820,6 +850,19 @@
       if (list) list.scrollTop = list.scrollHeight;
       runChatScriptStep(thread.id);
     });
+  }
+
+  function formatWhatsAppDay(date, fallback = "TODAY") {
+    if (!date) return fallback;
+    if (date === state.storyDate) return "TODAY";
+    const value = storyDateObject(date, "12:00");
+    if (Number.isNaN(value.getTime())) return fallback;
+    return new Intl.DateTimeFormat("en-US", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    }).format(value).toUpperCase();
   }
 
   function chatScriptTarget(scriptId) {
@@ -1601,6 +1644,22 @@
     return null;
   }
 
+  function instagramPostDate(post) {
+    if (post.availableAfterDate) return post.availableAfterDate;
+    const parsed = new Date(`${post.date || post.time || "1 Jan"} 2026`);
+    if (Number.isNaN(parsed.getTime())) return "2026-01-01";
+    const year = parsed.getFullYear();
+    const month = String(parsed.getMonth() + 1).padStart(2, "0");
+    const day = String(parsed.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
+  function visibleInstagramPosts(profile) {
+    return (profile?.posts || [])
+      .filter((post) => storyDateReached(instagramPostDate(post)) && storyCheckpointReached(post.availableAfter))
+      .sort((first, second) => instagramPostDate(second).localeCompare(instagramPostDate(first)));
+  }
+
   function instagramAvatar(profile, className = "", ring = false) {
     return `<span class="ig-avatar ${ring ? "has-ring" : ""} ${className}"><img src="${escapeAttribute(profile.avatar)}" alt=""></span>`;
   }
@@ -1649,7 +1708,12 @@
   function renderInstagram() {
     const instagram = config.instagram || {};
     const storyProfiles = (instagram.stories || []).map(getInstagramProfile).filter(Boolean);
-    const homePosts = (instagram.homePostIds || []).map(getInstagramPost).filter(Boolean);
+    const homePosts = (instagram.homeProfileIds || [])
+      .map(getInstagramProfile)
+      .filter(Boolean)
+      .map((profile) => ({ profile, post: visibleInstagramPosts(profile)[0] }))
+      .filter(({ post }) => Boolean(post))
+      .sort((first, second) => instagramPostDate(second.post).localeCompare(instagramPostDate(first.post)));
     screen.innerHTML = `
       <section class="view app-view instagram-view ig-home-view">
         <header class="ig-main-header">
@@ -1677,6 +1741,7 @@
       return;
     }
     const isOwner = profile.id === config.instagram?.ownerId;
+    const visiblePosts = visibleInstagramPosts(profile);
     screen.innerHTML = `
       <section class="view app-view instagram-view ig-profile-view">
         <header class="ig-profile-header ${isOwner ? "is-owner" : ""}">
@@ -1687,13 +1752,13 @@
         <div class="ig-profile-scroll">
           <section class="ig-profile-summary">
             <span class="ig-profile-avatar-wrap">${instagramAvatar(profile, "ig-profile-avatar")}${isOwner ? `<i class="ig-profile-note">busy, as usual</i><b class="ig-profile-add">+</b>` : ""}</span>
-            <div class="ig-profile-stats"><span><b>${profile.posts.length}</b><small>posts</small></span><span><b>${escapeHtml(profile.followers)}</b><small>followers</small></span><span><b>${escapeHtml(profile.following)}</b><small>following</small></span></div>
+            <div class="ig-profile-stats"><span><b>${visiblePosts.length}</b><small>posts</small></span><span><b>${escapeHtml(profile.followers)}</b><small>followers</small></span><span><b>${escapeHtml(profile.following)}</b><small>following</small></span></div>
             <div class="ig-profile-bio"><strong>${escapeHtml(profile.displayName)}</strong><p>${escapeHtml(profile.bio || "")}</p></div>
             <div class="ig-profile-actions">${isOwner ? `<button type="button" disabled>Edit profile</button><button type="button" disabled>Share profile</button><button class="ig-add-person" type="button" disabled>${igIcon("user")}</button>` : `<button type="button" disabled>Following</button><button type="button" disabled>Message</button>`}</div>
           </section>
           <div class="ig-profile-tabs"><span class="is-active">${igIcon("grid")}</span><span>${igIcon("reels")}</span><span>${igIcon("repost")}</span><span>${igIcon("user")}</span></div>
           <div class="ig-profile-grid">
-            ${profile.posts.map((post) => `<button type="button" data-ig-post="${escapeAttribute(post.id)}" data-ig-return="instagram-profile" aria-label="Buka post"><img src="${escapeAttribute(post.image)}" alt=""></button>`).join("")}
+            ${visiblePosts.map((post) => `<button type="button" data-ig-post="${escapeAttribute(post.id)}" data-ig-return="instagram-profile" aria-label="Buka post"><img src="${escapeAttribute(post.image)}" alt=""></button>`).join("")}
           </div>
         </div>
         ${instagramBottomNav(isOwner ? "profile" : "")}
@@ -1764,8 +1829,8 @@
     const x = config.xApp || {};
     const profile = x.profile || {};
     const posts = (x.posts || []).filter((post) => {
-      if (!post.availableAfter) return true;
-      return storyCheckpointReached(post.availableAfter);
+      const postDate = post.availableAfterDate || instagramPostDate(post);
+      return storyDateReached(postDate) && storyCheckpointReached(post.availableAfter);
     });
     screen.innerHTML = `
       <section class="view app-view x-view">
@@ -1948,7 +2013,7 @@
 
   function addMessage(threadId, message, markUnread) {
     if (!state.messages[threadId]) state.messages[threadId] = [];
-    state.messages[threadId].push(message);
+    state.messages[threadId].push({ ...message, storyDate: message.storyDate || state.storyDate });
     if (markUnread && message.from === "them") state.unread[threadId] = (state.unread[threadId] || 0) + 1;
     saveState();
   }

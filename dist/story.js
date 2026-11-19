@@ -62,6 +62,7 @@ window.STORY_CONFIG = {
     {
       id: "petra",
       name: "Petra",
+      initialDate: "2026-11-17",
       avatar: "P",
       avatarSrc: "assets/avatars/whatsapp/petra.jpg",
       color: "#8b6f83",
@@ -77,6 +78,7 @@ window.STORY_CONFIG = {
     {
       id: "bintang",
       name: "Bintang Marketing Team",
+      initialDate: "2026-11-17",
       avatar: "B",
       avatarSrc: "assets/avatars/whatsapp/bintang.jpg",
       color: "#7c8f83",
@@ -91,6 +93,7 @@ window.STORY_CONFIG = {
     {
       id: "maria",
       name: "Maria Marketing Team",
+      initialDate: "2026-11-17",
       avatar: "M",
       avatarSrc: "assets/avatars/whatsapp/maria.jpg",
       color: "#7b6f93",
@@ -105,6 +108,7 @@ window.STORY_CONFIG = {
     {
       id: "adelina",
       name: "Adelina Marketing Team",
+      initialDate: "2026-11-17",
       avatar: "A",
       avatarSrc: "assets/avatars/whatsapp/adelina.jpg",
       color: "#8e755f",
@@ -118,6 +122,7 @@ window.STORY_CONFIG = {
     {
       id: "satrio",
       name: "Pak Satrio Legal",
+      initialDate: "2026-11-15",
       avatar: "S",
       avatarSrc: "assets/avatars/whatsapp/satrio.jpg",
       color: "#67788f",
@@ -132,6 +137,7 @@ window.STORY_CONFIG = {
     {
       id: "mama",
       name: "Mama",
+      initialDate: "2026-11-17",
       avatar: "M",
       avatarSrc: "assets/avatars/whatsapp/mama.jpg",
       color: "#9a7f74",
@@ -152,6 +158,7 @@ window.STORY_CONFIG = {
    */
   chatScripts: {
     dirga: {
+      storyDate: "2026-11-17",
       onComplete: {
         activateChatOnExit: "petra"
       },
@@ -173,6 +180,7 @@ window.STORY_CONFIG = {
       ]
     },
     petra: {
+      storyDate: "2026-11-17",
       active: false,
       onComplete: {
         id: "chapter-3-dirga-home",
@@ -198,6 +206,7 @@ window.STORY_CONFIG = {
     },
     dirga_after_dinner: {
       threadId: "dirga",
+      storyDate: "2026-11-17",
       active: false,
       onComplete: {
         calendarEvents: [
@@ -245,6 +254,7 @@ window.STORY_CONFIG = {
     },
     dirga_coffee_arrival: {
       threadId: "dirga",
+      storyDate: "2026-11-21",
       active: false,
       onComplete: {
         id: "after-coffee-home-check",
@@ -268,6 +278,7 @@ window.STORY_CONFIG = {
     },
     dirga_after_coffee: {
       threadId: "dirga",
+      storyDate: "2026-11-21",
       active: false,
       onComplete: {
         id: "home-arrival-follow-up",
@@ -290,6 +301,7 @@ window.STORY_CONFIG = {
     },
     dirga_home_arrival: {
       threadId: "dirga",
+      storyDate: "2026-11-21",
       onComplete: {
         id: "second-meeting-plan-check",
         threadId: "dirga",
@@ -330,6 +342,7 @@ window.STORY_CONFIG = {
     },
     dirga_second_meeting_invite: {
       threadId: "dirga",
+      storyDate: "2026-11-26",
       active: false,
       onComplete: {
         id: "second-meeting-arrival",
@@ -360,6 +373,7 @@ window.STORY_CONFIG = {
     },
     dirga_second_meeting_arrival: {
       threadId: "dirga",
+      storyDate: "2026-11-28",
       active: false,
       onComplete: {
         id: "after-second-meeting-home-check",
@@ -384,6 +398,7 @@ window.STORY_CONFIG = {
     },
     dirga_after_second_meeting: {
       threadId: "dirga",
+      storyDate: "2026-11-28",
       active: false,
       onComplete: {
         id: "second-meeting-petra-checkin",
@@ -416,6 +431,7 @@ window.STORY_CONFIG = {
     },
     petra_second_meeting_report: {
       threadId: "petra",
+      storyDate: "2026-11-28",
       active: false,
       onComplete: {
         id: "wrong-chat-dirga-opening",
@@ -437,6 +453,7 @@ window.STORY_CONFIG = {
     },
     dirga_wrong_send: {
       threadId: "dirga",
+      storyDate: "2026-11-28",
       active: false,
       onComplete: {
         id: "wrong-send-petra-follow-up",
@@ -467,6 +484,7 @@ window.STORY_CONFIG = {
     },
     petra_wrong_send: {
       threadId: "petra",
+      storyDate: "2026-11-28",
       active: false,
       onComplete: {
         id: "late-revision-from-maria",
@@ -493,6 +511,7 @@ window.STORY_CONFIG = {
     },
     maria_late_revision: {
       threadId: "maria",
+      storyDate: "2026-11-30",
       active: false,
       onComplete: {
         activateChatOnExit: "dirga_work_night"
@@ -504,6 +523,7 @@ window.STORY_CONFIG = {
     },
     dirga_work_night: {
       threadId: "dirga",
+      storyDate: "2026-11-30",
       active: false,
       onComplete: {
         activateChatOnExit: "dirga_after_work_personal"
@@ -522,6 +542,7 @@ window.STORY_CONFIG = {
     },
     dirga_after_work_personal: {
       threadId: "dirga",
+      storyDate: "2026-11-30",
       active: false,
       steps: [
         { type: "mc", text: "Makasih tadi, Pak", storyDate: "2026-11-30", time: "23:36", waitBefore: 750 },
@@ -786,11 +807,11 @@ window.STORY_CONFIG = {
     { id: "photo-12", title: "14 February 2026", caption: "14 February 2026 · 8:41 PM", src: "assets/photos/gallery/831899362455754011.jpg", albums: ["favorites"] },
     { id: "photo-17", title: "22 November 2025", caption: "22 November 2025 · 4:03 PM", src: "assets/photos/gallery/Office.jpg", albums: ["work"] },
     { id: "photo-18", title: "18 November 2025", caption: "18 November 2025 · 10:36 AM", src: "assets/photos/gallery/when in San Francisco 🧺🌁✨🌙🌿☁ just some….jpg", albums: ["places"] },
-    { id: "photo-19", title: "17 November 2026", caption: "17 November 2026 · 8:56 PM", src: "assets/photos/gallery/dinner-17-first.jpg", albums: [], availableAfter: "dirga_after_dinner" },
-    { id: "photo-20", title: "21 November 2026", caption: "21 November 2026 · 5:38 PM", src: "assets/photos/gallery/coffee-date.jpg", albums: [], availableAfter: "dirga_coffee_arrival" },
-    { id: "photo-21", title: "28 November 2026", caption: "28 November 2026 · 8:42 PM", src: "assets/photos/gallery/Dion Windsor _ The unwanted marriage.jpg", albums: [], availableAfter: "dirga_wrong_send" },
-    { id: "photo-22", title: "30 November 2026", caption: "30 November 2026 · 9:34 PM", src: "assets/photos/gallery/alex volkov _ twisted love _ aesthetic _ boy….jpg", albums: [], availableAfter: "dirga_work_night" },
-    { id: "photo-23", title: "30 November 2026", caption: "30 November 2026 · 11:18 PM", src: "assets/photos/gallery/782852347766237811.jpg", albums: [], availableAfter: "dirga_after_work_personal" }
+    { id: "photo-19", title: "17 November 2026", caption: "17 November 2026 · 8:56 PM", src: "assets/photos/gallery/dinner-17-first.jpg", albums: [], availableAfter: "dirga_after_dinner", availableAfterDate: "2026-11-17" },
+    { id: "photo-20", title: "21 November 2026", caption: "21 November 2026 · 5:38 PM", src: "assets/photos/gallery/coffee-date.jpg", albums: [], availableAfter: "dirga_coffee_arrival", availableAfterDate: "2026-11-21" },
+    { id: "photo-21", title: "28 November 2026", caption: "28 November 2026 · 8:42 PM", src: "assets/photos/gallery/Dion Windsor _ The unwanted marriage.jpg", albums: [], availableAfter: "dirga_wrong_send", availableAfterDate: "2026-11-28" },
+    { id: "photo-22", title: "30 November 2026", caption: "30 November 2026 · 9:34 PM", src: "assets/photos/gallery/alex volkov _ twisted love _ aesthetic _ boy….jpg", albums: [], availableAfter: "dirga_work_night", availableAfterDate: "2026-11-30" },
+    { id: "photo-23", title: "30 November 2026", caption: "30 November 2026 · 11:18 PM", src: "assets/photos/gallery/782852347766237811.jpg", albums: [], availableAfter: "dirga_after_work_personal", availableAfterDate: "2026-11-30" }
   ],
 
   storyChatMedia: [
@@ -885,34 +906,32 @@ I think maybe I—
 no. absolutely not.`
     },
     {
-      title: "jangan panik",
+      title: "MINGGU DEPAN",
       date: "28 November 2026",
       availableAfter: "dirga_wrong_send",
-      body: `1. jangan salah kirim foto lagi
-2. jangan buka chat dia
-3. jangan buka X
-4. jangan dengarkan Petra
-5. pertimbangkan pindah negara`
+      body: `☐ Final check teaser copy
+☐ Confirm talent fitting
+☐ Minta timeline regional campaign
+☐ Cek slot presentasi Desember
+☐ Jangan ambil meeting sebelum jam 9`
     },
     {
-      title: "Dirga",
+      title: "DESEMBER",
       date: "30 November 2026",
       availableAfter: "dirga_after_work_personal",
-      body: `dia bilang aku boleh berhenti manggil “Pak” kalau di luar kantor
-
-terus aku beneran manggil namanya
-
-dan dia bilang “better”
-
-kenapa satu kata bisa bikin aku segugup itu`
+      body: `☐ Monthly review
+☐ Follow up legal untuk regional project
+☐ Cek sisa cuti
+☐ Kirim brief year-end campaign
+☐ Kosongkan Jumat malam kalau tidak ada revisi`
     }
   ],
 
-  /* Instagram — feed dan profil bersifat statis; Story hanya dekoratif. */
+  /* Instagram — Home selalu mengambil post terbaru yang terlihat dari setiap profil. */
   instagram: {
     ownerId: "mc",
     stories: ["mc", "maria", "adelina", "bintang", "petra", "dirga", "satrio", "wicaksono"],
-    homePostIds: ["mc-7", "maria-6", "adelina-6", "bintang-1", "petra-6", "dirga-1"],
+    homeProfileIds: ["mc", "maria", "adelina", "bintang", "petra", "dirga"],
     profiles: [
       {
         id: "mc",

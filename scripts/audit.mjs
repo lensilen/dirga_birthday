@@ -45,7 +45,7 @@ unique((config.photoAlbums || []).map((album) => album.id), "ID album");
 unique((config.notes || []).map((note) => note.title), "Judul Notes");
 unique((config.gmail?.emails || []).map((email) => email.id), "ID email");
 
-const validStepTypes = new Set(["mc", "them", "missed_call"]);
+const validStepTypes = new Set(["mc", "them", "missed_call", "incoming_call"]);
 const triggerIds = [];
 for (const [scriptId, script] of Object.entries(config.chatScripts || {})) {
   const target = script.threadId || scriptId;
@@ -53,7 +53,7 @@ for (const [scriptId, script] of Object.entries(config.chatScripts || {})) {
   assert(Array.isArray(script.steps) && script.steps.length > 0, `Chat script ${scriptId} tidak memiliki langkah`);
   for (const [index, step] of (script.steps || []).entries()) {
     assert(validStepTypes.has(step.type), `Tipe langkah ${scriptId}[${index}] tidak valid: ${step.type}`);
-    if (step.type !== "missed_call") assert(typeof step.text === "string" && step.text.length > 0, `Teks ${scriptId}[${index}] kosong`);
+    if (!["missed_call", "incoming_call"].includes(step.type)) assert(typeof step.text === "string" && step.text.length > 0, `Teks ${scriptId}[${index}] kosong`);
     assert(Number.isFinite(step.waitBefore) && step.waitBefore >= 0, `waitBefore ${scriptId}[${index}] tidak valid`);
   }
   const completion = script.onComplete;
@@ -168,10 +168,17 @@ assert(morningCheck?.onComplete?.text === "Done with work?" && morningCheck?.onC
 assert(morningCheck?.onComplete?.calendarEvents?.some((event) => event.title === "Us?" && event.date === "2026-12-05"), "Event Us? belum muncul melalui alur cerita");
 assert(decemberMeetup?.steps?.some((step) => step.text === "KOK GAK BILANG DULU"), "Respons CAPS LOCK MC belum tersedia");
 const decemberClarity = config.chatScripts?.dirga_december_clarity;
-assert(decemberMeetup?.onComplete?.text === "Home?" && decemberMeetup?.onComplete?.activateChatScript === "dirga_december_clarity", "Trigger confession setelah pertemuan belum tersedia");
-assert(decemberClarity?.steps?.some((step) => step.text === "I'm pursuing you, yes"), "Pengakuan Dirga belum tersedia");
-assert(decemberClarity?.steps?.some((step) => step.text === "Aku gak bilang jangan"), "Jawaban MC setelah pengakuan belum tersedia");
-const warmDirgaScripts = new Set(["dirga_after_work_personal", "dirga_morning_check", "dirga_december_meetup", "dirga_december_clarity"]);
+assert(decemberMeetup?.onComplete?.text === "Kamu udah di rumah?" && decemberMeetup?.onComplete?.activateChatScript === "dirga_december_clarity", "Trigger confession setelah pertemuan belum tersedia");
+assert(decemberClarity?.steps?.some((step) => step.text === "Yes, I'm pursuing you"), "Pengakuan Dirga belum tersedia");
+assert(decemberClarity?.steps?.some((step) => step.text === "Aku cuma belum terbiasa"), "Respons MC setelah pengakuan belum tersedia");
+assert(decemberClarity?.steps?.some((step) => step.text?.includes("worth staying for")), "Alasan personal Dirga saat confession belum tersedia");
+assert(decemberClarity?.onComplete?.activateChatScript === "petra_december_confession", "Confession belum membuka curhat dengan Petra");
+assert(config.chatScripts?.petra_december_confession?.onComplete?.exitTransition?.storyDate === "2026-12-06", "Hari sunyi setelah confession belum tersedia");
+assert(config.chatScripts?.petra_december_confession?.onComplete?.exitTransition?.armTransition?.activateChatScript === "dirga_midnight_reconciliation", "Keluar dari X belum membuka rekonsiliasi tengah malam");
+const midnightReconciliation = config.chatScripts?.dirga_midnight_reconciliation;
+assert(midnightReconciliation?.steps?.some((step) => step.text === "I never said no"), "MC belum membuka kembali kemungkinan hubungan");
+assert(midnightReconciliation?.steps?.some((step) => step.type === "incoming_call"), "Panggilan WhatsApp setelah chat tengah malam belum tersedia");
+const warmDirgaScripts = new Set(["dirga_after_work_personal", "dirga_morning_check", "dirga_december_meetup", "dirga_december_clarity", "dirga_midnight_reconciliation"]);
 for (const [scriptId, script] of Object.entries(config.chatScripts || {})) {
   if ((script.threadId || scriptId) !== "dirga") continue;
   const mcSteps = (script.steps || []).filter((step) => step.type === "mc");
@@ -188,6 +195,7 @@ assert(config.xApp?.posts?.some((post) => post.availableAfter === "dirga_work_ni
 assert((config.xApp?.posts || []).filter((post) => post.availableAfter === "dirga_work_night").length >= 3, "Tweet fase lembur belum cukup natural");
 assert((config.xApp?.posts || []).filter((post) => post.availableAfter === "dirga_after_work_personal").length >= 3, "Tweet fase chat warm belum cukup natural");
 assert((config.xApp?.posts || []).filter((post) => post.availableAfter === "dirga_december_clarity").length >= 3, "Tweet setelah confession belum cukup heboh");
+assert((config.xApp?.posts || []).filter((post) => post.availableAfter === "petra_december_confession" && post.availableAfterDate === "2026-12-06").length >= 5, "Tweet pada hari sunyi belum lengkap");
 assert((config.calendar?.events || []).every((event) => event.title !== "Us?"), "Event Us? masih muncul sebelum trigger cerita");
 assert((config.gmail?.emails || []).some((email) => email.id === "legal-copy-tonight" && email.availableAfter === "maria_late_revision"), "Email revisi malam belum terhubung ke cerita");
 assert((config.gmail?.emails || []).some((email) => email.id === "legal-copy-cleared" && email.availableAfter === "dirga_work_night"), "Email clearance legal belum terhubung ke cerita");
@@ -201,7 +209,9 @@ assert(Object.values(config.chatScripts || {}).every((script) => /^2026-\d{2}-\d
 assert(/formatWhatsAppDay\(message\.storyDate/.test(appSource), "WhatsApp belum memisahkan percakapan berdasarkan hari");
 assert(/homeProfileIds[\s\S]*visibleInstagramPosts\(profile\)\[0\]/.test(appSource), "Home Instagram belum mengambil post terbaru tiap profil");
 assert(/storyDateReached\(postDate\)/.test(appSource), "X belum mengikuti tanggal cerita");
-assert(/storyRevision:\s*8/.test(appSource) && /extendedScriptId = "dirga_home_arrival"/.test(appSource) && /reorderedScripts/.test(appSource) && /personalScriptId = "dirga_after_work_personal"/.test(appSource) && /redateThread\("dirga"/.test(appSource) && /goodCountByDate/.test(appSource) && /morningWasComplete/.test(appSource), "Progress lama belum dimigrasikan ke struktur cerita terbaru");
+assert(/storyRevision:\s*9/.test(appSource) && /extendedScriptId = "dirga_home_arrival"/.test(appSource) && /reorderedScripts/.test(appSource) && /personalScriptId = "dirga_after_work_personal"/.test(appSource) && /redateThread\("dirga"/.test(appSource) && /goodCountByDate/.test(appSource) && /morningWasComplete/.test(appSource) && /replacedClarityTexts/.test(appSource), "Progress lama belum dimigrasikan ke struktur cerita terbaru");
+assert(/function applyPendingViewTransitions\(previousView\)/.test(appSource), "Transisi hari sunyi berbasis keluar aplikasi belum tersedia");
+assert(/function renderIncomingCall\(\)/.test(appSource) && /function finishActiveCall\(\)/.test(appSource), "Layar panggilan WhatsApp belum tersedia");
 assert(/imageSrc:\s*step\.imageSrc/.test(appSource) && /wa-draft-image/.test(appSource), "Composer WhatsApp belum mendukung draft foto interaktif");
 assert(/wa-preview-draft/.test(appSource) && /scriptedDraft\.text/.test(appSource), "Daftar WhatsApp belum menampilkan draft chat MC");
 assert(/event\.exitDelayStarted = true/.test(appSource), "Runtime belum memulai timer saat WhatsApp ditutup");

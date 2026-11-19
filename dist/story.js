@@ -621,7 +621,7 @@ window.STORY_CONFIG = {
         id: "december-meetup-home-check",
         threadId: "dirga",
         notificationTitle: "?",
-        text: "Home?",
+        text: "Kamu udah di rumah?",
         storyDate: "2026-12-05",
         time: "22:14",
         afterMs: 5500,
@@ -643,19 +643,125 @@ window.STORY_CONFIG = {
       threadId: "dirga",
       storyDate: "2026-12-05",
       active: false,
+      onComplete: {
+        id: "december-petra-confession-check",
+        threadId: "petra",
+        notificationTitle: "Petra",
+        text: "Lo ke mana? Kok ilang",
+        storyDate: "2026-12-05",
+        time: "22:43",
+        afterMs: 5500,
+        requireAppExit: true,
+        delayAfterExit: true,
+        activateChatScript: "petra_december_confession"
+      },
       steps: [
-        { type: "mc", text: "Udah", time: "22:14", waitBefore: 600 },
-        { type: "mc", text: "Dirga", time: "22:15", waitBefore: 450 },
-        { type: "them", text: "Yes?", time: "22:15", waitBefore: 1500, typingMs: 700 },
-        { type: "mc", text: "Kamu emang selalu sebaik ini ke semua orang?", time: "22:16", waitBefore: 700 },
-        { type: "them", text: "No", time: "22:16", waitBefore: 1700, typingMs: 700 },
-        { type: "them", text: "I don't remember everyone's coffee order or wait downstairs for everyone", time: "22:17", waitBefore: 500, typingMs: 1900 },
-        { type: "them", text: "I've been trying to make this obvious without making you uncomfortable", time: "22:18", waitBefore: 650, typingMs: 2000 },
-        { type: "mc", text: "Jadi kamu...", time: "22:18", waitBefore: 800 },
-        { type: "them", text: "I'm pursuing you, yes", time: "22:19", waitBefore: 1800, typingMs: 1100 },
-        { type: "them", text: "Slowly, if you'll let me", time: "22:19", waitBefore: 500, typingMs: 1100 },
-        { type: "mc", text: "Aku gak bilang jangan", time: "22:20", waitBefore: 850 },
-        { type: "them", text: "Good", time: "22:20", waitBefore: 1600, typingMs: 700 }
+        { type: "mc", text: "Udaahh, Dirga", time: "22:14", waitBefore: 600 },
+        { type: "them", text: "Glad to know", time: "22:15", waitBefore: 1500, typingMs: 750 },
+        { type: "them", text: "I made the mistake of opening my laptop again", time: "22:16", waitBefore: 650, typingMs: 1300 },
+        { type: "them", text: "Seventeen comments on a document that was supposed to be final", time: "22:16", waitBefore: 450, typingMs: 1750 },
+        { type: "mc", text: "Sounds like a you problem wkwk", time: "22:17", waitBefore: 700 },
+        { type: "them", text: "Cruel", time: "22:17", waitBefore: 1500, typingMs: 650 },
+        { type: "mc", text: "Dirga", time: "22:18", waitBefore: 700 },
+        { type: "mc", text: "Boleh tanya sesuatu?", time: "22:18", waitBefore: 450 },
+        { type: "them", text: "Oh", time: "22:19", waitBefore: 1600, typingMs: 500 },
+        { type: "them", text: "This must be serious", time: "22:19", waitBefore: 400, typingMs: 850 },
+        { type: "them", text: "You usually ask first and apologize later", time: "22:20", waitBefore: 450, typingMs: 1300 },
+        { type: "mc", text: "Yes, this is serious", time: "22:20", waitBefore: 750 },
+        { type: "mc", text: "Kamu selalu begini ke semua orang?", time: "22:21", waitBefore: 550 },
+        { type: "them", text: "No, I'm not", time: "22:21", waitBefore: 1700, typingMs: 800 },
+        { type: "mc", text: "Maksudnya no?", time: "22:22", waitBefore: 700 },
+        { type: "them", text: "I don't remember everyone's coffee order", time: "22:22", waitBefore: 1500, typingMs: 1200 },
+        { type: "them", text: "I don't wait downstairs for everyone", time: "22:23", waitBefore: 450, typingMs: 1100 },
+        { type: "them", text: "And I don't wake up early to ask about everyone's ankle", time: "22:23", waitBefore: 450, typingMs: 1500 },
+        { type: "them", text: "I've been trying to make this obvious without making you uncomfortable", time: "22:24", waitBefore: 550, typingMs: 1850 },
+        { type: "mc", text: "Dirga... don't", time: "22:24", waitBefore: 800 },
+        { type: "them", text: "Yes", time: "22:25", waitBefore: 1800, typingMs: 600 },
+        { type: "them", text: "Yes, I'm pursuing you", time: "22:25", waitBefore: 400, typingMs: 1000 },
+        { type: "them", text: "I want you to let me do this properly", time: "22:26", waitBefore: 500, typingMs: 1250 },
+        { type: "them", text: "Most people meet my last name before they meet me", time: "22:27", waitBefore: 600, typingMs: 1500 },
+        { type: "them", text: "Or the position. Or what they think being close to me could get them", time: "22:27", waitBefore: 500, typingMs: 1750 },
+        { type: "them", text: "You never did", time: "22:28", waitBefore: 650, typingMs: 750 },
+        { type: "them", text: "With you, I don't feel like I have to be impressive to be worth staying for", time: "22:29", waitBefore: 550, typingMs: 2000 },
+        { type: "them", text: "I'm sorry if I made you feel rushed or uncomfortable", time: "22:30", waitBefore: 700, typingMs: 1600 },
+        { type: "mc", text: "I'm sorry", time: "22:31", waitBefore: 900 },
+        { type: "mc", text: "Aku cuma belum terbiasa", time: "22:31", waitBefore: 450 },
+        { type: "them", text: "It's okay", time: "22:32", waitBefore: 1700, typingMs: 700 },
+        { type: "them", text: "You don't owe me an answer tonight", time: "22:32", waitBefore: 450, typingMs: 1200 },
+        { type: "them", text: "I'll give you space", time: "22:33", waitBefore: 550, typingMs: 950 }
+      ]
+    },
+    petra_december_confession: {
+      threadId: "petra",
+      storyDate: "2026-12-05",
+      active: false,
+      onComplete: {
+        exitTransition: {
+          id: "december-silent-day",
+          fromViews: ["whatsapp", "thread"],
+          storyDate: "2026-12-06",
+          storyTime: "09:18",
+          armTransition: {
+            id: "december-midnight-after-x",
+            fromViews: ["x"],
+            storyDate: "2026-12-07",
+            storyTime: "00:12",
+            activateChatScript: "dirga_midnight_reconciliation"
+          }
+        }
+      },
+      steps: [
+        { type: "mc", text: "PET", time: "22:43", waitBefore: 650 },
+        { type: "mc", text: "DIRGA BARUSAN CONFESS KE GUE", time: "22:43", waitBefore: 400 },
+        { type: "them", text: "WHAT", time: "22:44", waitBefore: 1500, typingMs: 550 },
+        { type: "them", text: "TERUS LO JAWAB APA", time: "22:44", waitBefore: 350, typingMs: 750 },
+        { type: "mc", text: "Gue bilang aku belum terbiasa", time: "22:45", waitBefore: 700 },
+        { type: "them", text: "Lo suka dia gak", time: "22:45", waitBefore: 1450, typingMs: 850 },
+        { type: "mc", text: "Kayaknya iya", time: "22:46", waitBefore: 800 },
+        { type: "them", text: "Itu bukan kayaknya", time: "22:46", waitBefore: 1450, typingMs: 850 },
+        { type: "mc", text: "Gue lagi panik jangan ceramah", time: "22:47", waitBefore: 650 },
+        { type: "them", text: "Yaudah", time: "22:47", waitBefore: 1350, typingMs: 600 },
+        { type: "them", text: "Tapi jangan bikin dia mundur cuma karena lo takut", time: "22:48", waitBefore: 450, typingMs: 1250 }
+      ]
+    },
+    dirga_midnight_reconciliation: {
+      threadId: "dirga",
+      storyDate: "2026-12-07",
+      active: false,
+      onComplete: {
+        calendarEvents: [
+          { id: "singapore-briefing-8-dec", date: "2026-12-08", title: "Regional project briefing", time: "9:00 AM", color: "#0a84ff", type: "work" }
+        ]
+      },
+      steps: [
+        { type: "mc", text: "Masih bangun?", time: "00:12", waitBefore: 700 },
+        { type: "them", text: "Still awake", time: "00:13", waitBefore: 1600, typingMs: 750 },
+        { type: "them", text: "I thought you wanted me to leave you alone", time: "00:13", waitBefore: 500, typingMs: 1300 },
+        { type: "mc", text: "Aku pikir aku butuh jarak", time: "00:14", waitBefore: 800 },
+        { type: "mc", text: "Ternyata aku gak suka kamu beneran ngejauh", time: "00:14", waitBefore: 500 },
+        { type: "mc", text: "Maaf soal kemarin, aku cuma kaget", time: "00:15", waitBefore: 500 },
+        { type: "them", text: "You don't have to apologize", time: "00:15", waitBefore: 1700, typingMs: 1000 },
+        { type: "them", text: "I was the one who made you uncomfortable", time: "00:16", waitBefore: 450, typingMs: 1300 },
+        { type: "mc", text: "It's not like I rejected you", time: "00:16", waitBefore: 800 },
+        { type: "them", text: "?", time: "00:17", waitBefore: 1800, typingMs: 450 },
+        { type: "them", text: "So there is still a chance?", time: "00:17", waitBefore: 500, typingMs: 950 },
+        { type: "mc", text: "I never said no", time: "00:18", waitBefore: 850 },
+        { type: "them", text: "You're right", time: "00:18", waitBefore: 1600, typingMs: 700 },
+        { type: "them", text: "I should've noticed", time: "00:19", waitBefore: 450, typingMs: 850 },
+        { type: "them", text: "I was too busy expecting the worst", time: "00:19", waitBefore: 500, typingMs: 1100 },
+        { type: "them", text: "It's already midnight. Get some rest", time: "00:20", waitBefore: 600, typingMs: 1200 },
+        { type: "mc", text: "Kenapa kamu gak ngomong begitu ke diri sendiri", time: "00:20", waitBefore: 750 },
+        { type: "them", text: "I still have documents to read before tomorrow", time: "00:21", waitBefore: 1500, typingMs: 1350 },
+        { type: "mc", text: "Aku temenin, mau?", time: "00:21", waitBefore: 700 },
+        { type: "them", text: "No. Just sleep", time: "00:22", waitBefore: 1500, typingMs: 750 },
+        { type: "them", text: "I'll pick you up tomorrow", time: "00:22", waitBefore: 450, typingMs: 950 },
+        { type: "them", text: "Kita berangkat bareng", time: "00:23", waitBefore: 450, typingMs: 900 },
+        { type: "mc", text: "Then aku temenin kamu sekarang", time: "00:23", waitBefore: 750 },
+        { type: "mc", text: "Besok aku masih bisa tidur di mobil kamu", time: "00:24", waitBefore: 450 },
+        { type: "them", text: "Stubborn as always", time: "00:24", waitBefore: 1500, typingMs: 850 },
+        { type: "them", text: "Do whatever you want", time: "00:25", waitBefore: 450, typingMs: 900 },
+        { type: "mc", text: "Telepon mau?", time: "00:25", waitBefore: 800 },
+        { type: "incoming_call", time: "00:26", waitBefore: 1400, afterCallStoryDate: "2026-12-08", afterCallStoryTime: "07:05" }
       ]
     }
   },
@@ -1219,30 +1325,80 @@ no. absolutely not.`
     },
     posts: [
       {
-        time: "5 Dec",
-        text: "aku jawab aku gak bilang jangan\n\nself preservation resmi mengundurkan diri",
+        time: "6 Dec",
+        text: "gue kangen dia gangguin gue. this is a new low",
         replies: 0,
         reposts: 0,
         likes: 0,
         views: 3,
-        availableAfter: "dirga_december_clarity"
+        availableAfter: "petra_december_confession",
+        availableAfterDate: "2026-12-06"
       },
       {
-        time: "5 Dec",
-        text: "slowly if you'll let me\n\nSIAPA YANG NGAJARIN LAWYER NGOMONG BEGINI",
+        time: "6 Dec",
+        text: "kantor ini kenapa punya terlalu banyak lorong buat papasan",
         replies: 0,
         reposts: 0,
         likes: 0,
         views: 4,
-        availableAfter: "dirga_december_clarity"
+        availableAfter: "petra_december_confession",
+        availableAfterDate: "2026-12-06"
       },
       {
-        time: "5 Dec",
-        text: "DIA BILANG I'M PURSUING YOU TERUS GUE HARUS GIMANA",
+        time: "6 Dec",
+        text: "ternyata dikasih waktu buat mikir malah kepikiran terus",
         replies: 0,
         reposts: 0,
         likes: 0,
         views: 5,
+        availableAfter: "petra_december_confession",
+        availableAfterDate: "2026-12-06"
+      },
+      {
+        time: "6 Dec",
+        text: "professional development: pura-pura sibuk supaya gak eye contact sama orang yang confess ke lo",
+        replies: 0,
+        reposts: 0,
+        likes: 0,
+        views: 4,
+        availableAfter: "petra_december_confession",
+        availableAfterDate: "2026-12-06"
+      },
+      {
+        time: "6 Dec",
+        text: "dia bilang akan kasih gue space TERUS KENAPA SEKARANG BENERAN NGASIH SPACE",
+        replies: 0,
+        reposts: 0,
+        likes: 0,
+        views: 6,
+        availableAfter: "petra_december_confession",
+        availableAfterDate: "2026-12-06"
+      },
+      {
+        time: "5 Dec",
+        text: "dia bilang with you i don't have to be impressive to be worth staying for\n\nGUE MAU NANGIS TAPI BESOK TETEP KERJA",
+        replies: 0,
+        reposts: 0,
+        likes: 0,
+        views: 5,
+        availableAfter: "dirga_december_clarity"
+      },
+      {
+        time: "5 Dec",
+        text: "DIA BILANG YES I'M PURSUING YOU TERUS OTAK GUE RESMI BERHENTI",
+        replies: 0,
+        reposts: 0,
+        likes: 0,
+        views: 5,
+        availableAfter: "dirga_december_clarity"
+      },
+      {
+        time: "5 Dec",
+        text: "aku belum jawab apa-apa tapi dia malah minta maaf karena takut bikin gue uncomfortable\n\nHOW AM I SUPPOSED TO BE NORMAL ABOUT THIS",
+        replies: 0,
+        reposts: 0,
+        likes: 0,
+        views: 6,
         availableAfter: "dirga_december_clarity"
       },
       {

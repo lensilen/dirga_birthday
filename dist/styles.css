@@ -789,9 +789,126 @@ body[data-view="settings"] .home-indicator span { background: #fff; box-shadow: 
   box-shadow: 0 1px 1px rgba(0,0,0,.26);
 }
 .wa-call-event__icon { color: #ff453a; font-size: 20px; transform: rotate(-18deg); }
+.wa-call-event--answered .wa-call-event__icon { color: #20c76a; }
 .wa-call-event > span:last-child { display: grid; gap: 1px; }
 .wa-call-event strong { font-size: 13px; font-weight: 600; }
 .wa-call-event small { color: #aaaab0; font-size: 10px; }
+
+.wa-incoming-call {
+  position: relative;
+  overflow: hidden;
+  min-height: 100%;
+  background: linear-gradient(180deg, #26332e 0%, #111513 52%, #050605 100%);
+  color: #fff;
+  text-align: center;
+}
+.wa-incoming-call__wash {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 17%, rgba(74, 161, 118, .25), transparent 35%),
+    linear-gradient(180deg, rgba(255,255,255,.04), transparent 40%);
+  pointer-events: none;
+}
+.wa-incoming-call__identity {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  padding-top: 92px;
+}
+.wa-incoming-call__identity .avatar {
+  width: 104px;
+  height: 104px;
+  border: 2px solid rgba(255,255,255,.42);
+  box-shadow: 0 14px 35px rgba(0,0,0,.34);
+  font-size: 40px;
+}
+.wa-incoming-call__identity h1 { margin: 20px 0 4px; font-size: 27px; line-height: 1.1; }
+.wa-incoming-call__identity p { margin: 0; color: rgba(255,255,255,.72); font-size: 14px; }
+.wa-call-ringing {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  bottom: 154px;
+  margin: 0;
+  color: rgba(255,255,255,.68);
+  font-size: 12px;
+  letter-spacing: .02em;
+}
+.wa-call-answer,
+.wa-call-end {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: 62px;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  transform: translateX(-50%);
+}
+.wa-call-answer span,
+.wa-call-end span {
+  width: 62px;
+  height: 62px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #25d366;
+  font-size: 27px;
+  transform: rotate(-20deg);
+  box-shadow: 0 8px 24px rgba(0,0,0,.3);
+}
+.wa-call-end span { background: #ff3b30; transform: rotate(135deg); }
+.wa-call-answer small,
+.wa-call-end small { color: rgba(255,255,255,.84); font-size: 11px; }
+.wa-call-controls {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: 158px;
+  display: flex;
+  gap: 48px;
+  transform: translateX(-50%);
+}
+.wa-call-controls button {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  border: 0;
+  background: transparent;
+  color: rgba(255,255,255,.78);
+}
+.wa-call-controls span {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255,255,255,.13);
+  font-size: 20px;
+}
+.wa-call-controls small { font-size: 10px; }
+
+.phone-recents { padding: 0 14px 24px; }
+.phone-recent-row {
+  min-height: 64px;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto 18px;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #2b2b2e;
+}
+.phone-recent-row .avatar { width: 38px; height: 38px; }
+.phone-recent-row > span { min-width: 0; display: grid; gap: 3px; }
+.phone-recent-row strong { overflow: hidden; font-size: 14px; text-overflow: ellipsis; white-space: nowrap; }
+.phone-recent-row small { color: #8e8e93; font-size: 11px; }
+.phone-recent-row time { color: #8e8e93; font-size: 11px; }
+.phone-recent-row > i { color: #0a84ff; font-size: 15px; font-style: normal; }
 
 .wa-bottom { background: #171717; }
 .wa-chat-view .choice-dock { padding: 9px 10px 8px; border-top: 1px solid rgba(255,255,255,.07); background: #111; }

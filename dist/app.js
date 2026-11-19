@@ -12,7 +12,7 @@
   const demoPin = document.querySelector("#demo-pin");
 
   const defaultState = () => ({
-    storyRevision: 8,
+    storyRevision: 9,
     unlocked: false,
     pinVisible: false,
     view: "lock",
@@ -30,8 +30,11 @@
     pendingChatActivations: [],
     completedChats: [],
     pendingNotifications: [],
+    pendingViewTransitions: [],
     storyCalendarEvents: [],
     deliveredEvents: [],
+    callHistory: [],
+    activeCall: null,
     currentNode: null,
     ending: null,
     startedAt: null,
@@ -282,6 +285,53 @@
           loaded.messages.dirga = [...beforeMorning, ...revisedMorning, ...afterMorning];
         }
         loaded.storyRevision = 8;
+      }
+      if ((saved.storyRevision || 0) < 9) {
+        const replacedClarityTexts = new Set([
+          "Home?",
+          "Udah",
+          "Dirga",
+          "Yes?",
+          "Kamu emang selalu sebaik ini ke semua orang?",
+          "No",
+          "I don't remember everyone's coffee order or wait downstairs for everyone",
+          "I've been trying to make this obvious without making you uncomfortable",
+          "Jadi kamu...",
+          "I'm pursuing you, yes",
+          "Slowly, if you'll let me",
+          "Aku gak bilang jangan",
+          "Good"
+        ]);
+        const hadOldClarity = (loaded.messages?.dirga || []).some((message) => (
+          message.storyDate === "2026-12-05"
+          && replacedClarityTexts.has(message.text)
+          && String(message.time || "") >= "22:14"
+        )) || (loaded.chatProgress?.dirga_december_clarity || 0) > 0;
+        loaded.messages.dirga = (loaded.messages?.dirga || []).filter((message) => !(
+          message.storyDate === "2026-12-05"
+          && replacedClarityTexts.has(message.text)
+          && String(message.time || "") >= "22:14"
+        ));
+        ["dirga_december_clarity", "petra_december_confession", "dirga_midnight_reconciliation"].forEach((scriptId) => {
+          loaded.chatProgress[scriptId] = 0;
+        });
+        const revisedScripts = new Set(["dirga_december_clarity", "petra_december_confession", "dirga_midnight_reconciliation"]);
+        loaded.completedChats = (loaded.completedChats || []).filter((scriptId) => !revisedScripts.has(scriptId));
+        loaded.activeChatScripts = (loaded.activeChatScripts || []).filter((scriptId) => !revisedScripts.has(scriptId));
+        loaded.pendingChatActivations = (loaded.pendingChatActivations || []).filter((scriptId) => !revisedScripts.has(scriptId));
+        const revisedEvents = new Set(["december-meetup-home-check", "december-petra-confession-check"]);
+        loaded.pendingNotifications = (loaded.pendingNotifications || []).filter((event) => !revisedEvents.has(event.id));
+        loaded.deliveredEvents = (loaded.deliveredEvents || []).filter((eventId) => !revisedEvents.has(eventId));
+        loaded.pendingViewTransitions = [];
+        loaded.activeCall = null;
+        loaded.storyCalendarEvents = (loaded.storyCalendarEvents || []).filter((event) => event.id !== "singapore-briefing-8-dec");
+        if (hadOldClarity) {
+          loaded.storyDate = "2026-12-05";
+          loaded.storyTime = "18:11";
+          loaded.calendarMonth = 11;
+          loaded.selectedDate = "2026-12-05";
+        }
+        loaded.storyRevision = 9;
       }
       const messageTextMigrations = {
         "Harusnya bisaa, gue cek kerjaan dulu ya 😭": "Harusnya bisaa, gue cek kerjaan dulu yaa",
@@ -555,6 +605,7 @@
     else if (state.view === "gmail") renderGmail();
     else if (state.view === "gmail-email") renderGmailEmail();
     else if (state.view === "phone") renderPhone();
+    else if (state.view === "incoming-call") renderIncomingCall();
     else if (state.view === "placeholder") renderPlaceholder();
     else if (state.view === "settings") renderSettings();
     updateClock();
@@ -724,7 +775,9 @@
   function bindBackButtons() {
     document.querySelectorAll("[data-back]").forEach((button) => {
       button.addEventListener("click", () => {
+        const previousView = state.view;
         state.view = button.dataset.back;
+        if (!["whatsapp", "thread"].includes(state.view)) activatePendingChatsAfterWhatsAppExit(previousView);
         saveState();
         render();
       });
@@ -883,6 +936,10 @@
             <div class="wa-call-event" role="status" aria-label="Missed voice call from ${escapeAttribute(thread.name)}">
               <span class="wa-call-event__icon">☎</span>
               <span><strong>Missed voice call</strong><small>${escapeHtml(message.time || currentTime())}</small></span>
+            </div>` : message.type === "voice_call" ? `
+            <div class="wa-call-event wa-call-event--answered" role="status" aria-label="WhatsApp voice call with ${escapeAttribute(thread.name)}">
+              <span class="wa-call-event__icon">☎</span>
+              <span><strong>Voice call</strong><small>${escapeHtml(message.time || currentTime())}</small></span>
             </div>` : `
             <div class="bubble-row bubble-row--${message.from}">
               <div class="wa-bubble ${message.imageSrc ? "wa-bubble--image" : ""}">
@@ -986,6 +1043,12 @@
       state.pendingChatActivations.push(completion.activateChatOnExit);
       changed = true;
     }
+    if (completion.exitTransition
+      && !state.deliveredEvents.includes(completion.exitTransition.id)
+      && !(state.pendingViewTransitions || []).some((transition) => transition.id === completion.exitTransition.id)) {
+      state.pendingViewTransitions.push({ ...completion.exitTransition });
+      changed = true;
+    }
     (completion.calendarEvents || []).forEach((event) => {
       const savedEvent = (state.storyCalendarEvents || []).find((item) => item.id === event.id);
       if (savedEvent) {
@@ -1083,12 +1146,37 @@
 
   function activatePendingChatsAfterWhatsAppExit(previousView) {
     reconcileCompletedChatTriggers();
-    if (!["whatsapp", "thread"].includes(previousView) || !state.pendingChatActivations.length) return;
-    state.pendingChatActivations.forEach((threadId) => {
-      if (!state.activeChatScripts.includes(threadId)) state.activeChatScripts.push(threadId);
+    if (["whatsapp", "thread"].includes(previousView) && state.pendingChatActivations.length) {
+      state.pendingChatActivations.forEach((threadId) => {
+        if (!state.activeChatScripts.includes(threadId)) state.activeChatScripts.push(threadId);
+      });
+      state.pendingChatActivations = [];
+      saveState();
+    }
+    applyPendingViewTransitions(previousView);
+  }
+
+  function applyPendingViewTransitions(previousView) {
+    const transitions = state.pendingViewTransitions || [];
+    const matching = transitions.filter((transition) => (transition.fromViews || []).includes(previousView));
+    if (!matching.length) return false;
+    state.pendingViewTransitions = transitions.filter((transition) => !matching.includes(transition));
+    matching.forEach((transition) => {
+      if (!state.deliveredEvents.includes(transition.id)) state.deliveredEvents.push(transition.id);
+      setStoryClock(transition.storyDate || state.storyDate, transition.storyTime || state.storyTime);
+      if (transition.activateChatScript
+        && !state.activeChatScripts.includes(transition.activateChatScript)
+        && !state.completedChats.includes(transition.activateChatScript)) {
+        state.activeChatScripts.push(transition.activateChatScript);
+      }
+      if (transition.armTransition
+        && !state.deliveredEvents.includes(transition.armTransition.id)
+        && !state.pendingViewTransitions.some((item) => item.id === transition.armTransition.id)) {
+        state.pendingViewTransitions.push({ ...transition.armTransition });
+      }
     });
-    state.pendingChatActivations = [];
     saveState();
+    return true;
   }
 
   function schedulePendingNotifications() {
@@ -1228,6 +1316,29 @@
         if (!isOpen) showToast({ threadId, text: "Missed voice call", notificationTitle: getThread(threadId)?.name });
         if (isOpen || ["home", "whatsapp"].includes(state.view)) render();
         else runChatScriptStep(threadId);
+      }, Math.max(80, step.waitBefore || 0)));
+      return;
+    }
+
+    if (step.type === "incoming_call") {
+      const scriptId = getActiveChatScriptId(threadId);
+      chatRuntime.scheduled.add(threadId);
+      timers.push(setTimeout(() => {
+        chatRuntime.scheduled.delete(threadId);
+        state.activeCall = {
+          threadId,
+          scriptId,
+          stepIndex: state.chatProgress?.[scriptId] || 0,
+          time: timeForStoryStep(step),
+          storyDate: step.storyDate || state.storyDate,
+          afterCallStoryDate: step.afterCallStoryDate,
+          afterCallStoryTime: step.afterCallStoryTime,
+          connected: false,
+          startedAt: null
+        };
+        state.view = "incoming-call";
+        saveState();
+        render();
       }, Math.max(80, step.waitBefore || 0)));
     }
   }
@@ -2007,13 +2118,83 @@
   }
 
   function renderPhone() {
+    const calls = state.callHistory || [];
     screen.innerHTML = `
       <section class="view app-view phone-view">
         ${appHeader("Phone")}
         <div class="app-title"><p>PHONE</p><h1>Recents</h1></div>
-        <div class="empty-state"><span>☎</span><strong>No Recent Calls</strong><p>Missed call dan call back akan muncul di sini setelah trigger cerita ditentukan.</p></div>
+        ${calls.length ? `<div class="phone-recents">${calls.map((call) => `
+          <div class="phone-recent-row">
+            ${contactAvatarMarkup(getThread(call.threadId) || { avatar: "?", color: "#62626a" })}
+            <span><strong>${escapeHtml(call.name || getThread(call.threadId)?.name || "Unknown")}</strong><small>↗ WhatsApp Audio</small></span>
+            <time>${escapeHtml(call.dateLabel || call.time || "")}</time>
+            <i aria-hidden="true">ⓘ</i>
+          </div>`).join("")}</div>` : `<div class="empty-state"><span>☎</span><strong>No Recent Calls</strong><p>Panggilan cerita akan muncul di sini setelah dilakukan.</p></div>`}
       </section>`;
     bindBackButtons();
+    bindContactAvatarFallbacks();
+  }
+
+  function renderIncomingCall() {
+    const call = state.activeCall;
+    if (!call) {
+      state.view = "home";
+      render();
+      return;
+    }
+    const thread = getThread(call.threadId);
+    screen.innerHTML = `
+      <section class="view wa-incoming-call ${call.connected ? "is-connected" : ""}" aria-label="${call.connected ? "WhatsApp call connected" : "Incoming WhatsApp call"}">
+        <div class="wa-incoming-call__wash"></div>
+        <div class="wa-incoming-call__identity">
+          ${contactAvatarMarkup(thread)}
+          <h1>${escapeHtml(thread?.name || "?")}</h1>
+          <p>${call.connected ? "connected" : "WhatsApp Audio"}</p>
+        </div>
+        ${call.connected ? `
+          <div class="wa-call-controls">
+            <button type="button" disabled aria-label="Mute"><span>⌁</span><small>mute</small></button>
+            <button type="button" disabled aria-label="Speaker"><span>◖</span><small>speaker</small></button>
+          </div>
+          <button class="wa-call-end" id="wa-call-end" type="button" aria-label="End call"><span>☎</span><small>end</small></button>` : `
+          <p class="wa-call-ringing">incoming call</p>
+          <button class="wa-call-answer" id="wa-call-answer" type="button" aria-label="Answer call"><span>☎</span><small>accept</small></button>`}
+      </section>`;
+    bindContactAvatarFallbacks();
+    document.querySelector("#wa-call-answer")?.addEventListener("click", () => {
+      state.activeCall.connected = true;
+      state.activeCall.startedAt = Date.now();
+      saveState();
+      render();
+    });
+    document.querySelector("#wa-call-end")?.addEventListener("click", finishActiveCall);
+  }
+
+  function finishActiveCall() {
+    const call = state.activeCall;
+    if (!call?.connected) return;
+    addMessage(call.threadId, {
+      from: "system",
+      type: "voice_call",
+      text: "Voice call",
+      time: call.time,
+      storyDate: call.storyDate
+    }, false);
+    state.callHistory.unshift({
+      threadId: call.threadId,
+      name: getThread(call.threadId)?.name || "?",
+      time: call.time,
+      dateLabel: "Today"
+    });
+    state.activeCall = null;
+    state.activeThreadId = call.threadId;
+    state.view = "thread";
+    advanceChatScript(call.threadId);
+    if (call.afterCallStoryDate || call.afterCallStoryTime) {
+      setStoryClock(call.afterCallStoryDate || state.storyDate, call.afterCallStoryTime || state.storyTime);
+    }
+    saveState();
+    render();
   }
 
   function renderPlaceholder() {
@@ -2127,7 +2308,7 @@
   }
 
   homeButton.addEventListener("click", () => {
-    if (!state.unlocked) return;
+    if (!state.unlocked || state.view === "incoming-call") return;
     const previousView = state.view;
     state.view = "home";
     activatePendingChatsAfterWhatsAppExit(previousView);
@@ -2136,7 +2317,7 @@
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && state.unlocked) {
+    if (event.key === "Escape" && state.unlocked && state.view !== "incoming-call") {
       const previousView = state.view;
       state.view = "home";
       activatePendingChatsAfterWhatsAppExit(previousView);

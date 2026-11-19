@@ -12,7 +12,7 @@
   const demoPin = document.querySelector("#demo-pin");
 
   const defaultState = () => ({
-    storyRevision: 3,
+    storyRevision: 4,
     unlocked: false,
     pinVisible: false,
     view: "lock",
@@ -144,6 +144,37 @@
           loaded.selectedDate = "2026-11-28";
         }
         loaded.storyRevision = 3;
+      }
+      if ((saved.storyRevision || 0) < 4) {
+        const personalScriptId = "dirga_after_work_personal";
+        const hadPersonalProgress = (loaded.chatProgress?.[personalScriptId] || 0) > 0 || (loaded.completedChats || []).includes(personalScriptId);
+        if (hadPersonalProgress) {
+          const oldPersonalTexts = new Set([
+            "Makasih tadi, Pak",
+            "For what?",
+            "Benerin sepatu saya...",
+            "You would've tripped",
+            "Tetep aja... makasih",
+            "You're welcome",
+            "Next time wear sensible shoes",
+            "Next time jangan bikin saya nemenin lembur",
+            "You offered",
+            "I know...",
+            "And you'd do it again",
+            "Jangan pede dulu",
+            "Too late"
+          ]);
+          loaded.messages.dirga = (loaded.messages?.dirga || []).filter((message) => !(String(message.time || "").startsWith("23:") && oldPersonalTexts.has(message.text)));
+          loaded.chatProgress[personalScriptId] = 0;
+          loaded.completedChats = (loaded.completedChats || []).filter((scriptId) => scriptId !== personalScriptId);
+          if (!loaded.activeChatScripts.includes(personalScriptId)) loaded.activeChatScripts.push(personalScriptId);
+          loaded.pendingChatActivations = (loaded.pendingChatActivations || []).filter((scriptId) => scriptId !== personalScriptId);
+          loaded.storyDate = "2026-11-30";
+          loaded.storyTime = "23:36";
+          loaded.calendarMonth = 10;
+          loaded.selectedDate = "2026-11-30";
+        }
+        loaded.storyRevision = 4;
       }
       const messageTextMigrations = {
         "Harusnya bisaa, gue cek kerjaan dulu ya 😭": "Harusnya bisaa, gue cek kerjaan dulu yaa",

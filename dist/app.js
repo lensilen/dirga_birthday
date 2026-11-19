@@ -12,7 +12,7 @@
   const demoPin = document.querySelector("#demo-pin");
 
   const defaultState = () => ({
-    storyRevision: 9,
+    storyRevision: 10,
     unlocked: false,
     pinVisible: false,
     view: "lock",
@@ -332,6 +332,12 @@
           loaded.selectedDate = "2026-12-05";
         }
         loaded.storyRevision = 9;
+      }
+      if ((saved.storyRevision || 0) < 10) {
+        Object.keys(loaded.messages || {}).forEach((threadId) => {
+          loaded.messages[threadId] = (loaded.messages[threadId] || []).filter((message) => message.type !== "voice_call");
+        });
+        loaded.storyRevision = 10;
       }
       const messageTextMigrations = {
         "Harusnya bisaa, gue cek kerjaan dulu ya 😭": "Harusnya bisaa, gue cek kerjaan dulu yaa",
@@ -2136,7 +2142,7 @@
         ${calls.length ? `<div class="phone-recents">${calls.map((call) => `
           <div class="phone-recent-row">
             ${contactAvatarMarkup(getThread(call.threadId) || { avatar: "?", color: "#62626a" })}
-            <span><strong>${escapeHtml(call.name || getThread(call.threadId)?.name || "Unknown")}</strong><small>↗ WhatsApp Audio</small></span>
+            <span><strong>${escapeHtml(call.name || getThread(call.threadId)?.name || "Unknown")}</strong><small>↗ Mobile</small></span>
             <time>${escapeHtml(call.dateLabel || call.time || "")}</time>
             <i aria-hidden="true">ⓘ</i>
           </div>`).join("")}</div>` : `<div class="empty-state"><span>☎</span><strong>No Recent Calls</strong><p>Panggilan cerita akan muncul di sini setelah dilakukan.</p></div>`}
@@ -2154,12 +2160,12 @@
     }
     const thread = getThread(call.threadId);
     screen.innerHTML = `
-      <section class="view wa-incoming-call ${call.connected ? "is-connected" : ""}" aria-label="${call.connected ? "WhatsApp call connected" : "Incoming WhatsApp call"}">
+      <section class="view wa-incoming-call ${call.connected ? "is-connected" : ""}" aria-label="${call.connected ? "Call connected" : "Incoming call"}">
         <div class="wa-incoming-call__wash"></div>
         <div class="wa-incoming-call__identity">
           ${contactAvatarMarkup(thread)}
           <h1>${escapeHtml(thread?.name || "?")}</h1>
-          <p>${call.connected ? "connected" : "WhatsApp Audio"}</p>
+          <p>${call.connected ? "connected" : "mobile"}</p>
         </div>
         ${call.connected ? `
           <div class="wa-call-controls">
@@ -2183,13 +2189,6 @@
   function finishActiveCall() {
     const call = state.activeCall;
     if (!call?.connected) return;
-    addMessage(call.threadId, {
-      from: "system",
-      type: "voice_call",
-      text: "Voice call",
-      time: call.time,
-      storyDate: call.storyDate
-    }, false);
     state.callHistory.unshift({
       threadId: call.threadId,
       name: getThread(call.threadId)?.name || "?",

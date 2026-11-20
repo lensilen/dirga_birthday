@@ -984,7 +984,7 @@ window.STORY_CONFIG = {
 
   photoAlbums: [
     { id: "recents", title: "Recents", coverId: "photo-06" },
-    { id: "favorites", title: "Favorites", coverId: "photo-12" },
+    { id: "favorites", title: "Favorites", coverId: "photo-02" },
     { id: "places", title: "Places", coverId: "photo-01" },
     { id: "work", title: "Work", coverId: "photo-03" }
   ],

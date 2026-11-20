@@ -210,10 +210,13 @@ assert(Object.values(config.chatScripts || {}).every((script) => /^2026-\d{2}-\d
 assert(/formatWhatsAppDay\(message\.storyDate/.test(appSource), "WhatsApp belum memisahkan percakapan berdasarkan hari");
 assert(/homeProfileIds[\s\S]*visibleInstagramPosts\(profile\)\[0\]/.test(appSource), "Home Instagram belum mengambil post terbaru tiap profil");
 assert(/storyDateReached\(postDate\)/.test(appSource), "X belum mengikuti tanggal cerita");
-assert(/storyRevision:\s*10/.test(appSource) && /extendedScriptId = "dirga_home_arrival"/.test(appSource) && /reorderedScripts/.test(appSource) && /personalScriptId = "dirga_after_work_personal"/.test(appSource) && /redateThread\("dirga"/.test(appSource) && /goodCountByDate/.test(appSource) && /morningWasComplete/.test(appSource) && /replacedClarityTexts/.test(appSource), "Progress lama belum dimigrasikan ke struktur cerita terbaru");
+assert(/storyRevision:\s*11/.test(appSource) && /extendedScriptId = "dirga_home_arrival"/.test(appSource) && /reorderedScripts/.test(appSource) && /personalScriptId = "dirga_after_work_personal"/.test(appSource) && /redateThread\("dirga"/.test(appSource) && /goodCountByDate/.test(appSource) && /morningWasComplete/.test(appSource) && /replacedClarityTexts/.test(appSource), "Progress lama belum dimigrasikan ke struktur cerita terbaru");
 assert(/function applyPendingViewTransitions\(previousView\)/.test(appSource), "Transisi hari sunyi berbasis keluar aplikasi belum tersedia");
 assert(/function renderIncomingCall\(\)/.test(appSource) && /function finishActiveCall\(\)/.test(appSource), "Layar panggilan telepon belum tersedia");
-assert(!/WhatsApp Audio/.test(appSource) && /<small>↗ Mobile<\/small>/.test(appSource), "Panggilan masih ditampilkan sebagai WhatsApp Audio");
+assert(!/WhatsApp Audio/.test(appSource) && /call\.label \|\| "mobile"/.test(appSource), "Panggilan masih ditampilkan sebagai WhatsApp Audio");
+assert(/seededCallHistory/.test(appSource) && /call-office-1/.test(appSource), "Riwayat panggilan lama belum tersedia");
+assert(/phone-segmented/.test(appSource) && /phone-bottom-nav/.test(appSource), "Tampilan Phone Recents belum mengikuti iOS");
+assert(/iphone-call-secondary/.test(appSource) && /iphone-call-actions/.test(appSource), "Tampilan incoming call belum mengikuti iOS");
 assert(/imageSrc:\s*step\.imageSrc/.test(appSource) && /wa-draft-image/.test(appSource), "Composer WhatsApp belum mendukung draft foto interaktif");
 assert(/wa-preview-draft/.test(appSource) && /scriptedDraft\.text/.test(appSource), "Daftar WhatsApp belum menampilkan draft chat MC");
 assert(/event\.exitDelayStarted = true/.test(appSource), "Runtime belum memulai timer saat WhatsApp ditutup");

@@ -11,8 +11,17 @@
   const statusTime = document.querySelector("#status-time");
   const demoPin = document.querySelector("#demo-pin");
 
+  const seededCallHistory = () => ([
+    { id: "call-mama-1", threadId: "mama", name: "Mama", label: "mobile", dateLabel: "Yesterday", time: "20:14", outgoing: true },
+    { id: "call-petra-1", threadId: "petra", name: "Petra", label: "mobile", dateLabel: "Sunday", time: "22:56" },
+    { id: "call-satrio-1", threadId: "satrio", name: "Pak Satrio Legal", label: "work", dateLabel: "Friday", time: "09:42", outgoing: true },
+    { id: "call-office-1", name: "021 5098 4400", label: "Jakarta, Indonesia", dateLabel: "Thursday", time: "16:38", missed: true },
+    { id: "call-bintang-1", threadId: "bintang", name: "Bintang Marketing Team", label: "work", dateLabel: "16 Nov", time: "10:20" },
+    { id: "call-mama-2", threadId: "mama", name: "Mama", label: "mobile", dateLabel: "15 Nov", time: "08:16", missed: true }
+  ]);
+
   const defaultState = () => ({
-    storyRevision: 10,
+    storyRevision: 11,
     unlocked: false,
     pinVisible: false,
     view: "lock",
@@ -33,7 +42,7 @@
     pendingViewTransitions: [],
     storyCalendarEvents: [],
     deliveredEvents: [],
-    callHistory: [],
+    callHistory: seededCallHistory(),
     activeCall: null,
     currentNode: null,
     ending: null,
@@ -338,6 +347,15 @@
           loaded.messages[threadId] = (loaded.messages[threadId] || []).filter((message) => message.type !== "voice_call");
         });
         loaded.storyRevision = 10;
+      }
+      if ((saved.storyRevision || 0) < 11) {
+        const existingCalls = loaded.callHistory || [];
+        const existingIds = new Set(existingCalls.map((call) => call.id).filter(Boolean));
+        loaded.callHistory = [
+          ...existingCalls,
+          ...seededCallHistory().filter((call) => !existingIds.has(call.id))
+        ];
+        loaded.storyRevision = 11;
       }
       const messageTextMigrations = {
         "Harusnya bisaa, gue cek kerjaan dulu ya 😭": "Harusnya bisaa, gue cek kerjaan dulu yaa",
@@ -2133,22 +2151,40 @@
     bindBackButtons();
   }
 
+  function phoneIcon(name) {
+    const icons = {
+      star: `<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z"/>`,
+      clock: `<circle cx="12" cy="12" r="9"/><path d="M12 7v5l-3 2"/>`,
+      contact: `<circle cx="12" cy="8" r="3.5"/><path d="M5 21v-2c0-4 2.7-6.5 7-6.5s7 2.5 7 6.5v2"/>`,
+      keypad: `<circle cx="7" cy="6" r="1.3"/><circle cx="12" cy="6" r="1.3"/><circle cx="17" cy="6" r="1.3"/><circle cx="7" cy="11" r="1.3"/><circle cx="12" cy="11" r="1.3"/><circle cx="17" cy="11" r="1.3"/><circle cx="7" cy="16" r="1.3"/><circle cx="12" cy="16" r="1.3"/><circle cx="17" cy="16" r="1.3"/><circle cx="12" cy="21" r="1.3"/>`,
+      voicemail: `<circle cx="7" cy="12" r="4"/><circle cx="17" cy="12" r="4"/><path d="M7 16h10"/>`
+    };
+    return `<svg viewBox="0 0 24 24" aria-hidden="true">${icons[name] || ""}</svg>`;
+  }
+
   function renderPhone() {
     const calls = state.callHistory || [];
     screen.innerHTML = `
       <section class="view app-view phone-view">
-        ${appHeader("Phone")}
-        <div class="app-title"><p>PHONE</p><h1>Recents</h1></div>
+        <header class="phone-recents-header">
+          <div class="phone-segmented"><button class="is-active" type="button" disabled>All</button><button type="button" disabled>Missed</button></div>
+          <button class="phone-edit" type="button" disabled>Edit</button>
+          <h1>Recents</h1>
+        </header>
         ${calls.length ? `<div class="phone-recents">${calls.map((call) => `
           <div class="phone-recent-row">
-            ${contactAvatarMarkup(getThread(call.threadId) || { avatar: "?", color: "#62626a" })}
-            <span><strong>${escapeHtml(call.name || getThread(call.threadId)?.name || "Unknown")}</strong><small>↗ Mobile</small></span>
+            <span class="phone-call-copy"><strong class="${call.missed ? "is-missed" : ""}">${escapeHtml(call.name || getThread(call.threadId)?.name || "Unknown")}</strong><small>${call.outgoing ? `<i aria-hidden="true">↗</i>` : call.missed ? `<i aria-hidden="true">↙</i>` : ""}${escapeHtml(call.label || "mobile")}</small></span>
             <time>${escapeHtml(call.dateLabel || call.time || "")}</time>
-            <i aria-hidden="true">ⓘ</i>
+            <span class="phone-info" aria-hidden="true">ⓘ</span>
           </div>`).join("")}</div>` : `<div class="empty-state"><span>☎</span><strong>No Recent Calls</strong><p>Panggilan cerita akan muncul di sini setelah dilakukan.</p></div>`}
+        <nav class="phone-bottom-nav" aria-label="Phone tabs">
+          <button type="button" disabled><span>${phoneIcon("star")}</span><small>Favorites</small></button>
+          <button class="is-active" type="button" disabled><span>${phoneIcon("clock")}</span><small>Recents</small></button>
+          <button type="button" disabled><span>${phoneIcon("contact")}</span><small>Contacts</small></button>
+          <button type="button" disabled><span>${phoneIcon("keypad")}</span><small>Keypad</small></button>
+          <button type="button" disabled><span>${phoneIcon("voicemail")}</span><small>Voicemail</small></button>
+        </nav>
       </section>`;
-    bindBackButtons();
-    bindContactAvatarFallbacks();
   }
 
   function renderIncomingCall() {
@@ -2163,9 +2199,8 @@
       <section class="view wa-incoming-call ${call.connected ? "is-connected" : ""}" aria-label="${call.connected ? "Call connected" : "Incoming call"}">
         <div class="wa-incoming-call__wash"></div>
         <div class="wa-incoming-call__identity">
-          ${contactAvatarMarkup(thread)}
-          <h1>${escapeHtml(thread?.name || "?")}</h1>
           <p>${call.connected ? "connected" : "mobile"}</p>
+          <h1>${escapeHtml(thread?.name || "?")}</h1>
         </div>
         ${call.connected ? `
           <div class="wa-call-controls">
@@ -2173,10 +2208,15 @@
             <button type="button" disabled aria-label="Speaker"><span>◖</span><small>speaker</small></button>
           </div>
           <button class="wa-call-end" id="wa-call-end" type="button" aria-label="End call"><span>☎</span><small>end</small></button>` : `
-          <p class="wa-call-ringing">incoming call</p>
-          <button class="wa-call-answer" id="wa-call-answer" type="button" aria-label="Answer call"><span>☎</span><small>accept</small></button>`}
+          <div class="iphone-call-secondary">
+            <button type="button" disabled><span>●</span><small>Message</small></button>
+            <button type="button" disabled><span>◉</span><small>Voicemail</small></button>
+          </div>
+          <div class="iphone-call-actions">
+            <button class="iphone-call-decline" type="button" disabled aria-label="Decline call"><span>☎</span><small>Decline</small></button>
+            <button class="wa-call-answer" id="wa-call-answer" type="button" aria-label="Accept call"><span>☎</span><small>Accept</small></button>
+          </div>`}
       </section>`;
-    bindContactAvatarFallbacks();
     document.querySelector("#wa-call-answer")?.addEventListener("click", () => {
       state.activeCall.connected = true;
       state.activeCall.startedAt = Date.now();
@@ -2190,8 +2230,10 @@
     const call = state.activeCall;
     if (!call?.connected) return;
     state.callHistory.unshift({
+      id: "call-dirga-story",
       threadId: call.threadId,
       name: getThread(call.threadId)?.name || "?",
+      label: "mobile",
       time: call.time,
       dateLabel: "Today"
     });

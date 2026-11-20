@@ -218,6 +218,8 @@ assert(/seededCallHistory/.test(appSource) && /call-office-1/.test(appSource), "
 assert(/phone-segmented/.test(appSource) && /phone-bottom-nav/.test(appSource), "Tampilan Phone Recents belum mengikuti iOS");
 assert(/iphone-call-secondary/.test(appSource) && /iphone-call-actions/.test(appSource), "Tampilan incoming call belum mengikuti iOS");
 assert(/previewMode === "incoming-call"/.test(appSource) && /if \(previewMode\) return/.test(appSource), "Preview incoming call yang aman belum tersedia");
+assert(/your-phone-story-v10/.test(appSource) && /LEGACY_STORAGE_KEYS/.test(appSource), "Versi penyimpanan cerita terbaru belum mereset state lama");
+assert(/call\.preview/.test(appSource) && /call-dirga-preview/.test(appSource), "Preview panggilan masih dapat kembali ke chat awal");
 assert(/const callCaptions = \[/.test(appSource) && /function advanceCallCaption\(\)/.test(appSource) && /call-caption-next/.test(appSource), "Subtitle panggilan manual belum tersedia");
 assert(!/function scheduleCallCaption\(\)/.test(appSource), "Subtitle panggilan masih berjalan otomatis");
 assert(/data-replay-call/.test(appSource) && /call\.replay/.test(appSource) && /state\.view = "phone"/.test(appSource), "Replay panggilan dari Recents belum tersedia");

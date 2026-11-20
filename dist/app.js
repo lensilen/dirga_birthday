@@ -4,13 +4,15 @@
   const config = window.STORY_CONFIG;
   if (!config) throw new Error("STORY_CONFIG tidak ditemukan. Periksa story.js.");
 
-  const STORAGE_KEY = "your-phone-story-v9";
+  const STORAGE_KEY = "your-phone-story-v10";
+  const LEGACY_STORAGE_KEYS = ["your-phone-story-v9"];
   const screen = document.querySelector("#screen");
   const homeButton = document.querySelector("#home-button");
   const toastRegion = document.querySelector("#toast-region");
   const statusTime = document.querySelector("#status-time");
   const demoPin = document.querySelector("#demo-pin");
   const previewMode = new URLSearchParams(window.location.search).get("preview");
+  LEGACY_STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
 
   const seededCallHistory = () => ([
     { id: "call-mama-1", threadId: "mama", name: "Mama", label: "mobile", dateLabel: "Yesterday", time: "20:14", outgoing: true },
@@ -115,7 +117,8 @@
         afterCallStoryDate: "2026-12-08",
         afterCallStoryTime: "07:05",
         connected: false,
-        startedAt: null
+        startedAt: null,
+        preview: true
       }
     };
   }
@@ -2361,6 +2364,22 @@
   function finishActiveCall() {
     const call = state.activeCall;
     if (!call?.connected) return;
+    if (call.preview) {
+      state.callHistory.unshift({
+        id: "call-dirga-preview",
+        threadId: call.threadId,
+        name: getThread(call.threadId)?.name || "?",
+        label: "mobile",
+        time: call.time,
+        dateLabel: "Today"
+      });
+      state.activeCall = null;
+      clearCallDurationTimer();
+      setStoryClock(call.afterCallStoryDate || state.storyDate, call.afterCallStoryTime || state.storyTime);
+      state.view = "phone";
+      render();
+      return;
+    }
     if (call.replay) {
       state.activeCall = null;
       clearCallDurationTimer();

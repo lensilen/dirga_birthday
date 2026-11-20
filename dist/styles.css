@@ -954,11 +954,18 @@ body[data-view="settings"] .home-indicator span { background: #fff; box-shadow: 
   background: rgba(10, 12, 17, .68);
   box-shadow: 0 8px 24px rgba(0,0,0,.18);
   backdrop-filter: blur(18px);
+  width: auto;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
   text-align: left;
   animation: iphone-caption-in .22s ease-out;
 }
-.iphone-live-caption small { display: block; margin-bottom: 3px; color: rgba(255,255,255,.62); font-size: 10px; font-weight: 650; }
+.iphone-live-caption > span { display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px; }
+.iphone-live-caption small { display: block; color: rgba(255,255,255,.62); font-size: 10px; font-weight: 650; }
+.iphone-live-caption em { color: rgba(255,255,255,.42); font-size: 9px; font-style: normal; font-weight: 550; letter-spacing: .02em; }
 .iphone-live-caption p { margin: 0; color: #fff; font-size: 14px; line-height: 1.35; }
+.iphone-live-caption:active { transform: scale(.985); }
 @keyframes iphone-caption-in {
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }

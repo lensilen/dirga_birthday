@@ -27,7 +27,34 @@
     { speaker: "You", text: "Aku juga mikir begitu", duration: 2500 },
     { speaker: "Dirga", text: "About the call?", duration: 2300 },
     { speaker: "You", text: "About keeping my distance", duration: 2800 },
-    { speaker: "Dirga", text: "I'm glad you didn't", duration: 3200 }
+    { speaker: "Dirga", text: "I'm glad you didn't", duration: 3200 },
+    { speaker: "You", text: "Kamu masih kerja?", duration: 2400 },
+    { speaker: "Dirga", text: "Unfortunately, yes. A contract decided midnight is the perfect time to become complicated", duration: 4200 },
+    { speaker: "You", text: "Kerjaan legal selalu seseru ini?", duration: 2800 },
+    { speaker: "Dirga", text: "Only when people ignore my emails for three days and suddenly discover urgency", duration: 4200 },
+    { speaker: "You", text: "Jadi basically kamu dibayar buat baca masalah orang?", duration: 3300 },
+    { speaker: "Dirga", text: "And prevent them from creating new ones", duration: 2900 },
+    { speaker: "Dirga", text: "How was your day?", duration: 2500 },
+    { speaker: "You", text: "Balik serius?", duration: 2100 },
+    { speaker: "Dirga", text: "I'm asking about your day", duration: 2500 },
+    { speaker: "You", text: "Ini one on one atau teleponan sih?", duration: 2900 },
+    { speaker: "Dirga", text: "[laughs] Can't it be both?", duration: 2900 },
+    { speaker: "You", text: "Curang", duration: 1900 },
+    { speaker: "Dirga", text: "Occupational hazard", duration: 2400 },
+    { speaker: "You", text: "Hari aku biasa aja... sampai ada orang ngajak telepon tengah malam", duration: 3800 },
+    { speaker: "Dirga", text: "Sounds like the best part of your day", duration: 3000 },
+    { speaker: "You", text: "Pede banget", duration: 2100 },
+    { speaker: "Dirga", text: "Only with you", duration: 2600 },
+    { speaker: "You", text: "That was smooth", duration: 2300 },
+    { speaker: "Dirga", text: "I've had time to think about what I'd say if you called", duration: 3800 },
+    { speaker: "You", text: "Dan yang kepilih itu?", duration: 2400 },
+    { speaker: "Dirga", text: "No. The better ones might make you hang up", duration: 3400 },
+    { speaker: "You", text: "Coba satu", duration: 2100 },
+    { speaker: "Dirga", text: "I like hearing your voice when you're trying not to smile", duration: 4000 },
+    { speaker: "You", text: "Siapa yang senyum", duration: 2300 },
+    { speaker: "Dirga", text: "You. Right now", duration: 2500 },
+    { speaker: "You", text: "Sok tau", duration: 2100 },
+    { speaker: "Dirga", text: "Then stay on the phone and prove me wrong", duration: 4000 }
   ];
 
   const defaultState = () => ({
@@ -102,7 +129,9 @@
     scheduledNotifications: new Set()
   };
   const callRuntime = {
-    captionScheduled: false
+    captionScheduled: false,
+    captionTimer: null,
+    durationTimer: null
   };
 
   document.documentElement.style.setProperty("--accent", config.theme.accent);
@@ -531,6 +560,7 @@
 
   function resetStory() {
     clearTimers();
+    clearCallDurationTimer();
     chatRuntime.scheduled.clear();
     chatRuntime.typing.clear();
     chatRuntime.draftReady.clear();
@@ -2235,11 +2265,11 @@
       <section class="view wa-incoming-call ${call.connected ? "is-connected" : ""}" aria-label="${call.connected ? "Call connected" : "Incoming call"}">
         <div class="wa-incoming-call__wash"></div>
         <div class="wa-incoming-call__identity">
-          <p>${call.connected ? "connected" : "mobile"}</p>
+          <p id="iphone-call-status">${call.connected ? escapeHtml(formatCallDuration(call.startedAt)) : "mobile"}</p>
           <h1>${escapeHtml(thread?.name || "?")}</h1>
         </div>
         ${call.connected ? `
-          ${caption ? `<div class="iphone-live-caption" aria-live="polite"><small>${escapeHtml(caption.speaker)}</small><p>${escapeHtml(caption.text)}</p></div>` : ""}
+          ${caption ? `<button class="iphone-live-caption" id="call-caption-next" type="button" aria-label="Next subtitle" aria-live="polite"><span><small>${escapeHtml(caption.speaker)}</small><em>tap</em></span><p>${escapeHtml(caption.text)}</p></button>` : ""}
           <div class="wa-call-controls">
             <button type="button" disabled aria-label="Mute"><span>⌁</span><small>mute</small></button>
             <button type="button" disabled aria-label="Speaker"><span>◖</span><small>speaker</small></button>
@@ -2258,12 +2288,58 @@
       state.activeCall.connected = true;
       state.activeCall.startedAt = Date.now();
       state.activeCall.captionIndex = 0;
-      callRuntime.captionScheduled = false;
+      clearScheduledCallCaption();
       saveState();
       render();
     });
+    document.querySelector("#call-caption-next")?.addEventListener("click", advanceCallCaption);
     document.querySelector("#wa-call-end")?.addEventListener("click", finishActiveCall);
-    if (call.connected) scheduleCallCaption();
+    if (call.connected) {
+      scheduleCallDuration();
+      scheduleCallCaption();
+    } else {
+      clearCallDurationTimer();
+    }
+  }
+
+  function formatCallDuration(startedAt) {
+    const elapsedSeconds = Math.max(0, Math.floor((Date.now() - (Number(startedAt) || Date.now())) / 1000));
+    const hours = Math.floor(elapsedSeconds / 3600);
+    const minutes = Math.floor((elapsedSeconds % 3600) / 60);
+    const seconds = elapsedSeconds % 60;
+    return hours > 0
+      ? `${hours}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`
+      : `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  }
+
+  function clearCallDurationTimer() {
+    if (callRuntime.durationTimer) clearInterval(callRuntime.durationTimer);
+    callRuntime.durationTimer = null;
+  }
+
+  function scheduleCallDuration() {
+    clearCallDurationTimer();
+    const updateDuration = () => {
+      const label = document.querySelector("#iphone-call-status");
+      if (label && state.activeCall?.connected) label.textContent = formatCallDuration(state.activeCall.startedAt);
+    };
+    updateDuration();
+    callRuntime.durationTimer = setInterval(updateDuration, 1000);
+  }
+
+  function clearScheduledCallCaption() {
+    if (callRuntime.captionTimer) clearTimeout(callRuntime.captionTimer);
+    callRuntime.captionTimer = null;
+    callRuntime.captionScheduled = false;
+  }
+
+  function advanceCallCaption() {
+    const call = state.activeCall;
+    if (!call?.connected || !Number.isInteger(call.captionIndex) || call.captionIndex >= callCaptions.length - 1) return;
+    clearScheduledCallCaption();
+    call.captionIndex += 1;
+    saveState();
+    render();
   }
 
   function scheduleCallCaption() {
@@ -2276,15 +2352,16 @@
       return;
     }
     const caption = callCaptions[call.captionIndex];
-    if (!caption) return;
+    if (!caption || call.captionIndex >= callCaptions.length - 1) return;
     callRuntime.captionScheduled = true;
-    timers.push(setTimeout(() => {
+    callRuntime.captionTimer = setTimeout(() => {
+      callRuntime.captionTimer = null;
       callRuntime.captionScheduled = false;
       if (!state.activeCall?.connected) return;
       state.activeCall.captionIndex += 1;
       saveState();
       render();
-    }, caption.duration));
+    }, caption.duration);
   }
 
   function finishActiveCall() {
@@ -2299,7 +2376,8 @@
       dateLabel: "Today"
     });
     state.activeCall = null;
-    callRuntime.captionScheduled = false;
+    clearScheduledCallCaption();
+    clearCallDurationTimer();
     state.activeThreadId = call.threadId;
     state.view = "thread";
     advanceChatScript(call.threadId);

@@ -82,7 +82,7 @@ const gatedPhotos = (config.photos || []).filter((photo) => photo.availableAfter
 assert(gatedPhotos.length === 5, "Jumlah foto baru setelah pertemuan tidak sesuai");
 assert(gatedPhotos.some((photo) => photo.availableAfter === "dirga_after_dinner" && photo.src?.includes("dinner-17-first")), "Foto setelah dinner belum memiliki trigger");
 assert(gatedPhotos.some((photo) => photo.availableAfter === "dirga_coffee_arrival" && photo.src?.includes("coffee-date")), "Foto coffee date belum memiliki trigger");
-assert(gatedPhotos.some((photo) => photo.availableAfter === "dirga_wrong_send" && photo.src?.includes("Dion Windsor")), "Foto pertemuan kedua belum memiliki trigger salah kirim");
+assert(gatedPhotos.some((photo) => photo.availableAfter === "dirga_second_meeting_arrival" && photo.src?.includes("Dion Windsor")), "Foto pertemuan kedua belum muncul di Galeri sebelum adegan salah kirim");
 assert(gatedPhotos.some((photo) => photo.availableAfter === "dirga_work_night" && photo.src?.includes("alex volkov")), "Foto temani Dirga kerja belum memiliki trigger");
 assert(gatedPhotos.some((photo) => photo.availableAfter === "dirga_after_work_personal" && photo.src?.includes("782852347766237811")), "Foto momen personal belum memiliki trigger");
 const removedGalleryAssets = ["1140747780608893244", "987343918331237220", "917467755359088838"];

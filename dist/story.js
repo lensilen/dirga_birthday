@@ -1014,7 +1014,7 @@ window.STORY_CONFIG = {
     { id: "photo-18", title: "18 November 2025", caption: "18 November 2025 · 10:36 AM", src: "assets/photos/gallery/when in San Francisco 🧺🌁✨🌙🌿☁ just some….jpg", albums: ["places"] },
     { id: "photo-19", title: "17 November 2026", caption: "17 November 2026 · 8:56 PM", src: "assets/photos/gallery/dinner-17-first.jpg", albums: [], availableAfter: "dirga_after_dinner", availableAfterDate: "2026-11-17" },
     { id: "photo-20", title: "21 November 2026", caption: "21 November 2026 · 5:38 PM", src: "assets/photos/gallery/coffee-date.jpg", albums: [], availableAfter: "dirga_coffee_arrival", availableAfterDate: "2026-11-21" },
-    { id: "photo-21", title: "28 November 2026", caption: "28 November 2026 · 8:42 PM", src: "assets/photos/gallery/Dion Windsor _ The unwanted marriage.jpg", albums: [], availableAfter: "dirga_wrong_send", availableAfterDate: "2026-11-28" },
+    { id: "photo-21", title: "28 November 2026", caption: "28 November 2026 · 8:42 PM", src: "assets/photos/gallery/Dion Windsor _ The unwanted marriage.jpg", albums: [], availableAfter: "dirga_second_meeting_arrival", availableAfterDate: "2026-11-28" },
     { id: "photo-22", title: "30 November 2026", caption: "30 November 2026 · 9:34 PM", src: "assets/photos/gallery/alex volkov _ twisted love _ aesthetic _ boy….jpg", albums: [], availableAfter: "dirga_work_night", availableAfterDate: "2026-11-30" },
     { id: "photo-23", title: "30 November 2026", caption: "30 November 2026 · 11:18 PM", src: "assets/photos/gallery/782852347766237811.jpg", albums: [], availableAfter: "dirga_after_work_personal", availableAfterDate: "2026-11-30" }
   ],

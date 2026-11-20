@@ -821,8 +821,8 @@ body[data-view="settings"] .home-indicator span { background: #fff; box-shadow: 
   justify-items: center;
   padding-top: 74px;
 }
-.wa-incoming-call__identity h1 { margin: 4px 0 0; font-size: 26px; line-height: 1.1; font-weight: 500; }
-.wa-incoming-call__identity p { order: -1; margin: 0; color: rgba(255,255,255,.78); font-size: 12px; }
+.wa-incoming-call__identity h1 { margin: 6px 0 0; font-size: 40px; line-height: 1.05; font-weight: 500; letter-spacing: -.025em; text-shadow: 0 2px 12px rgba(0,0,0,.2); }
+.wa-incoming-call__identity p { order: -1; margin: 0; color: rgba(255,255,255,.82); font-size: 15px; font-weight: 500; }
 .wa-call-end {
   position: absolute;
   z-index: 2;

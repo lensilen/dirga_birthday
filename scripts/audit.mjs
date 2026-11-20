@@ -94,6 +94,7 @@ assert(/storyCheckpointReached\(photo\.availableAfter\)/.test(appSource), "Galer
 assert(/\.sort\(\(first, second\) => photoTimestamp\(second\) - photoTimestamp\(first\)\)/.test(appSource), "Galeri belum diurutkan dari foto paling baru");
 assert(/album\.id === "recents"\s*\? albumPhotos\[0\]/.test(appSource), "Cover Recents belum mengikuti foto terbaru yang terbuka");
 assert(/class="wa-message-image"/.test(appSource), "WhatsApp belum mendukung foto di dalam chat");
+assert(/class="wa-back"[\s\S]*?<svg viewBox="0 0 14 24"/.test(appSource) && /\.wa-back svg \{[^}]*translateY\(-1px\)/.test(cssSource), "Panah kembali WhatsApp belum disejajarkan dengan header");
 assert(config.chatScripts?.petra?.onComplete?.storyDate === "2026-11-17", "Trigger setelah dinner tidak memakai tanggal cerita 17 November");
 assert(config.chatScripts?.dirga_after_dinner?.onComplete?.calendarEvents?.[0]?.trigger?.storyDate === "2026-11-21", "Trigger coffee tidak memakai tanggal cerita 21 November");
 const afterCoffee = config.chatScripts?.dirga_coffee_arrival?.onComplete;

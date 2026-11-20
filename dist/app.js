@@ -1256,7 +1256,9 @@
     screen.innerHTML = `
       <section class="view app-view chat-view wa-chat-view">
         <header class="wa-chat-header">
-          <button class="wa-back" type="button" data-back="whatsapp" aria-label="Kembali ke WhatsApp">‹</button>
+          <button class="wa-back" type="button" data-back="whatsapp" aria-label="Kembali ke WhatsApp">
+            <svg viewBox="0 0 14 24" aria-hidden="true"><path d="M12 2 2 12l10 10"/></svg>
+          </button>
           <div class="wa-contact">
             ${contactAvatarMarkup(thread)}
             <span><strong>${escapeHtml(thread.name)}</strong>${isTyping ? `<small class="is-typing">typing…</small>` : ""}</span>

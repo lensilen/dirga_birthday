@@ -129,8 +129,6 @@
     scheduledNotifications: new Set()
   };
   const callRuntime = {
-    captionScheduled: false,
-    captionTimer: null,
     durationTimer: null
   };
 
@@ -2236,12 +2234,16 @@
           <button class="phone-edit" type="button" disabled>Edit</button>
           <h1>Recents</h1>
         </header>
-        ${calls.length ? `<div class="phone-recents">${calls.map((call) => `
-          <div class="phone-recent-row">
+        ${calls.length ? `<div class="phone-recents">${calls.map((call, index) => {
+          const replayable = call.threadId === "dirga";
+          const tag = replayable ? "button" : "div";
+          return `
+          <${tag} class="phone-recent-row ${replayable ? "is-replayable" : ""}" ${replayable ? `type="button" data-replay-call="${index}" aria-label="Call ${escapeAttribute(call.name || getThread(call.threadId)?.name || "?")} again"` : ""}>
             <span class="phone-call-copy"><strong class="${call.missed ? "is-missed" : ""}">${escapeHtml(call.name || getThread(call.threadId)?.name || "Unknown")}</strong><small>${call.outgoing ? `<i aria-hidden="true">↗</i>` : call.missed ? `<i aria-hidden="true">↙</i>` : ""}${escapeHtml(call.label || "mobile")}</small></span>
             <time>${escapeHtml(call.dateLabel || call.time || "")}</time>
             <span class="phone-info" aria-hidden="true">ⓘ</span>
-          </div>`).join("")}</div>` : `<div class="empty-state"><span>☎</span><strong>No Recent Calls</strong><p>Panggilan cerita akan muncul di sini setelah dilakukan.</p></div>`}
+          </${tag}>`;
+        }).join("")}</div>` : `<div class="empty-state"><span>☎</span><strong>No Recent Calls</strong><p>Panggilan cerita akan muncul di sini setelah dilakukan.</p></div>`}
         <nav class="phone-bottom-nav" aria-label="Phone tabs">
           <button type="button" disabled><span>${phoneIcon("star")}</span><small>Favorites</small></button>
           <button class="is-active" type="button" disabled><span>${phoneIcon("clock")}</span><small>Recents</small></button>
@@ -2250,6 +2252,24 @@
           <button type="button" disabled><span>${phoneIcon("voicemail")}</span><small>Voicemail</small></button>
         </nav>
       </section>`;
+    document.querySelectorAll("[data-replay-call]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const call = calls[Number(button.dataset.replayCall)];
+        if (!call || call.threadId !== "dirga") return;
+        state.activeCall = {
+          threadId: "dirga",
+          time: state.storyTime,
+          storyDate: state.storyDate,
+          connected: false,
+          startedAt: null,
+          captionIndex: 0,
+          replay: true
+        };
+        state.view = "incoming-call";
+        saveState();
+        render();
+      });
+    });
   }
 
   function renderIncomingCall() {
@@ -2276,7 +2296,7 @@
             <button type="button" disabled aria-label="FaceTime"><span><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="5" y="8" width="16" height="16" rx="3"/><path class="is-filled" d="m21 13 7-4v14l-7-4Z"/></svg></span><small>FaceTime</small></button>
             <button type="button" disabled aria-label="Mute"><span><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="12" y="5" width="8" height="14" rx="4"/><path d="M8.5 15.5A7.5 7.5 0 0 0 22 20M16 24v4M11 28h10M5 5l22 22"/></svg></span><small>Mute</small></button>
             <button type="button" disabled aria-label="Add person"><span><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="14" cy="12" r="5"/><path d="M5 26c.7-5 4-8 9-8 2.3 0 4.2.6 5.7 1.8M25 17v9M20.5 21.5h9"/></svg></span><small>Add</small></button>
-            <button class="iphone-call-control--end" id="wa-call-end" type="button" aria-label="End call"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path class="is-filled" d="M3.7 14.8C8.1 10.7 15.9 10.7 20.3 14.8L17 18.1c-2.7-2.2-7.3-2.2-10 0L3.7 14.8Z"/></svg></span><small>End</small></button>
+            <button class="iphone-call-control--end" id="wa-call-end" type="button" aria-label="End call"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path class="is-filled" d="M12 9c-1.6 0-3.15.25-4.6.7v3.1c0 .4-.25.75-.6.9-.85.4-1.65.9-2.35 1.5-.2.18-.45.3-.75.3s-.55-.1-.75-.3L.3 12.55c-.2-.2-.3-.45-.3-.75s.1-.55.3-.75C3.55 8.15 7.65 6.5 12 6.5s8.45 1.65 11.7 4.55c.2.2.3.45.3.75s-.1.55-.3.75l-2.65 2.65c-.2.2-.45.3-.75.3s-.55-.12-.75-.3c-.7-.6-1.5-1.1-2.35-1.5-.35-.15-.6-.5-.6-.9V9.7C15.15 9.25 13.6 9 12 9Z"/></svg></span><small>End</small></button>
             <button type="button" disabled aria-label="Keypad"><span><svg viewBox="0 0 32 32" aria-hidden="true"><circle class="is-filled" cx="9" cy="8" r="2.2"/><circle class="is-filled" cx="16" cy="8" r="2.2"/><circle class="is-filled" cx="23" cy="8" r="2.2"/><circle class="is-filled" cx="9" cy="15" r="2.2"/><circle class="is-filled" cx="16" cy="15" r="2.2"/><circle class="is-filled" cx="23" cy="15" r="2.2"/><circle class="is-filled" cx="9" cy="22" r="2.2"/><circle class="is-filled" cx="16" cy="22" r="2.2"/><circle class="is-filled" cx="23" cy="22" r="2.2"/></svg></span><small>Keypad</small></button>
           </div>
           ` : `
@@ -2285,15 +2305,14 @@
             <button type="button" disabled><span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6.5" cy="11.5" r="4"/><circle cx="17.5" cy="11.5" r="4"/><path d="M6.5 15.5h11"/></svg></span><small>Voicemail</small></button>
           </div>
           <div class="iphone-call-actions">
-            <button class="iphone-call-decline" type="button" disabled aria-label="Decline call"><span><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 18C10 12 22 12 28 18L23 23c-4-3-10-3-14 0L4 18Z"/></svg></span><small>Decline</small></button>
-            <button class="wa-call-answer" id="wa-call-answer" type="button" aria-label="Accept call"><span><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 18C10 12 22 12 28 18L23 23c-4-3-10-3-14 0L4 18Z"/></svg></span><small>Accept</small></button>
+            <button class="iphone-call-decline" type="button" disabled aria-label="Decline call"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 9c-1.6 0-3.15.25-4.6.7v3.1c0 .4-.25.75-.6.9-.85.4-1.65.9-2.35 1.5-.2.18-.45.3-.75.3s-.55-.1-.75-.3L.3 12.55c-.2-.2-.3-.45-.3-.75s.1-.55.3-.75C3.55 8.15 7.65 6.5 12 6.5s8.45 1.65 11.7 4.55c.2.2.3.45.3.75s-.1.55-.3.75l-2.65 2.65c-.2.2-.45.3-.75.3s-.55-.12-.75-.3c-.7-.6-1.5-1.1-2.35-1.5-.35-.15-.6-.5-.6-.9V9.7C15.15 9.25 13.6 9 12 9Z"/></svg></span><small>Decline</small></button>
+            <button class="wa-call-answer" id="wa-call-answer" type="button" aria-label="Accept call"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79a15.46 15.46 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2Z"/></svg></span><small>Accept</small></button>
           </div>`}
       </section>`;
     document.querySelector("#wa-call-answer")?.addEventListener("click", () => {
       state.activeCall.connected = true;
       state.activeCall.startedAt = Date.now();
       state.activeCall.captionIndex = 0;
-      clearScheduledCallCaption();
       saveState();
       render();
     });
@@ -2301,7 +2320,6 @@
     document.querySelector("#wa-call-end")?.addEventListener("click", finishActiveCall);
     if (call.connected) {
       scheduleCallDuration();
-      scheduleCallCaption();
     } else {
       clearCallDurationTimer();
     }
@@ -2332,46 +2350,25 @@
     callRuntime.durationTimer = setInterval(updateDuration, 1000);
   }
 
-  function clearScheduledCallCaption() {
-    if (callRuntime.captionTimer) clearTimeout(callRuntime.captionTimer);
-    callRuntime.captionTimer = null;
-    callRuntime.captionScheduled = false;
-  }
-
   function advanceCallCaption() {
     const call = state.activeCall;
     if (!call?.connected || !Number.isInteger(call.captionIndex) || call.captionIndex >= callCaptions.length - 1) return;
-    clearScheduledCallCaption();
     call.captionIndex += 1;
     saveState();
     render();
   }
 
-  function scheduleCallCaption() {
+  function finishActiveCall() {
     const call = state.activeCall;
-    if (!call?.connected || callRuntime.captionScheduled) return;
-    if (!Number.isInteger(call.captionIndex)) {
-      call.captionIndex = 0;
+    if (!call?.connected) return;
+    if (call.replay) {
+      state.activeCall = null;
+      clearCallDurationTimer();
+      state.view = "phone";
       saveState();
       render();
       return;
     }
-    const caption = callCaptions[call.captionIndex];
-    if (!caption || call.captionIndex >= callCaptions.length - 1) return;
-    callRuntime.captionScheduled = true;
-    callRuntime.captionTimer = setTimeout(() => {
-      callRuntime.captionTimer = null;
-      callRuntime.captionScheduled = false;
-      if (!state.activeCall?.connected) return;
-      state.activeCall.captionIndex += 1;
-      saveState();
-      render();
-    }, caption.duration);
-  }
-
-  function finishActiveCall() {
-    const call = state.activeCall;
-    if (!call?.connected) return;
     state.callHistory.unshift({
       id: "call-dirga-story",
       threadId: call.threadId,
@@ -2381,7 +2378,6 @@
       dateLabel: "Today"
     });
     state.activeCall = null;
-    clearScheduledCallCaption();
     clearCallDurationTimer();
     state.activeThreadId = call.threadId;
     state.view = "thread";

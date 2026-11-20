@@ -23,20 +23,20 @@
     { id: "call-mama-2", threadId: "mama", name: "Mama", label: "mobile", dateLabel: "15 Nov", time: "08:16", missed: true }
   ]);
   const callCaptions = [
-    { speaker: "Dirga", text: "You actually called", duration: 2500 },
+    { speaker: "Dirga", text: "Kamu beneran nelepon", duration: 2500 },
     { speaker: "You", text: "Kan aku yang nawarin", duration: 2400 },
-    { speaker: "Dirga", text: "I thought you might change your mind", duration: 3000 },
+    { speaker: "Dirga", text: "Saya kira kamu bakal berubah pikiran", duration: 3000 },
     { speaker: "You", text: "Aku juga mikir begitu", duration: 2500 },
     { speaker: "Dirga", text: "About the call?", duration: 2300 },
     { speaker: "You", text: "About keeping my distance", duration: 2800 },
-    { speaker: "Dirga", text: "I'm glad you didn't", duration: 3200 },
+    { speaker: "Dirga", text: "Syukurlah kamu gak jadi mundur", duration: 3200 },
     { speaker: "You", text: "Kamu masih kerja?", duration: 2400 },
     { speaker: "Dirga", text: "Unfortunately, iya. Kontrak ini tiba-tiba milih tengah malam buat jadi rumit", duration: 4200 },
     { speaker: "You", text: "Kerjaan legal selalu seseru ini?", duration: 2800 },
     { speaker: "Dirga", text: "Only when people ignore my emails for three days and suddenly discover urgency", duration: 4200 },
     { speaker: "You", text: "Jadi basically kamu dibayar buat baca masalah orang?", duration: 3300 },
     { speaker: "Dirga", text: "Sama mencegah mereka bikin masalah baru", duration: 2900 },
-    { speaker: "Dirga", text: "How was your day?", duration: 2500 },
+    { speaker: "Dirga", text: "Hari kamu gimana?", duration: 2500 },
     { speaker: "You", text: "Balik serius?", duration: 2100 },
     { speaker: "Dirga", text: "Aku cuma nanya hari kamu gimana", duration: 2500 },
     { speaker: "You", text: "Ini one on one atau teleponan sih?", duration: 2900 },
@@ -44,7 +44,7 @@
     { speaker: "You", text: "Curang", duration: 1900 },
     { speaker: "Dirga", text: "Occupational hazard", duration: 2400 },
     { speaker: "You", text: "Hari aku biasa aja... sampai ada orang ngajak telepon tengah malam", duration: 3800 },
-    { speaker: "Dirga", text: "Sounds like the best part of your day", duration: 3000 },
+    { speaker: "Dirga", text: "Kedengarannya itu bagian terbaik hari kamu", duration: 3000 },
     { speaker: "You", text: "Pede banget", duration: 2100 },
     { speaker: "Dirga", text: "Only with you", duration: 2600 },
     { speaker: "You", text: "That was smooth", duration: 2300 },
@@ -294,6 +294,7 @@
           "I'm downstairs": "2026-11-21",
           "How attached are you to your Saturday plans?": "2026-11-26",
           "I found the place for Saturday": "2026-11-26",
+          "Saya sudah nemu tempat buat Sabtu": "2026-11-26",
           "I'm here": "2026-11-28",
           "Pak masih di kantor?": "2026-11-30"
         });
@@ -504,13 +505,86 @@
         });
         loaded.storyRevision = 13;
       }
+      const dirgaLanguageMigrations = {
+        "Good": "Bagus",
+        "That's good": "Bagus",
+        "Thank you for tonight": "Makasih buat malam ini",
+        "Time moves differently outside the office": "Waktu rasanya jalan beda kalau kita di luar kantor",
+        "That depends": "Tergantung",
+        "You said maybe": "Kamu bilang mungkin",
+        "It is 3:52": "Ini baru 3:52",
+        "Is the car moving yet?": "Mobilnya udah jalan?",
+        "Eight minutes is not that early": "Delapan menit lebih awal itu bukan terlalu pagi",
+        "Still on the road?": "Masih di jalan?",
+        "I should've driven you home myself": "Harusnya saya yang nganter kamu pulang",
+        "Unfortunately": "Sayangnya",
+        "Text me when you're home?": "Kabari saya kalau udah sampai, ya?",
+        "I found the place for Saturday": "Saya sudah nemu tempat buat Sabtu",
+        "Says the person who promised to text": "Kata orang yang janji bakal ngabarin",
+        "Get some rest": "Istirahat dulu",
+        "I should be thanking you": "Harusnya saya yang bilang makasih",
+        "That sounded reluctant": "Kedengarannya ragu",
+        "Then don't make plans for next Saturday evening": "Kalau begitu, Sabtu depan jangan bikin rencana malam-malam",
+        "I don't make plans I don't intend to keep": "Saya gak bikin rencana kalau gak berniat nepatin",
+        "It's a surprise": "Tempatnya kejutan",
+        "I'll pick you up": "Saya jemput",
+        "I know": "Saya tau",
+        "I'm here": "Saya udah sampai",
+        "Home safe?": "Udah sampai rumah?",
+        "And you still came down late": "Dan kamu tetap turun telat",
+        "You looked like you needed a night away from work": "Kamu kelihatan butuh satu malam jauh dari kerjaan",
+        "Was that too honest?": "Terlalu jujur?",
+        "Because I meant it": "Karena saya serius",
+        "Still awake?": "Masih bangun?",
+        "I'm going to assume that wasn't meant for me": "Saya anggap itu bukan buat saya",
+        "I figured": "Sudah saya duga",
+        "I was hoping you thought so": "Saya memang berharap kamu mikir begitu",
+        "Maybe two": "Mungkin dua",
+        "Then stay": "Kalau begitu, temani saya",
+        "You can drop the ‘Pak’ when we're outside the office": "Di luar kantor, kamu gak perlu panggil saya ‘Pak’",
+        "Better": "Nah, lebih baik",
+        "You sent me a photo with ‘GANTENG BANGET’ written under it": "Kamu kirim foto dengan tulisan ‘GANTENG BANGET’ di bawahnya",
+        "I think we're past that": "Kayaknya kita sudah lewat fase itu",
+        "You would've tripped": "Kamu bisa jatuh",
+        "Next time wear sensible shoes": "Lain kali pakai sepatu yang masuk akal",
+        "And you'd do it again": "Dan kamu bakal melakukannya lagi",
+        "Done with work?": "Kerjaannya udah selesai?",
+        "Believe me, I don't like it either": "Percaya deh, saya juga gak suka bangun sepagi ini",
+        "How's your ankle?": "Gimana pergelangan kakimu?",
+        "Ice it after work": "Kompres es habis kerja",
+        "You would've said you were busy": "Kamu pasti bilang lagi sibuk",
+        "Glad to know": "Syukurlah",
+        "I made the mistake of opening my laptop again": "Saya salah buka laptop lagi",
+        "Seventeen comments on a document that was supposed to be final": "Tujuh belas komentar di dokumen yang katanya sudah final",
+        "This must be serious": "Wah, ini pasti serius",
+        "You usually ask first and apologize later": "Biasanya kamu langsung tanya, baru minta maaf belakangan",
+        "I don't remember everyone's coffee order": "Saya gak hafal pesanan kopi semua orang",
+        "And I don't wake up early to ask about everyone's ankle": "Dan saya gak bangun pagi buat nanyain pergelangan kaki semua orang",
+        "I've been trying to make this obvious without making you uncomfortable": "Dari kemarin saya berusaha bikin ini kelihatan tanpa membuat kamu gak nyaman",
+        "Yes, I'm pursuing you": "Yes, saya memang sedang mendekati kamu",
+        "I want you to let me do this properly": "Saya mau kamu membiarkan saya melakukan ini dengan benar",
+        "Or the position. Or what they think being close to me could get them": "Atau jabatan saya. Atau apa yang mereka kira bisa mereka dapat kalau dekat dengan saya",
+        "You never did": "Kamu gak pernah begitu",
+        "With you, I don't feel like I have to be impressive to be worth staying for": "Sama kamu, saya gak merasa harus terlihat mengesankan supaya pantas dipilih",
+        "I'm sorry if I made you feel rushed or uncomfortable": "Maaf kalau saya membuat kamu merasa terburu-buru atau gak nyaman",
+        "You don't owe me an answer tonight": "Kamu gak harus jawab malam ini",
+        "Still awake": "Masih bangun",
+        "I thought you wanted me to leave you alone": "Saya kira kamu mau saya menjauh",
+        "I was the one who made you uncomfortable": "Saya yang bikin kamu gak nyaman",
+        "So there is still a chance?": "Jadi masih ada kesempatan?",
+        "I should've noticed": "Harusnya saya sadar",
+        "It's already midnight. Get some rest": "Udah tengah malam. Istirahat",
+        "I still have documents to read before tomorrow": "Saya masih harus baca dokumen buat besok",
+        "I'll pick you up tomorrow": "Besok saya jemput",
+        "Stubborn as always": "Keras kepala seperti biasa"
+      };
       const messageTextMigrations = {
         "Harusnya bisaa, gue cek kerjaan dulu ya 😭": "Harusnya bisaa, gue cek kerjaan dulu yaa",
         "Ya jangan aneh aneh 😭": "Ya jangan aneh aneh...",
         "Pet... gue barusan diajak dinner sama Pak Dirga 😭": "Pet... gue barusan diajak dinner sama Pak Dirga",
         "Gue juga masih proses 😭": "Gue juga masih proses ini...",
         "Belum, baru jalan": "Baru banget... ini udah jalan",
-        "Home yet?": "Is the car moving yet?",
+        "Home yet?": "Mobilnya udah jalan?",
         "Belum... baru jalan": "Baru banget... ini udah jalan",
         "I will": "I willl",
         "Dramatis banget Pak, baru juga jalan": "Dramatis banget Pak... saya baru telat ngabarin dikit",
@@ -525,11 +599,15 @@
         "I remembered eventually 😭": "I remembered eventually... technically",
         "You too... makasih buat hari ini": "You too... makasih yaa buat hari ini",
         "Iya... nice": "Iya... nice banget malah",
-        "Enggaaa 😭": "Enggaaa, bukan gitu maksudnya"
+        "Enggaaa 😭": "Enggaaa, bukan gitu maksudnya",
+        ...dirgaLanguageMigrations
       };
       Object.values(loaded.messages || {}).flat().forEach((message) => {
         if (messageTextMigrations[message.text]) message.text = messageTextMigrations[message.text];
         if (message.storyDate === "2026-12-05" && message.text === "I'm downstairs") message.time = "18:09";
+      });
+      (loaded.pendingNotifications || []).forEach((event) => {
+        if (messageTextMigrations[event.text]) event.text = messageTextMigrations[event.text];
       });
       let downstairsCount = 0;
       (loaded.messages?.dirga || []).forEach((message) => {

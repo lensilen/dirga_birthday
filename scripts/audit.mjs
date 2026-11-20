@@ -97,30 +97,30 @@ assert(/class="wa-message-image"/.test(appSource), "WhatsApp belum mendukung fot
 assert(config.chatScripts?.petra?.onComplete?.storyDate === "2026-11-17", "Trigger setelah dinner tidak memakai tanggal cerita 17 November");
 assert(config.chatScripts?.dirga_after_dinner?.onComplete?.calendarEvents?.[0]?.trigger?.storyDate === "2026-11-21", "Trigger coffee tidak memakai tanggal cerita 21 November");
 const afterCoffee = config.chatScripts?.dirga_coffee_arrival?.onComplete;
-assert(afterCoffee?.text === "Is the car moving yet?", "Trigger setelah coffee belum menegaskan kendaraan MC sudah berangkat");
-assert(config.chatScripts?.dirga_after_coffee?.steps?.some((step) => step.text === "I should've driven you home myself"), "Dirga belum menjelaskan bahwa ia sebenarnya ingin mengantar MC");
+assert(afterCoffee?.text === "Mobilnya udah jalan?", "Trigger setelah coffee belum menegaskan kendaraan MC sudah berangkat");
+assert(config.chatScripts?.dirga_after_coffee?.steps?.some((step) => step.text === "Harusnya saya yang nganter kamu pulang"), "Dirga belum menjelaskan bahwa ia sebenarnya ingin mengantar MC");
 assert(afterCoffee?.afterMs >= 6000 && afterCoffee?.afterMs <= 8000, "Jeda trigger setelah coffee bukan 6–8 detik");
 assert(afterCoffee?.requireAppExit === true, "Trigger setelah coffee tidak menunggu pemain keluar WhatsApp");
 assert(afterCoffee?.delayAfterExit === true, "Timer setelah coffee tidak dimulai sesudah keluar WhatsApp");
 assert(afterCoffee?.activateChatScript === "dirga_after_coffee", "Trigger setelah coffee tidak membuka percakapan lanjutan");
 const afterIWill = config.chatScripts?.dirga_after_coffee?.onComplete;
-assert(afterIWill?.text === "Still on the road?", "Trigger setelah I will belum memakai follow-up yang berbeda");
+assert(afterIWill?.text === "Masih di jalan?", "Trigger setelah I will belum memakai follow-up yang berbeda");
 assert(afterIWill?.afterMs >= 5000 && afterIWill?.afterMs <= 6000, "Jeda trigger setelah I will bukan 5–6 detik");
 assert(afterIWill?.requireAppExit === true && afterIWill?.delayAfterExit === true, "Trigger setelah I will tidak menunggu pemain keluar WhatsApp");
 assert(afterIWill?.activateChatScript === "dirga_home_arrival", "Trigger setelah I will tidak membuka percakapan pulang");
 const secondMeetingPlan = config.chatScripts?.dirga_home_arrival?.onComplete;
-assert(secondMeetingPlan?.text === "I found the place for Saturday", "Trigger rencana pertemuan kedua belum menjadi kelanjutan ajakan sebelumnya");
+assert(secondMeetingPlan?.text === "Saya sudah nemu tempat buat Sabtu", "Trigger rencana pertemuan kedua belum menjadi kelanjutan ajakan sebelumnya");
 assert(config.chatScripts?.dirga_second_meeting_invite?.steps?.some((step) => step.text === "I'm still picking you up"), "Konfirmasi jemputan pertemuan kedua belum tersedia");
 assert(secondMeetingPlan?.storyDate === "2026-11-26", "Tanggal trigger rencana pertemuan kedua tidak sesuai");
 assert(secondMeetingPlan?.afterMs >= 5000 && secondMeetingPlan?.afterMs <= 6000, "Jeda menuju rencana pertemuan kedua bukan 5–6 detik");
 assert(secondMeetingPlan?.requireAppExit === true && secondMeetingPlan?.delayAfterExit === true, "Trigger pertemuan kedua tidak menunggu pemain keluar WhatsApp");
 assert(secondMeetingPlan?.activateChatScript === "dirga_second_meeting_invite", "Trigger tidak membuka ajakan pertemuan kedua");
 const secondMeetingArrival = config.chatScripts?.dirga_second_meeting_invite?.onComplete;
-assert(secondMeetingArrival?.storyDate === "2026-11-28" && secondMeetingArrival?.text === "I'm here", "Trigger hari pertemuan kedua belum benar");
+assert(secondMeetingArrival?.storyDate === "2026-11-28" && secondMeetingArrival?.text === "Saya udah sampai", "Trigger hari pertemuan kedua belum benar");
 assert(secondMeetingArrival?.afterMs >= 5000 && secondMeetingArrival?.afterMs <= 6000, "Jeda menuju hari pertemuan kedua bukan 5–6 detik");
 assert(secondMeetingArrival?.calendarEvents?.some((event) => event.id === "second-meeting-dirga-28-nov"), "Pertemuan kedua belum masuk Calendar");
 const afterSecondMeeting = config.chatScripts?.dirga_second_meeting_arrival?.onComplete;
-assert(afterSecondMeeting?.text === "Home safe?" && afterSecondMeeting?.activateChatScript === "dirga_after_second_meeting", "Follow-up setelah pertemuan kedua belum tersedia");
+assert(afterSecondMeeting?.text === "Udah sampai rumah?" && afterSecondMeeting?.activateChatScript === "dirga_after_second_meeting", "Follow-up setelah pertemuan kedua belum tersedia");
 assert(afterSecondMeeting?.afterMs >= 5000 && afterSecondMeeting?.afterMs <= 6000, "Jeda follow-up pertemuan kedua bukan 5–6 detik");
 const petraCheckin = config.chatScripts?.dirga_after_second_meeting?.onComplete;
 assert(petraCheckin?.text === "Udah kelar jalannya?" && petraCheckin?.threadId === "petra", "Petra belum menghubungi MC sebelum adegan salah kirim");
@@ -128,7 +128,7 @@ assert(petraCheckin?.afterMs >= 5000 && petraCheckin?.afterMs <= 6000, "Jeda che
 assert(petraCheckin?.activateChatScript === "petra_second_meeting_report", "Check-in Petra belum membuka laporan pertemuan kedua");
 const petraReport = config.chatScripts?.petra_second_meeting_report;
 assert(petraReport?.steps?.some((step) => step.text === "Bentar gue kirim fotonya"), "MC belum memberi konteks pengiriman foto kepada Petra");
-assert(petraReport?.onComplete?.text === "Still awake?" && petraReport?.onComplete?.threadId === "dirga", "Trigger masuk ke chat Dirga belum tersedia");
+assert(petraReport?.onComplete?.text === "Masih bangun?" && petraReport?.onComplete?.threadId === "dirga", "Trigger masuk ke chat Dirga belum tersedia");
 assert(petraReport?.onComplete?.afterMs >= 5000 && petraReport?.onComplete?.afterMs <= 6000, "Jeda menuju chat Dirga bukan 5–6 detik");
 assert(petraReport?.onComplete?.activateChatScript === "dirga_wrong_send", "Trigger tidak membuka adegan salah kirim ke Dirga");
 const wrongSendScript = config.chatScripts?.dirga_wrong_send;
@@ -151,8 +151,8 @@ const personalChat = config.chatScripts?.dirga_after_work_personal;
 assert(personalChat?.steps?.[0]?.text === "Makasih tadi, Pak", "Chat setelah momen sepatu belum dimulai oleh MC");
 assert(personalChat?.steps?.some((step) => step.text === "For what?"), "Respons Dirga tentang ucapan terima kasih belum tersedia");
 assert(personalChat?.steps?.some((step) => step.text === "Benerin sepatu saya..."), "MC belum menyebut momen sepatu di chat");
-const dropPakIndex = personalChat?.steps?.findIndex((step) => step.text === "You can drop the ‘Pak’ when we're outside the office");
-const photoCallbackIndex = personalChat?.steps?.findIndex((step) => step.text === "You sent me a photo with ‘GANTENG BANGET’ written under it");
+const dropPakIndex = personalChat?.steps?.findIndex((step) => step.text === "Di luar kantor, kamu gak perlu panggil saya ‘Pak’");
+const photoCallbackIndex = personalChat?.steps?.findIndex((step) => step.text === "Kamu kirim foto dengan tulisan ‘GANTENG BANGET’ di bawahnya");
 assert(dropPakIndex >= 0 && photoCallbackIndex > dropPakIndex, "Dirga belum meminta MC melepas panggilan Pak sebelum mengungkit foto");
 assert(personalChat?.steps?.some((step) => step.type === "mc" && step.text === "...Dirga"), "MC belum mencoba memanggil Dirga tanpa Pak");
 const morningCheck = config.chatScripts?.dirga_morning_check;
@@ -160,26 +160,48 @@ assert(personalChat?.onComplete?.text === "Morning" && personalChat?.onComplete?
 assert(personalChat?.onComplete?.afterMs >= 5000 && personalChat?.onComplete?.afterMs <= 6000, "Jeda menuju morning check bukan 5–6 detik");
 assert(morningCheck?.steps?.[0]?.text === "Morning(?)", "Balasan pertama MC pada morning check masih terlalu kaku");
 assert(morningCheck?.steps?.some((step) => step.text === "Tumben Bapak pagi-pagi?"), "MC belum menyinggung kebiasaan tidur Dirga");
-assert(morningCheck?.steps?.some((step) => step.text === "Believe me, I don't like it either"), "Dirga belum menanggapi soal bangun pagi");
+assert(morningCheck?.steps?.some((step) => step.text === "Percaya deh, saya juga gak suka bangun sepagi ini"), "Dirga belum menanggapi soal bangun pagi");
 const morningApologyIndex = morningCheck?.steps?.findIndex((step) => step.text === "Maaf, belum kebiasa");
 const morningNameIndex = morningCheck?.steps?.findIndex((step) => step.text === "Siap... Dirga");
-const morningBetterIndex = morningCheck?.steps?.findIndex((step) => step.text === "Better");
+const morningBetterIndex = morningCheck?.steps?.findIndex((step) => step.text === "Nah, lebih baik");
 assert(morningApologyIndex >= 0 && morningNameIndex > morningApologyIndex && morningBetterIndex > morningNameIndex, "Transisi panggilan Dirga pada morning check belum natural");
 const decemberMeetup = config.chatScripts?.dirga_december_meetup;
-assert(morningCheck?.onComplete?.text === "Done with work?" && morningCheck?.onComplete?.storyDate === "2026-12-05", "Trigger pertemuan 5 Desember belum tersedia");
+assert(morningCheck?.onComplete?.text === "Kerjaannya udah selesai?" && morningCheck?.onComplete?.storyDate === "2026-12-05", "Trigger pertemuan 5 Desember belum tersedia");
 assert(morningCheck?.onComplete?.calendarEvents?.some((event) => event.title === "Us?" && event.date === "2026-12-05"), "Event Us? belum muncul melalui alur cerita");
 assert(decemberMeetup?.steps?.some((step) => step.text === "KOK GAK BILANG DULU"), "Respons CAPS LOCK MC belum tersedia");
 const decemberClarity = config.chatScripts?.dirga_december_clarity;
 assert(decemberMeetup?.onComplete?.text === "Kamu udah di rumah?" && decemberMeetup?.onComplete?.activateChatScript === "dirga_december_clarity", "Trigger confession setelah pertemuan belum tersedia");
-assert(decemberClarity?.steps?.some((step) => step.text === "Yes, I'm pursuing you"), "Pengakuan Dirga belum tersedia");
+assert(decemberClarity?.steps?.some((step) => step.text === "Yes, saya memang sedang mendekati kamu"), "Pengakuan Dirga belum tersedia");
 assert(decemberClarity?.steps?.some((step) => step.text === "Aku cuma belum terbiasa"), "Respons MC setelah pengakuan belum tersedia");
-assert(decemberClarity?.steps?.some((step) => step.text?.includes("worth staying for")), "Alasan personal Dirga saat confession belum tersedia");
+assert(decemberClarity?.steps?.some((step) => step.text?.includes("supaya pantas dipilih")), "Alasan personal Dirga saat confession belum tersedia");
 assert(decemberClarity?.onComplete?.activateChatScript === "petra_december_confession", "Confession belum membuka curhat dengan Petra");
 assert(config.chatScripts?.petra_december_confession?.onComplete?.exitTransition?.storyDate === "2026-12-06", "Hari sunyi setelah confession belum tersedia");
 assert(config.chatScripts?.petra_december_confession?.onComplete?.exitTransition?.armTransition?.activateChatScript === "dirga_midnight_reconciliation", "Keluar dari X belum membuka rekonsiliasi tengah malam");
 const midnightReconciliation = config.chatScripts?.dirga_midnight_reconciliation;
 assert(midnightReconciliation?.steps?.some((step) => step.text === "I never said no"), "MC belum membuka kembali kemungkinan hubungan");
 assert(midnightReconciliation?.steps?.some((step) => step.type === "incoming_call"), "Panggilan WhatsApp setelah chat tengah malam belum tersedia");
+const indonesianDirgaPattern = /\b(ini|baru|saya|kamu|gak|udah|masih|kalau|buat|bagus|makasih|waktu|tadi|tergantung|mungkin|mobilnya|delapan|harusnya|sayangnya|kabari|kata|istirahat|kedengarannya|sabtu|tempatnya|jemput|tau|dan|rumah|terlalu|karena|anggap|mikir|temani|kantor|nah|kayaknya|bisa|lain|sepatu|percaya|gimana|kompres|kerjaan|syukurlah|tujuh|wah|biasanya|pesanan|dari|membuat|memang|mau|atau|pernah|sama|maaf|jawab|jadi|kesempatan|besok|berangkat|keras)\b/i;
+const incomingDirgaTexts = Object.values(config.chatScripts || {}).reduce((map, script) => {
+  const completion = script.onComplete;
+  if (completion?.threadId === "dirga" && completion?.activateChatScript && completion?.text) {
+    if (!map.has(completion.activateChatScript)) map.set(completion.activateChatScript, []);
+    map.get(completion.activateChatScript).push(completion.text);
+  }
+  return map;
+}, new Map());
+for (const [scriptId, script] of Object.entries(config.chatScripts || {})) {
+  if (script.threadId !== "dirga") continue;
+  const dirgaLines = [
+    ...(incomingDirgaTexts.get(scriptId) || []),
+    ...(script.steps || []).filter((step) => step.type === "them").map((step) => step.text)
+  ];
+  const indonesianLines = dirgaLines.filter((text) => indonesianDirgaPattern.test(text));
+  assert(indonesianLines.length >= Math.ceil(dirgaLines.length / 2), `Dialog Dirga pada ${scriptId} belum memiliki setidaknya separuh baris berbahasa Indonesia`);
+}
+const callCaptionBlock = appSource.match(/const callCaptions = \[([\s\S]*?)\n  \];/)?.[1] || "";
+const dirgaCallLines = [...callCaptionBlock.matchAll(/\{ speaker: "Dirga", text: "([^"]+)"/g)].map((match) => match[1]);
+assert(dirgaCallLines.length > 0 && dirgaCallLines.filter((text) => indonesianDirgaPattern.test(text)).length >= Math.ceil(dirgaCallLines.length / 2), "Dialog telepon Dirga belum memiliki setidaknya separuh baris berbahasa Indonesia");
+assert(/const dirgaLanguageMigrations = \{/.test(appSource), "Riwayat chat lama belum dimigrasikan ke dialog bilingual Dirga");
 const warmDirgaScripts = new Set(["dirga_after_work_personal", "dirga_morning_check", "dirga_december_meetup", "dirga_december_clarity", "dirga_midnight_reconciliation"]);
 for (const [scriptId, script] of Object.entries(config.chatScripts || {})) {
   if ((script.threadId || scriptId) !== "dirga") continue;

@@ -2399,7 +2399,7 @@
     state.activeCall = null;
     clearCallDurationTimer();
     state.activeThreadId = call.threadId;
-    state.view = "thread";
+    state.view = "phone";
     advanceChatScript(call.threadId);
     if (call.afterCallStoryDate || call.afterCallStoryTime) {
       setStoryClock(call.afterCallStoryDate || state.storyDate, call.afterCallStoryTime || state.storyTime);

@@ -2244,14 +2244,14 @@
             <button type="button" disabled aria-label="Mute"><span>⌁</span><small>mute</small></button>
             <button type="button" disabled aria-label="Speaker"><span>◖</span><small>speaker</small></button>
           </div>
-          <button class="wa-call-end" id="wa-call-end" type="button" aria-label="End call"><span>☎</span><small>end</small></button>` : `
+          <button class="wa-call-end" id="wa-call-end" type="button" aria-label="End call"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.7 14.8C8.1 10.7 15.9 10.7 20.3 14.8L17 18.1c-2.7-2.2-7.3-2.2-10 0L3.7 14.8Z"/></svg></span><small>end</small></button>` : `
           <div class="iphone-call-secondary">
             <button type="button" disabled><span><svg viewBox="0 0 24 24" aria-hidden="true"><path class="is-filled" d="M4 4.5h16a2 2 0 0 1 2 2v8.8a2 2 0 0 1-2 2H10l-5.3 3.2.9-3.2H4a2 2 0 0 1-2-2V6.5a2 2 0 0 1 2-2Z"/></svg></span><small>Message</small></button>
             <button type="button" disabled><span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6.5" cy="11.5" r="4"/><circle cx="17.5" cy="11.5" r="4"/><path d="M6.5 15.5h11"/></svg></span><small>Voicemail</small></button>
           </div>
           <div class="iphone-call-actions">
-            <button class="iphone-call-decline" type="button" disabled aria-label="Decline call"><span>☎</span><small>Decline</small></button>
-            <button class="wa-call-answer" id="wa-call-answer" type="button" aria-label="Accept call"><span>☎</span><small>Accept</small></button>
+            <button class="iphone-call-decline" type="button" disabled aria-label="Decline call"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.7 14.8C8.1 10.7 15.9 10.7 20.3 14.8L17 18.1c-2.7-2.2-7.3-2.2-10 0L3.7 14.8Z"/></svg></span><small>Decline</small></button>
+            <button class="wa-call-answer" id="wa-call-answer" type="button" aria-label="Accept call"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.7 14.8C8.1 10.7 15.9 10.7 20.3 14.8L17 18.1c-2.7-2.2-7.3-2.2-10 0L3.7 14.8Z"/></svg></span><small>Accept</small></button>
           </div>`}
       </section>`;
     document.querySelector("#wa-call-answer")?.addEventListener("click", () => {

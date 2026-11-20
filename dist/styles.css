@@ -847,7 +847,14 @@ body[data-view="settings"] .home-indicator span { background: #fff; box-shadow: 
   transform: rotate(-20deg);
   box-shadow: 0 8px 24px rgba(0,0,0,.3);
 }
-.wa-call-end span { background: #ff3b30; transform: rotate(135deg); }
+.wa-call-end span { background: #ff3b30; }
+.wa-call-end svg,
+.iphone-call-actions svg {
+  display: block;
+  width: 30px;
+  height: 30px;
+  fill: #fff;
+}
 .wa-call-end small { color: rgba(255,255,255,.84); font-size: 11px; }
 .iphone-call-secondary,
 .iphone-call-actions {
@@ -903,8 +910,9 @@ body[data-view="settings"] .home-indicator span { background: #fff; box-shadow: 
   font-size: 25px;
   box-shadow: 0 8px 22px rgba(0,0,0,.22);
 }
-.iphone-call-actions .iphone-call-decline span { background: #ff3b30; transform: rotate(135deg); }
-.iphone-call-actions .wa-call-answer span { background: #34c759; transform: rotate(-20deg); }
+.iphone-call-actions .iphone-call-decline span { background: #ff3b30; }
+.iphone-call-actions .wa-call-answer span { background: #34c759; }
+.iphone-call-actions .wa-call-answer svg { transform: rotate(-50deg); }
 .iphone-call-secondary small,
 .iphone-call-actions small { color: #fff; font-size: 10px; font-weight: 450; }
 .wa-call-controls {

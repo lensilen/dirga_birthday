@@ -685,6 +685,50 @@
         if (event.id === "after-coffee-home-check") event.time = "18:42";
         if (event.id === "home-arrival-follow-up") event.time = "19:17";
       });
+      const dirgaTimeline = new Map();
+      const ambiguousDirgaTimelineKeys = new Set();
+      let dirgaTimelineRank = 0;
+      const rememberDirgaTimeline = (text, time, storyDate) => {
+        if (!text || !time || !storyDate) return;
+        const key = `${text}\u0000${time}`;
+        const existing = dirgaTimeline.get(key);
+        if (existing && existing.storyDate !== storyDate) ambiguousDirgaTimelineKeys.add(key);
+        else if (!existing) dirgaTimeline.set(key, { storyDate, time, rank: dirgaTimelineRank++ });
+      };
+      Object.values(config.chatScripts || {}).forEach((script) => {
+        if (script.threadId === "dirga") {
+          (script.steps || []).forEach((step) => {
+            if (["mc", "them"].includes(step.type)) {
+              rememberDirgaTimeline(step.text, step.time, step.storyDate || script.storyDate);
+            }
+          });
+        }
+        const completion = script.onComplete;
+        if (completion?.threadId === "dirga" && completion?.text) {
+          rememberDirgaTimeline(completion.text, completion.time, completion.storyDate || script.storyDate);
+        }
+      });
+      loaded.messages.dirga = (loaded.messages?.dirga || [])
+        .map((message, index) => {
+          const key = `${message.text || ""}\u0000${message.time || ""}`;
+          const canonical = ambiguousDirgaTimelineKeys.has(key) ? null : dirgaTimeline.get(key);
+          if (canonical) {
+            message.storyDate = canonical.storyDate;
+            message.time = canonical.time;
+          }
+          return { message, index, rank: canonical?.rank ?? Number.MAX_SAFE_INTEGER };
+        })
+        .sort((first, second) => {
+          const firstDate = String(first.message.storyDate || "2026-11-17");
+          const secondDate = String(second.message.storyDate || "2026-11-17");
+          if (firstDate !== secondDate) return firstDate.localeCompare(secondDate);
+          const firstTime = normalizeStoryTime(first.message.time);
+          const secondTime = normalizeStoryTime(second.message.time);
+          if (firstTime !== secondTime) return firstTime.localeCompare(secondTime);
+          if (first.rank !== second.rank) return first.rank - second.rank;
+          return first.index - second.index;
+        })
+        .map(({ message }) => message);
       if (!Object.prototype.hasOwnProperty.call(saved, "storyDate") || !Object.prototype.hasOwnProperty.call(saved, "storyTime")) {
         const dirgaMessages = loaded.messages?.dirga || [];
         const hasCoffeeScene = loaded.deliveredEvents?.includes("coffee-dirga-arrival")

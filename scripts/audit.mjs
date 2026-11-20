@@ -202,6 +202,7 @@ const callCaptionBlock = appSource.match(/const callCaptions = \[([\s\S]*?)\n  \
 const dirgaCallLines = [...callCaptionBlock.matchAll(/\{ speaker: "Dirga", text: "([^"]+)"/g)].map((match) => match[1]);
 assert(dirgaCallLines.length > 0 && dirgaCallLines.filter((text) => indonesianDirgaPattern.test(text)).length >= Math.ceil(dirgaCallLines.length / 2), "Dialog telepon Dirga belum memiliki setidaknya separuh baris berbahasa Indonesia");
 assert(/const dirgaLanguageMigrations = \{/.test(appSource), "Riwayat chat lama belum dimigrasikan ke dialog bilingual Dirga");
+assert(/const dirgaTimeline = new Map\(\)/.test(appSource) && /loaded\.messages\.dirga = \(loaded\.messages\?\.dirga \|\| \[\]\)/.test(appSource) && /firstDate\.localeCompare\(secondDate\)/.test(appSource), "Riwayat chat Dirga belum dinormalisasi mengikuti tanggal dan waktu cerita");
 const warmDirgaScripts = new Set(["dirga_after_work_personal", "dirga_morning_check", "dirga_december_meetup", "dirga_december_clarity", "dirga_midnight_reconciliation"]);
 for (const [scriptId, script] of Object.entries(config.chatScripts || {})) {
   if ((script.threadId || scriptId) !== "dirga") continue;

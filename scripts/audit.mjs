@@ -109,8 +109,8 @@ assert(afterIWill?.afterMs >= 5000 && afterIWill?.afterMs <= 6000, "Jeda trigger
 assert(afterIWill?.requireAppExit === true && afterIWill?.delayAfterExit === true, "Trigger setelah I will tidak menunggu pemain keluar WhatsApp");
 assert(afterIWill?.activateChatScript === "dirga_home_arrival", "Trigger setelah I will tidak membuka percakapan pulang");
 const secondMeetingPlan = config.chatScripts?.dirga_home_arrival?.onComplete;
-assert(secondMeetingPlan?.text === "Saya sudah nemu tempat buat Sabtu", "Trigger rencana pertemuan kedua belum menjadi kelanjutan ajakan sebelumnya");
-assert(config.chatScripts?.dirga_second_meeting_invite?.steps?.some((step) => step.text === "Nanti biar saya yang jemput") && config.chatScripts?.dirga_second_meeting_invite?.steps?.some((step) => step.text === "Tapi saya tetap mau jemput kamu"), "Konfirmasi jemputan pertemuan kedua belum terasa hangat");
+assert(secondMeetingPlan?.text === "Tempat buat Sabtu udah ketemu", "Trigger rencana pertemuan kedua belum menjadi kelanjutan ajakan sebelumnya");
+assert(config.chatScripts?.dirga_second_meeting_invite?.steps?.some((step) => step.text === "Nanti saya mampir jemput") && config.chatScripts?.dirga_second_meeting_invite?.steps?.some((step) => step.text === "Biar saya pastikan kamu gak telat lagi"), "Konfirmasi jemputan pertemuan kedua belum terasa hangat");
 assert(secondMeetingPlan?.storyDate === "2026-11-26", "Tanggal trigger rencana pertemuan kedua tidak sesuai");
 assert(secondMeetingPlan?.afterMs >= 5000 && secondMeetingPlan?.afterMs <= 6000, "Jeda menuju rencana pertemuan kedua bukan 5–6 detik");
 assert(secondMeetingPlan?.requireAppExit === true && secondMeetingPlan?.delayAfterExit === true, "Trigger pertemuan kedua tidak menunggu pemain keluar WhatsApp");
@@ -171,16 +171,16 @@ assert(morningCheck?.onComplete?.calendarEvents?.some((event) => event.title ===
 assert(decemberMeetup?.steps?.some((step) => step.text === "KOK GAK BILANG DULU"), "Respons CAPS LOCK MC belum tersedia");
 const decemberClarity = config.chatScripts?.dirga_december_clarity;
 assert(decemberMeetup?.onComplete?.text === "Kamu udah di rumah?" && decemberMeetup?.onComplete?.activateChatScript === "dirga_december_clarity", "Trigger confession setelah pertemuan belum tersedia");
-assert(decemberClarity?.steps?.some((step) => step.text === "Yes, saya memang sedang mendekati kamu"), "Pengakuan Dirga belum tersedia");
+assert(decemberClarity?.steps?.some((step) => step.text === "Yes, saya memang lagi mendekati kamu"), "Pengakuan Dirga belum tersedia");
 assert(decemberClarity?.steps?.some((step) => step.text === "Aku cuma belum terbiasa"), "Respons MC setelah pengakuan belum tersedia");
-assert(decemberClarity?.steps?.some((step) => step.text?.includes("supaya pantas dipilih")), "Alasan personal Dirga saat confession belum tersedia");
+assert(decemberClarity?.steps?.some((step) => step.text?.includes("supaya merasa cukup")), "Alasan personal Dirga saat confession belum tersedia");
 assert(decemberClarity?.onComplete?.activateChatScript === "petra_december_confession", "Confession belum membuka curhat dengan Petra");
 assert(config.chatScripts?.petra_december_confession?.onComplete?.exitTransition?.storyDate === "2026-12-06", "Hari sunyi setelah confession belum tersedia");
 assert(config.chatScripts?.petra_december_confession?.onComplete?.exitTransition?.armTransition?.activateChatScript === "dirga_midnight_reconciliation", "Keluar dari X belum membuka rekonsiliasi tengah malam");
 const midnightReconciliation = config.chatScripts?.dirga_midnight_reconciliation;
 assert(midnightReconciliation?.steps?.some((step) => step.text === "I never said no"), "MC belum membuka kembali kemungkinan hubungan");
 assert(midnightReconciliation?.steps?.some((step) => step.type === "incoming_call"), "Panggilan WhatsApp setelah chat tengah malam belum tersedia");
-const indonesianDirgaPattern = /\b(ini|baru|saya|kamu|gak|udah|masih|kalau|buat|bagus|makasih|waktu|tadi|tergantung|mungkin|mobilnya|delapan|harusnya|sayangnya|kabari|kata|istirahat|kedengarannya|sabtu|tempatnya|jemput|tau|dan|rumah|terlalu|karena|anggap|mikir|temani|kantor|nah|kayaknya|bisa|lain|sepatu|percaya|gimana|kompres|kerjaan|syukurlah|tujuh|wah|biasanya|pesanan|dari|membuat|memang|mau|atau|pernah|sama|maaf|jawab|jadi|kesempatan|besok|berangkat|keras)\b/i;
+const indonesianDirgaPattern = /\b(ini|baru|saya|kamu|gak|udah|masih|kalau|buat|bagus|makasih|waktu|tadi|tergantung|mungkin|mobilnya|mobil|delapan|harusnya|sayangnya|kabari|kata|istirahat|kedengarannya|sabtu|tempatnya|jemput|tau|dan|rumah|terlalu|karena|anggap|mikir|temani|kantor|nah|kayaknya|bisa|lain|sepatu|percaya|gimana|kompres|kerjaan|kerjaannya|syukurlah|tujuh|wah|biasanya|pesanan|dari|membuat|memang|mau|atau|pernah|sama|maaf|jawab|jadi|kesempatan|besok|berangkat|keras|pas|oke|aman|tapi|biar|bakal|pura-pura|jalanin|ngerasa|setumpuk)\b/i;
 const incomingDirgaTexts = Object.values(config.chatScripts || {}).reduce((map, script) => {
   const completion = script.onComplete;
   if (completion?.threadId === "dirga" && completion?.activateChatScript && completion?.text) {
@@ -198,6 +198,11 @@ for (const [scriptId, script] of Object.entries(config.chatScripts || {})) {
   const indonesianLines = dirgaLines.filter((text) => indonesianDirgaPattern.test(text));
   assert(indonesianLines.length >= Math.ceil(dirgaLines.length / 2), `Dialog Dirga pada ${scriptId} belum memiliki setidaknya separuh baris berbahasa Indonesia`);
 }
+const allDirgaReplies = Object.values(config.chatScripts || {})
+  .filter((script) => script.threadId === "dirga")
+  .flatMap((script) => (script.steps || []).filter((step) => step.type === "them").map((step) => step.text));
+assert(allDirgaReplies.filter((text) => /\bjemput\b/i.test(text)).length <= 1, "Kata jemput masih terlalu sering diulang dalam dialog Dirga");
+assert(!allDirgaReplies.includes("Bagus"), "Respons Bagus masih dipakai berulang tanpa menyesuaikan konteks");
 const callCaptionBlock = appSource.match(/const callCaptions = \[([\s\S]*?)\n  \];/)?.[1] || "";
 const dirgaCallLines = [...callCaptionBlock.matchAll(/\{ speaker: "Dirga", text: "([^"]+)"/g)].map((match) => match[1]);
 assert(dirgaCallLines.length > 0 && dirgaCallLines.filter((text) => indonesianDirgaPattern.test(text)).length >= Math.ceil(dirgaCallLines.length / 2), "Dialog telepon Dirga belum memiliki setidaknya separuh baris berbahasa Indonesia");

@@ -295,6 +295,7 @@
           "How attached are you to your Saturday plans?": "2026-11-26",
           "I found the place for Saturday": "2026-11-26",
           "Saya sudah nemu tempat buat Sabtu": "2026-11-26",
+          "Tempat buat Sabtu udah ketemu": "2026-11-26",
           "I'm here": "2026-11-28",
           "Pak masih di kantor?": "2026-11-30"
         });
@@ -519,26 +520,33 @@
         "I should've driven you home myself": "Harusnya saya yang nganter kamu pulang",
         "Unfortunately": "Sayangnya",
         "Text me when you're home?": "Kabari saya kalau udah sampai, ya?",
-        "I found the place for Saturday": "Saya sudah nemu tempat buat Sabtu",
+        "I found the place for Saturday": "Tempat buat Sabtu udah ketemu",
+        "Saya sudah nemu tempat buat Sabtu": "Tempat buat Sabtu udah ketemu",
         "Says the person who promised to text": "Kata orang yang janji bakal ngabarin",
         "Get some rest": "Istirahat dulu",
         "I should be thanking you": "Harusnya saya yang bilang makasih",
         "That sounded reluctant": "Kedengarannya ragu",
-        "Then don't make plans for next Saturday evening": "Kalau begitu, Sabtu depan jangan bikin rencana malam-malam",
-        "I don't make plans I don't intend to keep": "Saya gak bikin rencana kalau gak berniat nepatin",
+        "Then don't make plans for next Saturday evening": "Kalau gitu, Sabtu depan malam jangan bikin rencana dulu",
+        "Kalau begitu, Sabtu depan jangan bikin rencana malam-malam": "Kalau gitu, Sabtu depan malam jangan bikin rencana dulu",
+        "I don't make plans I don't intend to keep": "Kalau saya udah bikin rencana, berarti bakal ditepatin",
+        "Saya gak bikin rencana kalau gak berniat nepatin": "Kalau saya udah bikin rencana, berarti bakal ditepatin",
         "It's a surprise": "Tempatnya kejutan",
-        "I'll pick you up": "Nanti biar saya yang jemput",
-        "Saya jemput": "Nanti biar saya yang jemput",
+        "I'll pick you up": "Nanti saya mampir jemput",
+        "Saya jemput": "Nanti saya mampir jemput",
+        "Nanti biar saya yang jemput": "Nanti saya mampir jemput",
         "Saya tau": "I know",
-        "I'm still picking you up": "Tapi saya tetap mau jemput kamu",
+        "I'm still picking you up": "Biar saya pastikan kamu gak telat lagi",
+        "Tapi saya tetap mau jemput kamu": "Biar saya pastikan kamu gak telat lagi",
         "I'm here": "Saya udah sampai",
         "Home safe?": "Udah sampai rumah?",
         "And you still came down late": "Dan kamu tetap turun telat",
-        "You looked like you needed a night away from work": "Kamu kelihatan butuh satu malam jauh dari kerjaan",
+        "You looked like you needed a night away from work": "Kelihatan banget kamu butuh kabur sebentar dari kerjaan",
+        "Kamu kelihatan butuh satu malam jauh dari kerjaan": "Kelihatan banget kamu butuh kabur sebentar dari kerjaan",
         "Was that too honest?": "Terlalu jujur?",
         "Because I meant it": "Karena saya serius",
         "Still awake?": "Masih bangun?",
-        "I'm going to assume that wasn't meant for me": "Saya anggap itu bukan buat saya",
+        "I'm going to assume that wasn't meant for me": "Saya bakal pura-pura itu bukan buat saya",
+        "Saya anggap itu bukan buat saya": "Saya bakal pura-pura itu bukan buat saya",
         "I figured": "Sudah saya duga",
         "I was hoping you thought so": "Saya memang berharap kamu mikir begitu",
         "Maybe two": "Mungkin dua",
@@ -556,28 +564,37 @@
         "Ice it after work": "Kompres es habis kerja",
         "You would've said you were busy": "Kamu pasti bilang lagi sibuk",
         "Glad to know": "Syukurlah",
-        "I made the mistake of opening my laptop again": "Saya salah buka laptop lagi",
+        "I made the mistake of opening my laptop again": "Tadi saya malah buka laptop lagi",
+        "Saya salah buka laptop lagi": "Tadi saya malah buka laptop lagi",
         "Seventeen comments on a document that was supposed to be final": "Tujuh belas komentar di dokumen yang katanya sudah final",
         "This must be serious": "Wah, ini pasti serius",
         "You usually ask first and apologize later": "Biasanya kamu langsung tanya, baru minta maaf belakangan",
         "I don't remember everyone's coffee order": "Saya gak hafal pesanan kopi semua orang",
         "And I don't wake up early to ask about everyone's ankle": "Dan saya gak bangun pagi buat nanyain pergelangan kaki semua orang",
-        "I've been trying to make this obvious without making you uncomfortable": "Dari kemarin saya berusaha bikin ini kelihatan tanpa membuat kamu gak nyaman",
-        "Yes, I'm pursuing you": "Yes, saya memang sedang mendekati kamu",
-        "I want you to let me do this properly": "Saya mau kamu membiarkan saya melakukan ini dengan benar",
+        "I've been trying to make this obvious without making you uncomfortable": "Saya berusaha bikin ini kelihatan tanpa bikin kamu gak nyaman",
+        "Dari kemarin saya berusaha bikin ini kelihatan tanpa membuat kamu gak nyaman": "Saya berusaha bikin ini kelihatan tanpa bikin kamu gak nyaman",
+        "Yes, I'm pursuing you": "Yes, saya memang lagi mendekati kamu",
+        "Yes, saya memang sedang mendekati kamu": "Yes, saya memang lagi mendekati kamu",
+        "I want you to let me do this properly": "Biar saya jalanin ini dengan benar",
+        "Saya mau kamu membiarkan saya melakukan ini dengan benar": "Biar saya jalanin ini dengan benar",
         "Or the position. Or what they think being close to me could get them": "Atau jabatan saya. Atau apa yang mereka kira bisa mereka dapat kalau dekat dengan saya",
         "You never did": "Kamu gak pernah begitu",
-        "With you, I don't feel like I have to be impressive to be worth staying for": "Sama kamu, saya gak merasa harus terlihat mengesankan supaya pantas dipilih",
-        "I'm sorry if I made you feel rushed or uncomfortable": "Maaf kalau saya membuat kamu merasa terburu-buru atau gak nyaman",
+        "With you, I don't feel like I have to be impressive to be worth staying for": "Sama kamu, saya gak perlu kelihatan hebat dulu supaya merasa cukup",
+        "Sama kamu, saya gak merasa harus terlihat mengesankan supaya pantas dipilih": "Sama kamu, saya gak perlu kelihatan hebat dulu supaya merasa cukup",
+        "I'm sorry if I made you feel rushed or uncomfortable": "Maaf kalau cara saya bikin kamu ngerasa terburu-buru atau gak nyaman",
+        "Maaf kalau saya membuat kamu merasa terburu-buru atau gak nyaman": "Maaf kalau cara saya bikin kamu ngerasa terburu-buru atau gak nyaman",
         "You don't owe me an answer tonight": "Kamu gak harus jawab malam ini",
         "Still awake": "Masih bangun",
         "I thought you wanted me to leave you alone": "Saya kira kamu mau saya menjauh",
         "I was the one who made you uncomfortable": "Saya yang bikin kamu gak nyaman",
         "So there is still a chance?": "Jadi masih ada kesempatan?",
-        "I should've noticed": "Harusnya saya sadar",
+        "I should've noticed": "Harusnya dari awal saya sadar",
+        "Harusnya saya sadar": "Harusnya dari awal saya sadar",
         "It's already midnight. Get some rest": "Udah tengah malam. Istirahat",
-        "I still have documents to read before tomorrow": "Saya masih harus baca dokumen buat besok",
-        "I'll pick you up tomorrow": "Besok saya jemput",
+        "I still have documents to read before tomorrow": "Masih ada setumpuk dokumen buat besok",
+        "Saya masih harus baca dokumen buat besok": "Masih ada setumpuk dokumen buat besok",
+        "I'll pick you up tomorrow": "Besok ikut mobil saya aja",
+        "Besok saya jemput": "Besok ikut mobil saya aja",
         "Stubborn as always": "Keras kepala seperti biasa"
       };
       const messageTextMigrations = {
@@ -607,6 +624,20 @@
       Object.values(loaded.messages || {}).flat().forEach((message) => {
         if (messageTextMigrations[message.text]) message.text = messageTextMigrations[message.text];
         if (message.storyDate === "2026-12-05" && message.text === "I'm downstairs") message.time = "18:09";
+      });
+      const contextualDirgaResponses = {
+        "22:41": "Oke, good",
+        "18:43": "Good",
+        "19:18": "Syukurlah",
+        "19:25": "Nah, itu baru jawaban yang saya mau",
+        "22:37": "Oke, aman",
+        "22:43": "Good",
+        "18:09": "Pas banget"
+      };
+      (loaded.messages?.dirga || []).forEach((message) => {
+        if (message.text === "Bagus" && contextualDirgaResponses[message.time]) {
+          message.text = contextualDirgaResponses[message.time];
+        }
       });
       (loaded.pendingNotifications || []).forEach((event) => {
         if (messageTextMigrations[event.text]) event.text = messageTextMigrations[event.text];

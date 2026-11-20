@@ -883,6 +883,17 @@ body[data-view="settings"] .home-indicator span { background: #fff; box-shadow: 
   background: rgba(255,255,255,.22);
   font-size: 13px;
 }
+.iphone-call-secondary svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.iphone-call-secondary svg .is-filled { fill: #fff; stroke: none; }
 .iphone-call-actions button span {
   width: 58px;
   height: 58px;

@@ -18,7 +18,7 @@ window.STORY_CONFIG = {
 
   lock: {
     pin: "1117",
-    hint: "Swipe up to unlock"
+    hint: "Tap to unlock"
   },
 
   theme: {

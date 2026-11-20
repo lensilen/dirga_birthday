@@ -109,7 +109,8 @@ assert(afterIWill?.afterMs >= 5000 && afterIWill?.afterMs <= 6000, "Jeda trigger
 assert(afterIWill?.requireAppExit === true && afterIWill?.delayAfterExit === true, "Trigger setelah I will tidak menunggu pemain keluar WhatsApp");
 assert(afterIWill?.activateChatScript === "dirga_home_arrival", "Trigger setelah I will tidak membuka percakapan pulang");
 const secondMeetingPlan = config.chatScripts?.dirga_home_arrival?.onComplete;
-assert(secondMeetingPlan?.text === "How attached are you to your Saturday plans?", "Trigger rencana pertemuan kedua belum tersedia");
+assert(secondMeetingPlan?.text === "I found the place for Saturday", "Trigger rencana pertemuan kedua belum menjadi kelanjutan ajakan sebelumnya");
+assert(config.chatScripts?.dirga_second_meeting_invite?.steps?.some((step) => step.text === "I'm still picking you up"), "Konfirmasi jemputan pertemuan kedua belum tersedia");
 assert(secondMeetingPlan?.storyDate === "2026-11-26", "Tanggal trigger rencana pertemuan kedua tidak sesuai");
 assert(secondMeetingPlan?.afterMs >= 5000 && secondMeetingPlan?.afterMs <= 6000, "Jeda menuju rencana pertemuan kedua bukan 5–6 detik");
 assert(secondMeetingPlan?.requireAppExit === true && secondMeetingPlan?.delayAfterExit === true, "Trigger pertemuan kedua tidak menunggu pemain keluar WhatsApp");
@@ -211,7 +212,7 @@ assert(Object.values(config.chatScripts || {}).every((script) => /^2026-\d{2}-\d
 assert(/formatWhatsAppDay\(message\.storyDate/.test(appSource), "WhatsApp belum memisahkan percakapan berdasarkan hari");
 assert(/homeProfileIds[\s\S]*visibleInstagramPosts\(profile\)\[0\]/.test(appSource), "Home Instagram belum mengambil post terbaru tiap profil");
 assert(/storyDateReached\(postDate\)/.test(appSource), "X belum mengikuti tanggal cerita");
-assert(/storyRevision:\s*12/.test(appSource) && /extendedScriptId = "dirga_home_arrival"/.test(appSource) && /reorderedScripts/.test(appSource) && /personalScriptId = "dirga_after_work_personal"/.test(appSource) && /redateThread\("dirga"/.test(appSource) && /goodCountByDate/.test(appSource) && /morningWasComplete/.test(appSource) && /replacedClarityTexts/.test(appSource) && /oldCoffeeTexts/.test(appSource), "Progress lama belum dimigrasikan ke struktur cerita terbaru");
+assert(/storyRevision:\s*13/.test(appSource) && /extendedScriptId = "dirga_home_arrival"/.test(appSource) && /reorderedScripts/.test(appSource) && /personalScriptId = "dirga_after_work_personal"/.test(appSource) && /redateThread\("dirga"/.test(appSource) && /goodCountByDate/.test(appSource) && /morningWasComplete/.test(appSource) && /replacedClarityTexts/.test(appSource) && /oldCoffeeTexts/.test(appSource) && /oldSecondMeetingTexts/.test(appSource), "Progress lama belum dimigrasikan ke struktur cerita terbaru");
 assert(/function applyPendingViewTransitions\(previousView\)/.test(appSource), "Transisi hari sunyi berbasis keluar aplikasi belum tersedia");
 assert(/function renderIncomingCall\(\)/.test(appSource) && /function finishActiveCall\(\)/.test(appSource), "Layar panggilan telepon belum tersedia");
 assert(!/WhatsApp Audio/.test(appSource) && /call\.label \|\| "mobile"/.test(appSource), "Panggilan masih ditampilkan sebagai WhatsApp Audio");

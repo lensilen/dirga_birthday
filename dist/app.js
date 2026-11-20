@@ -60,7 +60,7 @@
   ];
 
   const defaultState = () => ({
-    storyRevision: 12,
+    storyRevision: 13,
     unlocked: false,
     pinVisible: false,
     view: "lock",
@@ -293,6 +293,7 @@
         redateThread("dirga", "2026-11-17", {
           "I'm downstairs": "2026-11-21",
           "How attached are you to your Saturday plans?": "2026-11-26",
+          "I found the place for Saturday": "2026-11-26",
           "I'm here": "2026-11-28",
           "Pak masih di kantor?": "2026-11-30"
         });
@@ -459,6 +460,49 @@
           if (event.id === "after-coffee-home-check") event.text = "Is the car moving yet?";
         });
         loaded.storyRevision = 12;
+      }
+      if ((saved.storyRevision || 0) < 13) {
+        const dirgaMessages = loaded.messages?.dirga || [];
+        const oldSecondMeetingTexts = new Set([
+          "How attached are you to your Saturday plans?",
+          "Depends... kenapa?",
+          "I may have found somewhere",
+          "Saturday, six",
+          "Pak ini ngajak atau ngasih jadwal sih",
+          "Does it matter if you're saying yes?",
+          "Yaudah... yes",
+          "Good choice",
+          "I'll pick you up"
+        ]);
+        const oldSecondMeetingIndexes = dirgaMessages
+          .map((message, index) => ({ message, index }))
+          .filter(({ message }) => message.storyDate === "2026-11-26" && oldSecondMeetingTexts.has(message.text))
+          .map(({ index }) => index);
+        if (oldSecondMeetingIndexes.length) {
+          const insertAt = Math.min(...oldSecondMeetingIndexes);
+          const oldProgress = loaded.chatProgress?.dirga_second_meeting_invite || 0;
+          const completed = (loaded.completedChats || []).includes("dirga_second_meeting_invite");
+          const migratedProgress = completed
+            ? config.chatScripts.dirga_second_meeting_invite.steps.length
+            : ({ 0: 0, 1: 1, 2: 2, 3: 4, 4: 5, 5: 6, 6: 9, 7: 9, 8: 13 }[oldProgress] ?? Math.min(oldProgress, 13));
+          const replacement = [
+            { from: "them", text: "I found the place for Saturday", time: "20:14", storyDate: "2026-11-26" },
+            ...config.chatScripts.dirga_second_meeting_invite.steps.slice(0, migratedProgress).map((step) => ({
+              from: step.type === "mc" ? "me" : "them",
+              text: step.text,
+              time: step.time,
+              storyDate: "2026-11-26"
+            }))
+          ];
+          const retained = dirgaMessages.filter((message) => !(message.storyDate === "2026-11-26" && oldSecondMeetingTexts.has(message.text)));
+          retained.splice(insertAt, 0, ...replacement);
+          loaded.messages.dirga = retained;
+          if (!completed) loaded.chatProgress.dirga_second_meeting_invite = migratedProgress;
+        }
+        (loaded.pendingNotifications || []).forEach((event) => {
+          if (event.id === "second-meeting-plan-check") event.text = "I found the place for Saturday";
+        });
+        loaded.storyRevision = 13;
       }
       const messageTextMigrations = {
         "Harusnya bisaa, gue cek kerjaan dulu ya 😭": "Harusnya bisaa, gue cek kerjaan dulu yaa",

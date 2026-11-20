@@ -309,7 +309,7 @@ window.STORY_CONFIG = {
         id: "second-meeting-plan-check",
         threadId: "dirga",
         notificationTitle: "?",
-        text: "How attached are you to your Saturday plans?",
+        text: "I found the place for Saturday",
         storyDate: "2026-11-26",
         time: "20:14",
         afterMs: 5500,
@@ -364,14 +364,19 @@ window.STORY_CONFIG = {
         ]
       },
       steps: [
-        { type: "mc", text: "Depends... kenapa?", time: "20:14", waitBefore: 650 },
-        { type: "them", text: "I may have found somewhere", time: "20:15", waitBefore: 1700, typingMs: 1400 },
-        { type: "them", text: "Saturday, six", time: "20:15", waitBefore: 500, typingMs: 900 },
-        { type: "mc", text: "Pak ini ngajak atau ngasih jadwal sih", time: "20:16", waitBefore: 650 },
-        { type: "them", text: "Does it matter if you're saying yes?", time: "20:16", waitBefore: 1700, typingMs: 1500 },
-        { type: "mc", text: "Yaudah... yes", time: "20:17", waitBefore: 700 },
-        { type: "them", text: "Good choice", time: "20:17", waitBefore: 1400, typingMs: 800 },
-        { type: "them", text: "I'll pick you up", time: "20:18", waitBefore: 450, typingMs: 1000 }
+        { type: "mc", text: "Oh jadi Sabtu kemarin serius?", time: "20:14", waitBefore: 650 },
+        { type: "them", text: "I don't make plans I don't intend to keep", time: "20:15", waitBefore: 1700, typingMs: 1500 },
+        { type: "mc", text: "Saya tau... cuma gak nyangka langsung disiapin", time: "20:15", waitBefore: 650 },
+        { type: "them", text: "Saturday, six", time: "20:16", waitBefore: 1500, typingMs: 900 },
+        { type: "mc", text: "Tempatnya?", time: "20:16", waitBefore: 650 },
+        { type: "them", text: "It's a surprise", time: "20:17", waitBefore: 1500, typingMs: 950 },
+        { type: "mc", text: "Pak, ini mencurigakan", time: "20:17", waitBefore: 650 },
+        { type: "them", text: "And yet you're still going", time: "20:18", waitBefore: 1500, typingMs: 1200 },
+        { type: "mc", text: "Yaudah... yes", time: "20:18", waitBefore: 650 },
+        { type: "them", text: "I'll pick you up", time: "20:19", waitBefore: 1400, typingMs: 1000 },
+        { type: "mc", text: "Saya bisa berangkat sendiri kok", time: "20:19", waitBefore: 650 },
+        { type: "them", text: "I know", time: "20:20", waitBefore: 1300, typingMs: 700 },
+        { type: "them", text: "I'm still picking you up", time: "20:20", waitBefore: 450, typingMs: 1100 }
       ]
     },
     dirga_second_meeting_arrival: {

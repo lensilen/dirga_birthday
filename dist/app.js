@@ -10,6 +10,7 @@
   const toastRegion = document.querySelector("#toast-region");
   const statusTime = document.querySelector("#status-time");
   const demoPin = document.querySelector("#demo-pin");
+  const previewMode = new URLSearchParams(window.location.search).get("preview");
 
   const seededCallHistory = () => ([
     { id: "call-mama-1", threadId: "mama", name: "Mama", label: "mobile", dateLabel: "Yesterday", time: "20:14", outgoing: true },
@@ -61,6 +62,27 @@
   });
 
   let state = loadState();
+  if (previewMode === "incoming-call") {
+    state = {
+      ...defaultState(),
+      unlocked: true,
+      view: "incoming-call",
+      storyDate: "2026-12-07",
+      storyTime: "00:26",
+      activeThreadId: "dirga",
+      activeCall: {
+        threadId: "dirga",
+        scriptId: "dirga_midnight_reconciliation",
+        stepIndex: 27,
+        time: "00:26",
+        storyDate: "2026-12-07",
+        afterCallStoryDate: "2026-12-08",
+        afterCallStoryTime: "07:05",
+        connected: false,
+        startedAt: null
+      }
+    };
+  }
   let timers = [];
   const chatRuntime = {
     scheduled: new Set(),
@@ -491,6 +513,7 @@
   }
 
   function saveState() {
+    if (previewMode) return;
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...state, pinInput: "", view: state.unlocked ? state.view : "lock" }));
   }
 

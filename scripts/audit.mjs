@@ -217,6 +217,7 @@ assert(!/WhatsApp Audio/.test(appSource) && /call\.label \|\| "mobile"/.test(app
 assert(/seededCallHistory/.test(appSource) && /call-office-1/.test(appSource), "Riwayat panggilan lama belum tersedia");
 assert(/phone-segmented/.test(appSource) && /phone-bottom-nav/.test(appSource), "Tampilan Phone Recents belum mengikuti iOS");
 assert(/iphone-call-secondary/.test(appSource) && /iphone-call-actions/.test(appSource), "Tampilan incoming call belum mengikuti iOS");
+assert(/previewMode === "incoming-call"/.test(appSource) && /if \(previewMode\) return/.test(appSource), "Preview incoming call yang aman belum tersedia");
 assert(/imageSrc:\s*step\.imageSrc/.test(appSource) && /wa-draft-image/.test(appSource), "Composer WhatsApp belum mendukung draft foto interaktif");
 assert(/wa-preview-draft/.test(appSource) && /scriptedDraft\.text/.test(appSource), "Daftar WhatsApp belum menampilkan draft chat MC");
 assert(/event\.exitDelayStarted = true/.test(appSource), "Runtime belum memulai timer saat WhatsApp ditutup");

@@ -77,7 +77,7 @@ for (const post of gatedXPosts) {
   assert(Boolean(config.chatScripts?.[post.availableAfter]), `Tweet X memakai fase yang tidak ada: ${post.availableAfter}`);
 }
 assert(/function storyCheckpointReached\(checkpoint\)/.test(appSource), "Progress cerita belum memiliki pemeriksa checkpoint bersama");
-assert(/message\.text === "Take your time"/.test(appSource), "Progress lama tidak dapat membuka tweet setelah coffee");
+assert(/\["Take your time", "Santai aja"\]\.includes\(message\.text\)/.test(appSource), "Progress lama tidak dapat membuka tweet setelah coffee");
 const gatedPhotos = (config.photos || []).filter((photo) => photo.availableAfter || photo.availableAfterDate);
 assert(gatedPhotos.length === 5, "Jumlah foto baru setelah pertemuan tidak sesuai");
 assert(gatedPhotos.some((photo) => photo.availableAfter === "dirga_after_dinner" && photo.src?.includes("dinner-17-first")), "Foto setelah dinner belum memiliki trigger");
@@ -111,8 +111,8 @@ assert(afterIWill?.requireAppExit === true && afterIWill?.delayAfterExit === tru
 assert(afterIWill?.activateChatScript === "dirga_home_arrival", "Trigger setelah I will tidak membuka percakapan pulang");
 const secondMeetingPlan = config.chatScripts?.dirga_home_arrival?.onComplete;
 assert(secondMeetingPlan?.text === "Tempat buat Sabtu udah ketemu", "Trigger rencana pertemuan kedua belum menjadi kelanjutan ajakan sebelumnya");
-assert(config.chatScripts?.dirga_second_meeting_invite?.steps?.some((step) => step.text === "Nanti saya mampir jemput") && config.chatScripts?.dirga_second_meeting_invite?.steps?.some((step) => step.text === "Biar saya pastikan kamu gak telat lagi"), "Konfirmasi jemputan pertemuan kedua belum terasa hangat");
-assert(config.chatScripts?.dirga_second_meeting_invite?.steps?.some((step) => step.text === "Rahasia dulu") && config.chatScripts?.dirga_second_meeting_invite?.steps?.some((step) => step.text === "Percaya sama saya"), "Percakapan rencana pertemuan kedua belum terasa natural");
+assert(config.chatScripts?.dirga_second_meeting_invite?.steps?.some((step) => step.text === "I'll pick you up") && config.chatScripts?.dirga_second_meeting_invite?.steps?.some((step) => step.text === "Biar saya pastikan kamu gak telat lagi"), "Konfirmasi jemputan pertemuan kedua belum terasa hangat");
+assert(config.chatScripts?.dirga_second_meeting_invite?.steps?.some((step) => step.text === "It's a surprise") && config.chatScripts?.dirga_second_meeting_invite?.steps?.some((step) => step.text === "Trust me"), "Percakapan rencana pertemuan kedua belum terasa natural");
 assert(!config.chatScripts?.dirga_second_meeting_invite?.steps?.some((step) => step.text === "Yaudah... yes"), "Persetujuan pertemuan kedua masih diulang tanpa perlu");
 assert(secondMeetingPlan?.storyDate === "2026-11-26", "Tanggal trigger rencana pertemuan kedua tidak sesuai");
 assert(secondMeetingPlan?.afterMs >= 5000 && secondMeetingPlan?.afterMs <= 6000, "Jeda menuju rencana pertemuan kedua bukan 5–6 detik");
@@ -183,7 +183,7 @@ assert(config.chatScripts?.petra_december_confession?.onComplete?.exitTransition
 const midnightReconciliation = config.chatScripts?.dirga_midnight_reconciliation;
 assert(midnightReconciliation?.steps?.some((step) => step.text === "I never said no"), "MC belum membuka kembali kemungkinan hubungan");
 assert(midnightReconciliation?.steps?.some((step) => step.type === "incoming_call"), "Panggilan WhatsApp setelah chat tengah malam belum tersedia");
-const indonesianDirgaPattern = /\b(ini|baru|saya|kamu|gak|udah|masih|kalau|buat|bagus|makasih|waktu|tadi|tergantung|mungkin|mobilnya|mobil|delapan|harusnya|sayangnya|kabari|kata|istirahat|kedengarannya|sabtu|tempatnya|jemput|tau|dan|rumah|terlalu|karena|anggap|mikir|temani|kantor|nah|kayaknya|bisa|lain|sepatu|percaya|gimana|kompres|kerjaan|kerjaannya|syukurlah|tujuh|wah|biasanya|pesanan|dari|membuat|memang|mau|atau|pernah|sama|maaf|jawab|jadi|kesempatan|besok|berangkat|keras|pas|oke|aman|tapi|biar|bakal|pura-pura|jalanin|ngerasa|setumpuk)\b/i;
+const indonesianDirgaPattern = /\b(ini|baru|saya|kamu|gak|udah|masih|kalau|buat|bagus|makasih|waktu|tadi|tergantung|mungkin|mobilnya|mobil|delapan|harusnya|sayangnya|kabari|kata|istirahat|kedengarannya|sabtu|tempatnya|jemput|tau|dan|rumah|terlalu|karena|anggap|mikir|temani|kantor|nah|kayaknya|bisa|lain|sepatu|percaya|gimana|kompres|kerjaan|kerjaannya|syukurlah|tujuh|wah|biasanya|pesanan|dari|membuat|memang|mau|atau|pernah|sama|maaf|jawab|jadi|kesempatan|besok|berangkat|keras|pas|oke|aman|tapi|biar|bakal|pura-pura|jalanin|ngerasa|setumpuk|santai|nyaris|hari|sekitar)\b/i;
 const incomingDirgaTexts = Object.values(config.chatScripts || {}).reduce((map, script) => {
   const completion = script.onComplete;
   if (completion?.threadId === "dirga" && completion?.activateChatScript && completion?.text) {

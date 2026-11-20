@@ -484,7 +484,7 @@ window.STORY_CONFIG = {
         { type: "mc", text: "Pak", time: "22:48", waitBefore: 350 },
         { type: "mc", text: "Tolong hapus dari ingatan", time: "22:49", waitBefore: 450 },
         { type: "them", text: "Kayaknya gak bisa", time: "22:49", waitBefore: 1700, typingMs: 1000 },
-        { type: "mc", text: "Itu buat Petra...", time: "22:50", waitBefore: 650 },
+        { type: "mc", text: "Harusnya bukan ke sini...", time: "22:50", waitBefore: 650 },
         { type: "them", text: "Sudah saya duga", time: "22:50", waitBefore: 1500, typingMs: 800 },
         { type: "them", text: "For what it's worth", time: "22:50", waitBefore: 450, typingMs: 1000 },
         { type: "them", text: "Saya memang berharap kamu mikir begitu", time: "22:51", waitBefore: 450, typingMs: 1300 },

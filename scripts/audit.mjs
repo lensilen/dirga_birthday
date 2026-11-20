@@ -137,6 +137,7 @@ assert(petraReport?.onComplete?.activateChatScript === "dirga_wrong_send", "Trig
 const wrongSendScript = config.chatScripts?.dirga_wrong_send;
 const wrongSendPhoto = wrongSendScript?.steps?.find((step) => step.type === "mc" && step.imageSrc);
 assert(wrongSendPhoto?.text === "GANTENG BANGET???" && wrongSendPhoto?.imageSrc?.includes("Dion Windsor"), "Foto salah kirim ke Dirga belum tersedia");
+assert(wrongSendScript?.steps?.some((step) => step.text === "Harusnya bukan ke sini...") && !wrongSendScript?.steps?.some((step) => step.text === "Itu buat Petra..."), "MC masih menjelaskan bahwa foto salah kirim ditujukan kepada Petra");
 assert(wrongSendScript?.onComplete?.text === "Mana fotonya woy" && wrongSendScript?.onComplete?.threadId === "petra", "Trigger Petra setelah salah kirim belum tersedia");
 assert(wrongSendScript?.onComplete?.afterMs >= 5000 && wrongSendScript?.onComplete?.afterMs <= 6000, "Jeda notifikasi Petra bukan 5–6 detik");
 assert(wrongSendScript?.onComplete?.activateChatScript === "petra_wrong_send", "Trigger salah kirim tidak membuka chat Petra");

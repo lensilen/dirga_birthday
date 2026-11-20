@@ -642,6 +642,7 @@
         "Enggaaa 😭": "Enggaaa, bukan gitu maksudnya",
         "Tempatnya?": "Tempatnya di mana?",
         "Pak, ini mencurigakan": "Pak, ini agak mencurigakan",
+        "Itu buat Petra...": "Harusnya bukan ke sini...",
         ...dirgaLanguageMigrations
       };
       Object.values(loaded.messages || {}).flat().forEach((message) => {

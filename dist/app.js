@@ -528,9 +528,12 @@
         "That sounded reluctant": "Kedengarannya ragu",
         "Then don't make plans for next Saturday evening": "Kalau gitu, Sabtu depan malam jangan bikin rencana dulu",
         "Kalau begitu, Sabtu depan jangan bikin rencana malam-malam": "Kalau gitu, Sabtu depan malam jangan bikin rencana dulu",
-        "I don't make plans I don't intend to keep": "Kalau saya udah bikin rencana, berarti bakal ditepatin",
-        "Saya gak bikin rencana kalau gak berniat nepatin": "Kalau saya udah bikin rencana, berarti bakal ditepatin",
-        "It's a surprise": "Tempatnya kejutan",
+        "I don't make plans I don't intend to keep": "I thought I made that clear",
+        "Saya gak bikin rencana kalau gak berniat nepatin": "I thought I made that clear",
+        "Kalau saya udah bikin rencana, berarti bakal ditepatin": "I thought I made that clear",
+        "It's a surprise": "Rahasia dulu",
+        "Tempatnya kejutan": "Rahasia dulu",
+        "And yet you're still going": "Percaya sama saya",
         "I'll pick you up": "Nanti saya mampir jemput",
         "Saya jemput": "Nanti saya mampir jemput",
         "Nanti biar saya yang jemput": "Nanti saya mampir jemput",
@@ -619,12 +622,69 @@
         "You too... makasih buat hari ini": "You too... makasih yaa buat hari ini",
         "Iya... nice": "Iya... nice banget malah",
         "Enggaaa 😭": "Enggaaa, bukan gitu maksudnya",
+        "Tempatnya?": "Tempatnya di mana?",
+        "Pak, ini mencurigakan": "Pak, ini agak mencurigakan",
         ...dirgaLanguageMigrations
       };
       Object.values(loaded.messages || {}).flat().forEach((message) => {
         if (messageTextMigrations[message.text]) message.text = messageTextMigrations[message.text];
         if (message.storyDate === "2026-12-05" && message.text === "I'm downstairs") message.time = "18:09";
       });
+      const secondMeetingScript = config.chatScripts?.dirga_second_meeting_invite;
+      const secondMeetingSceneTexts = new Set([
+        secondMeetingScript?.onComplete?.text,
+        ...(secondMeetingScript?.steps || []).map((step) => step.text),
+        "How attached are you to your Saturday plans?",
+        "Depends... kenapa?",
+        "I may have found somewhere",
+        "Pak ini ngajak atau ngasih jadwal sih",
+        "Does it matter if you're saying yes?",
+        "Good choice",
+        "I found the place for Saturday",
+        "Saya sudah nemu tempat buat Sabtu",
+        "Tempat buat Sabtu udah ketemu",
+        "I don't make plans I don't intend to keep",
+        "Saya gak bikin rencana kalau gak berniat nepatin",
+        "Kalau saya udah bikin rencana, berarti bakal ditepatin",
+        "It's a surprise",
+        "Tempatnya kejutan",
+        "And yet you're still going",
+        "Yaudah... yes",
+        "Nanti biar saya yang jemput",
+        "Saya jemput",
+        "Saya tau",
+        "I'm still picking you up",
+        "Tapi saya tetap mau jemput kamu"
+      ].filter(Boolean));
+      const isSecondMeetingMessage = (message) => secondMeetingSceneTexts.has(message.text)
+        && /^20:(1[4-9]|2[01])$/.test(String(message.time || ""));
+      const secondMeetingIndexes = (loaded.messages?.dirga || [])
+        .map((message, index) => ({ message, index }))
+        .filter(({ message }) => isSecondMeetingMessage(message))
+        .map(({ index }) => index);
+      if (secondMeetingIndexes.length && secondMeetingScript) {
+        const completed = (loaded.completedChats || []).includes("dirga_second_meeting_invite")
+          || (loaded.deliveredEvents || []).includes("second-meeting-arrival")
+          || (loaded.messages?.dirga || []).some((message) => ["I'm here", "Saya udah sampai"].includes(message.text));
+        const previousProgress = loaded.chatProgress?.dirga_second_meeting_invite || 0;
+        const migratedProgress = completed
+          ? secondMeetingScript.steps.length
+          : Math.min(previousProgress, secondMeetingScript.steps.length);
+        const replacement = [
+          { from: "them", text: "Tempat buat Sabtu udah ketemu", time: "20:14", storyDate: "2026-11-26" },
+          ...secondMeetingScript.steps.slice(0, migratedProgress).map((step) => ({
+            from: step.type === "mc" ? "me" : "them",
+            text: step.text,
+            time: step.time,
+            storyDate: "2026-11-26"
+          }))
+        ];
+        const insertAt = Math.min(...secondMeetingIndexes);
+        const retained = loaded.messages.dirga.filter((message) => !isSecondMeetingMessage(message));
+        retained.splice(insertAt, 0, ...replacement);
+        loaded.messages.dirga = retained;
+        loaded.chatProgress.dirga_second_meeting_invite = migratedProgress;
+      }
       const contextualDirgaResponses = {
         "22:41": "Oke, good",
         "18:43": "Good",
@@ -741,6 +801,7 @@
           rememberDirgaTimeline(completion.text, completion.time, completion.storyDate || script.storyDate);
         }
       });
+      const seenDirgaMessages = new Set();
       loaded.messages.dirga = (loaded.messages?.dirga || [])
         .map((message, index) => {
           const key = `${message.text || ""}\u0000${message.time || ""}`;
@@ -761,7 +822,13 @@
           if (first.rank !== second.rank) return first.rank - second.rank;
           return first.index - second.index;
         })
-        .map(({ message }) => message);
+        .map(({ message }) => message)
+        .filter((message) => {
+          const signature = [message.storyDate, message.time, message.from, message.type, message.text, message.imageSrc].join("\u0000");
+          if (seenDirgaMessages.has(signature)) return false;
+          seenDirgaMessages.add(signature);
+          return true;
+        });
       if (!Object.prototype.hasOwnProperty.call(saved, "storyDate") || !Object.prototype.hasOwnProperty.call(saved, "storyTime")) {
         const dirgaMessages = loaded.messages?.dirga || [];
         const hasCoffeeScene = loaded.deliveredEvents?.includes("coffee-dirga-arrival")

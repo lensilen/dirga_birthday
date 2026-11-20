@@ -365,18 +365,20 @@ window.STORY_CONFIG = {
       },
       steps: [
         { type: "mc", text: "Oh jadi Sabtu kemarin serius?", time: "20:14", waitBefore: 650 },
-        { type: "them", text: "Kalau saya udah bikin rencana, berarti bakal ditepatin", time: "20:15", waitBefore: 1700, typingMs: 1500 },
+        { type: "them", text: "I thought I made that clear", time: "20:15", waitBefore: 1700, typingMs: 1500 },
         { type: "mc", text: "Saya tau... cuma gak nyangka langsung disiapin", time: "20:15", waitBefore: 650 },
         { type: "them", text: "Saturday, six", time: "20:16", waitBefore: 1500, typingMs: 900 },
-        { type: "mc", text: "Tempatnya?", time: "20:16", waitBefore: 650 },
-        { type: "them", text: "Tempatnya kejutan", time: "20:17", waitBefore: 1500, typingMs: 950 },
-        { type: "mc", text: "Pak, ini mencurigakan", time: "20:17", waitBefore: 650 },
-        { type: "them", text: "And yet you're still going", time: "20:18", waitBefore: 1500, typingMs: 1200 },
-        { type: "mc", text: "Yaudah... yes", time: "20:18", waitBefore: 650 },
+        { type: "mc", text: "Tempatnya di mana?", time: "20:16", waitBefore: 650 },
+        { type: "them", text: "Rahasia dulu", time: "20:17", waitBefore: 1500, typingMs: 950 },
+        { type: "mc", text: "Pak, ini agak mencurigakan", time: "20:17", waitBefore: 650 },
+        { type: "them", text: "Percaya sama saya", time: "20:18", waitBefore: 1500, typingMs: 1200 },
+        { type: "mc", text: "...", time: "20:18", waitBefore: 650 },
         { type: "them", text: "Nanti saya mampir jemput", time: "20:19", waitBefore: 1400, typingMs: 1000 },
         { type: "mc", text: "Saya bisa berangkat sendiri kok", time: "20:19", waitBefore: 650 },
         { type: "them", text: "I know", time: "20:20", waitBefore: 1300, typingMs: 700 },
-        { type: "them", text: "Biar saya pastikan kamu gak telat lagi", time: "20:20", waitBefore: 450, typingMs: 1100 }
+        { type: "them", text: "Biar saya pastikan kamu gak telat lagi", time: "20:20", waitBefore: 450, typingMs: 1100 },
+        { type: "mc", text: "Kamu masih inget itu?", time: "20:21", waitBefore: 650 },
+        { type: "them", text: "Sayangnya, masih", time: "20:21", waitBefore: 1400, typingMs: 850 }
       ]
     },
     dirga_second_meeting_arrival: {

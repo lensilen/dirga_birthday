@@ -112,6 +112,8 @@ assert(afterIWill?.activateChatScript === "dirga_home_arrival", "Trigger setelah
 const secondMeetingPlan = config.chatScripts?.dirga_home_arrival?.onComplete;
 assert(secondMeetingPlan?.text === "Tempat buat Sabtu udah ketemu", "Trigger rencana pertemuan kedua belum menjadi kelanjutan ajakan sebelumnya");
 assert(config.chatScripts?.dirga_second_meeting_invite?.steps?.some((step) => step.text === "Nanti saya mampir jemput") && config.chatScripts?.dirga_second_meeting_invite?.steps?.some((step) => step.text === "Biar saya pastikan kamu gak telat lagi"), "Konfirmasi jemputan pertemuan kedua belum terasa hangat");
+assert(config.chatScripts?.dirga_second_meeting_invite?.steps?.some((step) => step.text === "Rahasia dulu") && config.chatScripts?.dirga_second_meeting_invite?.steps?.some((step) => step.text === "Percaya sama saya"), "Percakapan rencana pertemuan kedua belum terasa natural");
+assert(!config.chatScripts?.dirga_second_meeting_invite?.steps?.some((step) => step.text === "Yaudah... yes"), "Persetujuan pertemuan kedua masih diulang tanpa perlu");
 assert(secondMeetingPlan?.storyDate === "2026-11-26", "Tanggal trigger rencana pertemuan kedua tidak sesuai");
 assert(secondMeetingPlan?.afterMs >= 5000 && secondMeetingPlan?.afterMs <= 6000, "Jeda menuju rencana pertemuan kedua bukan 5–6 detik");
 assert(secondMeetingPlan?.requireAppExit === true && secondMeetingPlan?.delayAfterExit === true, "Trigger pertemuan kedua tidak menunggu pemain keluar WhatsApp");
@@ -209,6 +211,7 @@ const dirgaCallLines = [...callCaptionBlock.matchAll(/\{ speaker: "Dirga", text:
 assert(dirgaCallLines.length > 0 && dirgaCallLines.filter((text) => indonesianDirgaPattern.test(text)).length >= Math.ceil(dirgaCallLines.length / 2), "Dialog telepon Dirga belum memiliki setidaknya separuh baris berbahasa Indonesia");
 assert(/const dirgaLanguageMigrations = \{/.test(appSource), "Riwayat chat lama belum dimigrasikan ke dialog bilingual Dirga");
 assert(/const dirgaTimeline = new Map\(\)/.test(appSource) && /loaded\.messages\.dirga = \(loaded\.messages\?\.dirga \|\| \[\]\)/.test(appSource) && /firstDate\.localeCompare\(secondDate\)/.test(appSource), "Riwayat chat Dirga belum dinormalisasi mengikuti tanggal dan waktu cerita");
+assert(/const secondMeetingSceneTexts = new Set\(\[/.test(appSource) && /const seenDirgaMessages = new Set\(\)/.test(appSource), "Pesan ganda pada percakapan pertemuan kedua belum dibersihkan");
 const warmDirgaScripts = new Set(["dirga_after_work_personal", "dirga_morning_check", "dirga_december_meetup", "dirga_december_clarity", "dirga_midnight_reconciliation"]);
 for (const [scriptId, script] of Object.entries(config.chatScripts || {})) {
   if ((script.threadId || scriptId) !== "dirga") continue;

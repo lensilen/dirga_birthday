@@ -2269,12 +2269,17 @@
           <h1>${escapeHtml(thread?.name || "?")}</h1>
         </div>
         ${call.connected ? `
+          <button class="iphone-call-info" type="button" disabled aria-label="Call information"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 10.5v6M12 7.5h.01"/></svg></button>
           ${caption ? `<button class="iphone-live-caption" id="call-caption-next" type="button" aria-label="Next subtitle" aria-live="polite"><span><small>${escapeHtml(caption.speaker)}</small><em>tap</em></span><p>${escapeHtml(caption.text)}</p></button>` : ""}
-          <div class="wa-call-controls">
-            <button type="button" disabled aria-label="Mute"><span>⌁</span><small>mute</small></button>
-            <button type="button" disabled aria-label="Speaker"><span>◖</span><small>speaker</small></button>
+          <div class="iphone-connected-controls">
+            <button type="button" disabled aria-label="Speaker"><span><svg viewBox="0 0 32 32" aria-hidden="true"><path class="is-filled" d="M5 13h5l7-6v18l-7-6H5Z"/><path d="M21 11c2.8 2.7 2.8 7.3 0 10M24.5 7.5c4.8 4.7 4.8 12.3 0 17"/></svg></span><small>Speaker</small></button>
+            <button type="button" disabled aria-label="FaceTime"><span><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="5" y="8" width="16" height="16" rx="3"/><path class="is-filled" d="m21 13 7-4v14l-7-4Z"/></svg></span><small>FaceTime</small></button>
+            <button type="button" disabled aria-label="Mute"><span><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="12" y="5" width="8" height="14" rx="4"/><path d="M8.5 15.5A7.5 7.5 0 0 0 22 20M16 24v4M11 28h10M5 5l22 22"/></svg></span><small>Mute</small></button>
+            <button type="button" disabled aria-label="Add person"><span><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="14" cy="12" r="5"/><path d="M5 26c.7-5 4-8 9-8 2.3 0 4.2.6 5.7 1.8M25 17v9M20.5 21.5h9"/></svg></span><small>Add</small></button>
+            <button class="iphone-call-control--end" id="wa-call-end" type="button" aria-label="End call"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path class="is-filled" d="M3.7 14.8C8.1 10.7 15.9 10.7 20.3 14.8L17 18.1c-2.7-2.2-7.3-2.2-10 0L3.7 14.8Z"/></svg></span><small>End</small></button>
+            <button type="button" disabled aria-label="Keypad"><span><svg viewBox="0 0 32 32" aria-hidden="true"><circle class="is-filled" cx="9" cy="8" r="2.2"/><circle class="is-filled" cx="16" cy="8" r="2.2"/><circle class="is-filled" cx="23" cy="8" r="2.2"/><circle class="is-filled" cx="9" cy="15" r="2.2"/><circle class="is-filled" cx="16" cy="15" r="2.2"/><circle class="is-filled" cx="23" cy="15" r="2.2"/><circle class="is-filled" cx="9" cy="22" r="2.2"/><circle class="is-filled" cx="16" cy="22" r="2.2"/><circle class="is-filled" cx="23" cy="22" r="2.2"/></svg></span><small>Keypad</small></button>
           </div>
-          <button class="wa-call-end" id="wa-call-end" type="button" aria-label="End call"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.7 14.8C8.1 10.7 15.9 10.7 20.3 14.8L17 18.1c-2.7-2.2-7.3-2.2-10 0L3.7 14.8Z"/></svg></span><small>end</small></button>` : `
+          ` : `
           <div class="iphone-call-secondary">
             <button type="button" disabled><span><svg viewBox="0 0 24 24" aria-hidden="true"><path class="is-filled" d="M4 4.5h16a2 2 0 0 1 2 2v8.8a2 2 0 0 1-2 2H10l-5.3 3.2.9-3.2H4a2 2 0 0 1-2-2V6.5a2 2 0 0 1 2-2Z"/></svg></span><small>Message</small></button>
             <button type="button" disabled><span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6.5" cy="11.5" r="4"/><circle cx="17.5" cy="11.5" r="4"/><path d="M6.5 15.5h11"/></svg></span><small>Voicemail</small></button>

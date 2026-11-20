@@ -814,6 +814,8 @@ body[data-view="settings"] .home-indicator span { background: #fff; box-shadow: 
   transform: scale(1.14);
   pointer-events: none;
 }
+.wa-incoming-call.is-connected { background: #53565a; }
+.wa-incoming-call.is-connected .wa-incoming-call__wash { display: none; }
 .wa-incoming-call__identity {
   position: relative;
   z-index: 1;
@@ -823,6 +825,20 @@ body[data-view="settings"] .home-indicator span { background: #fff; box-shadow: 
 }
 .wa-incoming-call__identity h1 { margin: 6px 0 0; font-size: 40px; line-height: 1.05; font-weight: 500; letter-spacing: -.025em; text-shadow: 0 2px 12px rgba(0,0,0,.2); }
 .wa-incoming-call__identity p { order: -1; margin: 0; color: rgba(255,255,255,.82); font-size: 15px; font-weight: 500; }
+.iphone-call-info {
+  position: absolute;
+  z-index: 2;
+  top: 58px;
+  right: 20px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgba(255,255,255,.62);
+}
+.iphone-call-info:disabled { opacity: 1; }
+.iphone-call-info svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
 .wa-call-end {
   position: absolute;
   z-index: 2;
@@ -942,6 +958,47 @@ body[data-view="settings"] .home-indicator span { background: #fff; box-shadow: 
   font-size: 20px;
 }
 .wa-call-controls small { font-size: 10px; }
+.iphone-connected-controls {
+  position: absolute;
+  z-index: 2;
+  left: 24px;
+  right: 24px;
+  bottom: 35px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 22px;
+}
+.iphone-connected-controls button {
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+}
+.iphone-connected-controls button:disabled { opacity: 1; }
+.iphone-connected-controls button > span {
+  width: 67px;
+  height: 67px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255,255,255,.18);
+}
+.iphone-connected-controls .iphone-call-control--end > span { background: #ff453a; }
+.iphone-connected-controls svg {
+  width: 34px;
+  height: 34px;
+  display: block;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.iphone-connected-controls svg .is-filled { fill: #fff; stroke: none; }
+.iphone-connected-controls small { color: #fff; font-size: 12px; font-weight: 500; text-shadow: 0 1px 2px rgba(0,0,0,.45); }
 .iphone-live-caption {
   position: absolute;
   z-index: 3;
@@ -961,6 +1018,7 @@ body[data-view="settings"] .home-indicator span { background: #fff; box-shadow: 
   text-align: left;
   animation: iphone-caption-in .22s ease-out;
 }
+.wa-incoming-call.is-connected .iphone-live-caption { bottom: 305px; }
 .iphone-live-caption > span { display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px; }
 .iphone-live-caption small { display: block; color: rgba(255,255,255,.62); font-size: 10px; font-weight: 650; }
 .iphone-live-caption em { color: rgba(255,255,255,.42); font-size: 9px; font-style: normal; font-weight: 550; letter-spacing: .02em; }

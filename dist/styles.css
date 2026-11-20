@@ -930,8 +930,9 @@ body[data-view="settings"] .home-indicator span { background: #fff; box-shadow: 
 }
 .iphone-call-actions .iphone-call-decline span { background: #ff3b30; }
 .iphone-call-actions .wa-call-answer span { background: #34c759; }
-.iphone-call-actions svg { width: 38px; height: 38px; overflow: visible; }
-.iphone-call-actions .wa-call-answer svg { transform: none; }
+.iphone-call-actions svg { width: 46px; height: 46px; overflow: visible; }
+.iphone-call-actions .iphone-call-decline svg { transform: rotate(-45deg); transform-origin: center; }
+.iphone-call-actions .wa-call-answer svg { transform: scaleX(-1); transform-origin: center; }
 .iphone-call-secondary small,
 .iphone-call-actions small { color: #fff; font-size: 11px; font-weight: 500; }
 .wa-call-controls {
@@ -990,6 +991,7 @@ body[data-view="settings"] .home-indicator span { background: #fff; box-shadow: 
   background: rgba(255,255,255,.18);
 }
 .iphone-connected-controls .iphone-call-control--end > span { background: #ff453a; }
+.iphone-connected-controls .iphone-call-control--end svg { width: 42px; height: 42px; transform: rotate(-45deg); transform-origin: center; }
 .iphone-connected-controls svg {
   width: 34px;
   height: 34px;

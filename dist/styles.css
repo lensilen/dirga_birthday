@@ -876,16 +876,18 @@ body[data-view="settings"] .home-indicator span { background: #fff; box-shadow: 
 .iphone-call-actions {
   position: absolute;
   z-index: 2;
-  left: 30px;
-  right: 30px;
+  left: 50%;
+  right: auto;
+  width: 240px;
   display: flex;
   justify-content: space-between;
+  transform: translateX(-50%);
 }
-.iphone-call-secondary { bottom: 160px; padding: 0 12px; }
-.iphone-call-actions { bottom: 55px; }
+.iphone-call-secondary { bottom: 145px; padding: 0; }
+.iphone-call-actions { bottom: 49px; }
 .iphone-call-secondary button,
 .iphone-call-actions button {
-  width: 72px;
+  width: 82px;
   display: grid;
   justify-items: center;
   gap: 7px;
@@ -898,8 +900,8 @@ body[data-view="settings"] .home-indicator span { background: #fff; box-shadow: 
 .iphone-call-secondary button:disabled,
 .iphone-call-actions button:disabled { opacity: 1; }
 .iphone-call-secondary button span {
-  width: 35px;
-  height: 35px;
+  width: 48px;
+  height: 48px;
   display: grid;
   place-items: center;
   border-radius: 50%;
@@ -907,8 +909,8 @@ body[data-view="settings"] .home-indicator span { background: #fff; box-shadow: 
   font-size: 13px;
 }
 .iphone-call-secondary svg {
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   display: block;
   fill: none;
   stroke: #fff;
@@ -918,8 +920,8 @@ body[data-view="settings"] .home-indicator span { background: #fff; box-shadow: 
 }
 .iphone-call-secondary svg .is-filled { fill: #fff; stroke: none; }
 .iphone-call-actions button span {
-  width: 58px;
-  height: 58px;
+  width: 70px;
+  height: 70px;
   display: grid;
   place-items: center;
   border-radius: 50%;
@@ -928,9 +930,10 @@ body[data-view="settings"] .home-indicator span { background: #fff; box-shadow: 
 }
 .iphone-call-actions .iphone-call-decline span { background: #ff3b30; }
 .iphone-call-actions .wa-call-answer span { background: #34c759; }
-.iphone-call-actions .wa-call-answer svg { transform: rotate(-50deg); }
+.iphone-call-actions svg { width: 38px; height: 38px; overflow: visible; }
+.iphone-call-actions .wa-call-answer svg { transform: rotate(-45deg); transform-origin: center; }
 .iphone-call-secondary small,
-.iphone-call-actions small { color: #fff; font-size: 10px; font-weight: 450; }
+.iphone-call-actions small { color: #fff; font-size: 11px; font-weight: 500; }
 .wa-call-controls {
   position: absolute;
   z-index: 2;

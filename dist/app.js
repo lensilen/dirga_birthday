@@ -20,6 +20,15 @@
     { id: "call-bintang-1", threadId: "bintang", name: "Bintang Marketing Team", label: "work", dateLabel: "16 Nov", time: "10:20" },
     { id: "call-mama-2", threadId: "mama", name: "Mama", label: "mobile", dateLabel: "15 Nov", time: "08:16", missed: true }
   ]);
+  const callCaptions = [
+    { speaker: "Dirga", text: "You actually called", duration: 2500 },
+    { speaker: "You", text: "Kan aku yang nawarin", duration: 2400 },
+    { speaker: "Dirga", text: "I thought you might change your mind", duration: 3000 },
+    { speaker: "You", text: "Aku juga mikir begitu", duration: 2500 },
+    { speaker: "Dirga", text: "About the call?", duration: 2300 },
+    { speaker: "You", text: "About keeping my distance", duration: 2800 },
+    { speaker: "Dirga", text: "I'm glad you didn't", duration: 3200 }
+  ];
 
   const defaultState = () => ({
     storyRevision: 11,
@@ -91,6 +100,9 @@
   };
   const storyRuntime = {
     scheduledNotifications: new Set()
+  };
+  const callRuntime = {
+    captionScheduled: false
   };
 
   document.documentElement.style.setProperty("--accent", config.theme.accent);
@@ -2218,6 +2230,7 @@
       return;
     }
     const thread = getThread(call.threadId);
+    const caption = call.connected && Number.isInteger(call.captionIndex) ? callCaptions[call.captionIndex] : null;
     screen.innerHTML = `
       <section class="view wa-incoming-call ${call.connected ? "is-connected" : ""}" aria-label="${call.connected ? "Call connected" : "Incoming call"}">
         <div class="wa-incoming-call__wash"></div>
@@ -2226,6 +2239,7 @@
           <h1>${escapeHtml(thread?.name || "?")}</h1>
         </div>
         ${call.connected ? `
+          ${caption ? `<div class="iphone-live-caption" aria-live="polite"><small>${escapeHtml(caption.speaker)}</small><p>${escapeHtml(caption.text)}</p></div>` : ""}
           <div class="wa-call-controls">
             <button type="button" disabled aria-label="Mute"><span>⌁</span><small>mute</small></button>
             <button type="button" disabled aria-label="Speaker"><span>◖</span><small>speaker</small></button>
@@ -2243,10 +2257,34 @@
     document.querySelector("#wa-call-answer")?.addEventListener("click", () => {
       state.activeCall.connected = true;
       state.activeCall.startedAt = Date.now();
+      state.activeCall.captionIndex = 0;
+      callRuntime.captionScheduled = false;
       saveState();
       render();
     });
     document.querySelector("#wa-call-end")?.addEventListener("click", finishActiveCall);
+    if (call.connected) scheduleCallCaption();
+  }
+
+  function scheduleCallCaption() {
+    const call = state.activeCall;
+    if (!call?.connected || callRuntime.captionScheduled) return;
+    if (!Number.isInteger(call.captionIndex)) {
+      call.captionIndex = 0;
+      saveState();
+      render();
+      return;
+    }
+    const caption = callCaptions[call.captionIndex];
+    if (!caption) return;
+    callRuntime.captionScheduled = true;
+    timers.push(setTimeout(() => {
+      callRuntime.captionScheduled = false;
+      if (!state.activeCall?.connected) return;
+      state.activeCall.captionIndex += 1;
+      saveState();
+      render();
+    }, caption.duration));
   }
 
   function finishActiveCall() {
@@ -2261,6 +2299,7 @@
       dateLabel: "Today"
     });
     state.activeCall = null;
+    callRuntime.captionScheduled = false;
     state.activeThreadId = call.threadId;
     state.view = "thread";
     advanceChatScript(call.threadId);

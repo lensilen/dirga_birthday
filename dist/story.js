@@ -260,7 +260,7 @@ window.STORY_CONFIG = {
         id: "after-coffee-home-check",
         threadId: "dirga",
         notificationTitle: "?",
-        text: "Home yet?",
+        text: "Is the car moving yet?",
         storyDate: "2026-11-21",
         time: "18:42",
         afterMs: 7000,
@@ -293,10 +293,13 @@ window.STORY_CONFIG = {
         activateChatScript: "dirga_home_arrival"
       },
       steps: [
-        { type: "mc", text: "Belum... baru jalan", time: "18:42", waitBefore: 550 },
-        { type: "them", text: "Alright", time: "18:43", waitBefore: 1500, typingMs: 750 },
-        { type: "them", text: "Let me know when you get home", time: "18:43", waitBefore: 550, typingMs: 1500 },
-        { type: "mc", text: "I willl", time: "18:44", waitBefore: 650 }
+        { type: "mc", text: "Baru banget... ini udah jalan", time: "18:42", waitBefore: 550 },
+        { type: "them", text: "Good", time: "18:43", waitBefore: 1500, typingMs: 750 },
+        { type: "them", text: "I should've driven you home myself", time: "18:43", waitBefore: 550, typingMs: 1500 },
+        { type: "mc", text: "Pak kan masih ada meeting lagi", time: "18:44", waitBefore: 650 },
+        { type: "them", text: "Unfortunately", time: "18:44", waitBefore: 1500, typingMs: 850 },
+        { type: "them", text: "Text me when you're home?", time: "18:44", waitBefore: 500, typingMs: 1300 },
+        { type: "mc", text: "I willl", time: "18:45", waitBefore: 650 }
       ]
     },
     dirga_home_arrival: {

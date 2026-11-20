@@ -60,7 +60,7 @@
   ];
 
   const defaultState = () => ({
-    storyRevision: 11,
+    storyRevision: 12,
     unlocked: false,
     pinVisible: false,
     view: "lock",
@@ -421,12 +421,53 @@
         ];
         loaded.storyRevision = 11;
       }
+      if ((saved.storyRevision || 0) < 12) {
+        const dirgaMessages = loaded.messages?.dirga || [];
+        const oldCoffeeTexts = new Set([
+          "Home yet?",
+          "Belum... baru jalan",
+          "Alright",
+          "Let me know when you get home",
+          "I willl"
+        ]);
+        const oldCoffeeIndexes = dirgaMessages
+          .map((message, index) => ({ message, index }))
+          .filter(({ message }) => message.storyDate === "2026-11-21" && oldCoffeeTexts.has(message.text))
+          .map(({ index }) => index);
+        if (oldCoffeeIndexes.length) {
+          const insertAt = Math.min(...oldCoffeeIndexes);
+          const oldProgress = loaded.chatProgress?.dirga_after_coffee || 0;
+          const completed = (loaded.completedChats || []).includes("dirga_after_coffee");
+          const migratedProgress = completed
+            ? config.chatScripts.dirga_after_coffee.steps.length
+            : ({ 0: 0, 1: 1, 2: 2, 3: 6, 4: 7 }[oldProgress] ?? Math.min(oldProgress, 7));
+          const replacement = [
+            { from: "them", text: "Is the car moving yet?", time: "18:42", storyDate: "2026-11-21" },
+            ...config.chatScripts.dirga_after_coffee.steps.slice(0, migratedProgress).map((step) => ({
+              from: step.type === "mc" ? "me" : "them",
+              text: step.text,
+              time: step.time,
+              storyDate: "2026-11-21"
+            }))
+          ];
+          const retained = dirgaMessages.filter((message) => !(message.storyDate === "2026-11-21" && oldCoffeeTexts.has(message.text)));
+          retained.splice(insertAt, 0, ...replacement);
+          loaded.messages.dirga = retained;
+          if (!completed) loaded.chatProgress.dirga_after_coffee = migratedProgress;
+        }
+        (loaded.pendingNotifications || []).forEach((event) => {
+          if (event.id === "after-coffee-home-check") event.text = "Is the car moving yet?";
+        });
+        loaded.storyRevision = 12;
+      }
       const messageTextMigrations = {
         "Harusnya bisaa, gue cek kerjaan dulu ya 😭": "Harusnya bisaa, gue cek kerjaan dulu yaa",
         "Ya jangan aneh aneh 😭": "Ya jangan aneh aneh...",
         "Pet... gue barusan diajak dinner sama Pak Dirga 😭": "Pet... gue barusan diajak dinner sama Pak Dirga",
         "Gue juga masih proses 😭": "Gue juga masih proses ini...",
-        "Belum, baru jalan": "Belum... baru jalan",
+        "Belum, baru jalan": "Baru banget... ini udah jalan",
+        "Home yet?": "Is the car moving yet?",
+        "Belum... baru jalan": "Baru banget... ini udah jalan",
         "I will": "I willl",
         "Dramatis banget Pak, baru juga jalan": "Dramatis banget Pak... saya baru telat ngabarin dikit",
         "Dramatis banget Pak... aku baru telat ngabarin dikit": "Dramatis banget Pak... saya baru telat ngabarin dikit",
@@ -490,11 +531,12 @@
         "Exactly": "15:53",
         "Eight minutes is not that early": "15:53",
         "Take your time": "15:53",
-        "Home yet?": "18:42",
-        "Belum... baru jalan": "18:42",
-        "Alright": "18:43",
-        "Let me know when you get home": "18:43",
-        "I willl": "18:44",
+        "Is the car moving yet?": "18:42",
+        "Baru banget... ini udah jalan": "18:42",
+        "I should've driven you home myself": "18:43",
+        "Pak kan masih ada meeting lagi": "18:44",
+        "Text me when you're home?": "18:44",
+        "I willl": "18:45",
         "Still on the road?": "19:17",
         "Baru sampeee": "19:17",
         "I was about to call": "19:18",

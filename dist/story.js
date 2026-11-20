@@ -373,10 +373,10 @@ window.STORY_CONFIG = {
         { type: "mc", text: "Pak, ini mencurigakan", time: "20:17", waitBefore: 650 },
         { type: "them", text: "And yet you're still going", time: "20:18", waitBefore: 1500, typingMs: 1200 },
         { type: "mc", text: "Yaudah... yes", time: "20:18", waitBefore: 650 },
-        { type: "them", text: "Saya jemput", time: "20:19", waitBefore: 1400, typingMs: 1000 },
+        { type: "them", text: "Nanti biar saya yang jemput", time: "20:19", waitBefore: 1400, typingMs: 1000 },
         { type: "mc", text: "Saya bisa berangkat sendiri kok", time: "20:19", waitBefore: 650 },
-        { type: "them", text: "Saya tau", time: "20:20", waitBefore: 1300, typingMs: 700 },
-        { type: "them", text: "I'm still picking you up", time: "20:20", waitBefore: 450, typingMs: 1100 }
+        { type: "them", text: "I know", time: "20:20", waitBefore: 1300, typingMs: 700 },
+        { type: "them", text: "Tapi saya tetap mau jemput kamu", time: "20:20", waitBefore: 450, typingMs: 1100 }
       ]
     },
     dirga_second_meeting_arrival: {

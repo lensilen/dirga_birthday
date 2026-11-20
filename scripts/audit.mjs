@@ -110,7 +110,7 @@ assert(afterIWill?.requireAppExit === true && afterIWill?.delayAfterExit === tru
 assert(afterIWill?.activateChatScript === "dirga_home_arrival", "Trigger setelah I will tidak membuka percakapan pulang");
 const secondMeetingPlan = config.chatScripts?.dirga_home_arrival?.onComplete;
 assert(secondMeetingPlan?.text === "Saya sudah nemu tempat buat Sabtu", "Trigger rencana pertemuan kedua belum menjadi kelanjutan ajakan sebelumnya");
-assert(config.chatScripts?.dirga_second_meeting_invite?.steps?.some((step) => step.text === "I'm still picking you up"), "Konfirmasi jemputan pertemuan kedua belum tersedia");
+assert(config.chatScripts?.dirga_second_meeting_invite?.steps?.some((step) => step.text === "Nanti biar saya yang jemput") && config.chatScripts?.dirga_second_meeting_invite?.steps?.some((step) => step.text === "Tapi saya tetap mau jemput kamu"), "Konfirmasi jemputan pertemuan kedua belum terasa hangat");
 assert(secondMeetingPlan?.storyDate === "2026-11-26", "Tanggal trigger rencana pertemuan kedua tidak sesuai");
 assert(secondMeetingPlan?.afterMs >= 5000 && secondMeetingPlan?.afterMs <= 6000, "Jeda menuju rencana pertemuan kedua bukan 5–6 detik");
 assert(secondMeetingPlan?.requireAppExit === true && secondMeetingPlan?.delayAfterExit === true, "Trigger pertemuan kedua tidak menunggu pemain keluar WhatsApp");

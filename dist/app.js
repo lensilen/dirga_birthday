@@ -23,44 +23,53 @@
     { id: "call-mama-2", threadId: "mama", name: "Mama", label: "mobile", dateLabel: "15 Nov", time: "08:16", missed: true }
   ]);
   const callCaptions = [
-    { speaker: "Dirga", text: "Kamu beneran nelepon", duration: 2500 },
-    { speaker: "You", text: "Kan aku yang nawarin", duration: 2400 },
-    { speaker: "Dirga", text: "Saya kira kamu bakal berubah pikiran", duration: 3000 },
-    { speaker: "You", text: "Aku juga mikir begitu", duration: 2500 },
-    { speaker: "Dirga", text: "About the call?", duration: 2300 },
-    { speaker: "You", text: "About keeping my distance", duration: 2800 },
-    { speaker: "Dirga", text: "Syukurlah kamu gak jadi mundur", duration: 3200 },
     { speaker: "You", text: "Kamu masih kerja?", duration: 2400 },
-    { speaker: "Dirga", text: "Unfortunately, iya. Kontrak ini tiba-tiba milih tengah malam buat jadi rumit", duration: 4200 },
+    { speaker: "Dirga", text: "Yes\nThis document suddenly decided to get complicated in the middle of the night", duration: 4700 },
     { speaker: "You", text: "Kerjaan legal selalu seseru ini?", duration: 2800 },
-    { speaker: "Dirga", text: "Only when people ignore my emails for three days and suddenly discover urgency", duration: 4200 },
+    { speaker: "Dirga", text: "Only when people ignore my emails for three days\nand suddenly discover urgency", duration: 4300 },
     { speaker: "You", text: "Jadi basically kamu dibayar buat baca masalah orang?", duration: 3300 },
-    { speaker: "Dirga", text: "Sama mencegah mereka bikin masalah baru", duration: 2900 },
-    { speaker: "Dirga", text: "Hari kamu gimana?", duration: 2500 },
-    { speaker: "You", text: "Balik serius?", duration: 2100 },
-    { speaker: "Dirga", text: "Aku cuma nanya hari kamu gimana", duration: 2500 },
+    { speaker: "Dirga", text: "Dan mencegah mereka bikin masalah baru", duration: 2900 },
+    { speaker: "Dirga", text: "How was your day?", duration: 2500 },
+    { speaker: "You", text: "Tiba tiba?", duration: 2100 },
+    { speaker: "Dirga", text: "Saya cuma bertanya hari kamu gimana", duration: 2700 },
     { speaker: "You", text: "Ini one on one atau teleponan sih?", duration: 2900 },
     { speaker: "Dirga", text: "[laughs] Can't it be both?", duration: 2900 },
     { speaker: "You", text: "Curang", duration: 1900 },
     { speaker: "Dirga", text: "Occupational hazard", duration: 2400 },
     { speaker: "You", text: "Hari aku biasa aja... sampai ada orang ngajak telepon tengah malam", duration: 3800 },
-    { speaker: "Dirga", text: "Kedengarannya itu bagian terbaik hari kamu", duration: 3000 },
+    { speaker: "Dirga", text: "Sepertinya ceritanya gak begitu\ntapi itu harusnya jadi bagian terbaik hari ini kan?", duration: 4300 },
     { speaker: "You", text: "Pede banget", duration: 2100 },
     { speaker: "Dirga", text: "Only with you", duration: 2600 },
     { speaker: "You", text: "That was smooth", duration: 2300 },
-    { speaker: "Dirga", text: "Aku punya cukup banyak waktu buat mikirin apa yang mau aku bilang kalau kamu beneran nelepon", duration: 3800 },
+    { speaker: "Dirga", text: "[laugh] Saya punya cukup banyak Waktu untuk berpikir apa yang mau saya bilang kalau kamu beneran nelepon", duration: 4700 },
     { speaker: "You", text: "Dan yang kepilih itu?", duration: 2400 },
-    { speaker: "Dirga", text: "Bukan. Yang lebih bagus mungkin malah bikin kamu tutup telepon", duration: 3400 },
-    { speaker: "You", text: "Coba satu", duration: 2100 },
-    { speaker: "Dirga", text: "I like hearing your voice when you're trying not to smile", duration: 4000 },
+    { speaker: "Dirga", text: "Nope\nAn even better one might actually make you hang up the phone", duration: 4300 },
+    { speaker: "You", text: "Try me, then", duration: 2100 },
+    { speaker: "Dirga", text: "I like hearing your voice\nwhen you're trying not to smile", duration: 4000 },
     { speaker: "You", text: "Siapa yang senyum", duration: 2300 },
-    { speaker: "Dirga", text: "You. Right now", duration: 2500 },
+    { speaker: "Dirga", text: "You\nRight now", duration: 2500 },
     { speaker: "You", text: "Sok tau", duration: 2100 },
-    { speaker: "Dirga", text: "Then stay on the phone and prove me wrong", duration: 4000 }
+    { speaker: "Dirga", text: "Then stay on the phone and prove me wrong", duration: 4000 },
+    { speaker: "You", text: "Siapa juga yang mau matiin?", duration: 2400 },
+    { speaker: "Dirga", text: "So, saya masih ada kesempatan?", duration: 2800 },
+    { speaker: "You", text: "About what?", duration: 2100 },
+    { speaker: "Dirga", text: "About us", duration: 2200 },
+    { speaker: "You", text: "I never said no", duration: 2300 },
+    { speaker: "Dirga", text: "You're right\nI was too busy expecting the worst", duration: 3600 },
+    { speaker: "You", text: "Can you promise me one thing?", duration: 2700 },
+    { speaker: "Dirga", text: "Of course", duration: 2100 },
+    { speaker: "You", text: "Let’s remain professional at the office\nI’m afraid of what might happen kalau ada yang tau tentang kita", duration: 5000 },
+    { speaker: "Dirga", text: "I won't let anything happen to us", duration: 3000 },
+    { speaker: "You", text: "I know, I know, for our own good", duration: 2800 },
+    { speaker: "Dirga", text: "You know, you can tell me about anything right?", duration: 3500 },
+    { speaker: "You", text: "Yes, I trust you more than anyone", duration: 3000 },
+    { speaker: "Dirga", text: "Then tell me\nApa yang membuat kamu berpikir seperti itu?", duration: 3900 },
+    { speaker: "You", text: "Nothing, Dirga\nAku hanya mencegah", duration: 3000 },
+    { speaker: "Dirga", text: "Okay then\nI promise", duration: 2800 }
   ];
 
   const defaultState = () => ({
-    storyRevision: 13,
+    storyRevision: 14,
     unlocked: false,
     pinVisible: false,
     view: "lock",
@@ -111,9 +120,9 @@
       activeCall: {
         threadId: "dirga",
         scriptId: "dirga_midnight_reconciliation",
-        stepIndex: 27,
-        time: "00:26",
-        storyDate: "2026-12-07",
+        stepIndex: 19,
+        time: "00:23",
+        storyDate: "2026-12-03",
         afterCallStoryDate: "2026-12-08",
         afterCallStoryTime: "07:05",
         connected: false,
@@ -506,6 +515,7 @@
         });
         loaded.storyRevision = 13;
       }
+      if ((saved.storyRevision || 0) < 14) {
       const dirgaLanguageMigrations = {
         "Good": "Bagus",
         "That's good": "Bagus",
@@ -848,6 +858,7 @@
           seenDirgaMessages.add(signature);
           return true;
         });
+      }
       if (!Object.prototype.hasOwnProperty.call(saved, "storyDate") || !Object.prototype.hasOwnProperty.call(saved, "storyTime")) {
         const dirgaMessages = loaded.messages?.dirga || [];
         const hasCoffeeScene = loaded.deliveredEvents?.includes("coffee-dirga-arrival")
@@ -874,6 +885,165 @@
         }
         loaded.calendarMonth = Number(loaded.storyDate.slice(5, 7)) - 1;
         loaded.selectedDate = loaded.storyDate;
+      }
+      if ((saved.storyRevision || 0) < 14) {
+        const revisedOrder = [
+          "dirga",
+          "petra",
+          "dirga_after_dinner",
+          "dirga_coffee_arrival",
+          "dirga_after_coffee",
+          "dirga_second_meeting_arrival",
+          "dirga_client_meeting",
+          "dirga_after_second_meeting",
+          "petra_second_meeting_report",
+          "dirga_wrong_send",
+          "petra_wrong_send",
+          "maria_late_revision",
+          "dirga_work_night",
+          "dirga_after_work_personal",
+          "dirga_morning_check",
+          "dirga_december_meetup",
+          "petra_december_confession",
+          "dirga_midnight_reconciliation"
+        ];
+        const revisedIndex = new Map(revisedOrder.map((scriptId, index) => [scriptId, index]));
+        const oldStageMap = {
+          dirga_home_arrival: "dirga_after_coffee",
+          dirga_second_meeting_invite: "dirga_after_coffee",
+          dirga_second_meeting_arrival: "dirga_second_meeting_arrival",
+          dirga_after_second_meeting: "dirga_after_second_meeting",
+          dirga_december_clarity: "dirga_december_meetup"
+        };
+        const mapStage = (scriptId) => oldStageMap[scriptId] || scriptId;
+        let completedCount = 0;
+        (loaded.completedChats || []).forEach((scriptId) => {
+          const mappedIndex = revisedIndex.get(mapStage(scriptId));
+          if (Number.isInteger(mappedIndex)) completedCount = Math.max(completedCount, mappedIndex + 1);
+        });
+        Object.entries(loaded.chatProgress || {}).forEach(([scriptId, progress]) => {
+          if (!(progress > 0)) return;
+          const mappedIndex = revisedIndex.get(mapStage(scriptId));
+          if (Number.isInteger(mappedIndex)) completedCount = Math.max(completedCount, mappedIndex);
+        });
+        (loaded.activeChatScripts || []).forEach((scriptId) => {
+          const mappedIndex = revisedIndex.get(mapStage(scriptId));
+          if (Number.isInteger(mappedIndex)) completedCount = Math.max(completedCount, mappedIndex);
+        });
+        completedCount = Math.min(completedCount, revisedOrder.length);
+
+        const openingMessages = {
+          dirga_after_dinner: { threadId: "dirga", text: "Sudah masuk ke rumah, Bu?", time: "22:41", storyDate: "2026-11-17" },
+          dirga_coffee_arrival: { threadId: "dirga", text: "I'm downstairs", time: "15:52", storyDate: "2026-11-21" },
+          dirga_after_coffee: { threadId: "dirga", text: "I'm sorry, Bu. Saya gak bisa antar pulang karena panggilan mendadak", time: "18:42", storyDate: "2026-11-21" },
+          dirga_second_meeting_arrival: { threadId: "dirga", text: "Saya udah sampai", time: "09:47", storyDate: "2026-11-28" },
+          dirga_client_meeting: { threadId: "dirga", text: "Hey", time: "11:14", storyDate: "2026-11-28" },
+          dirga_after_second_meeting: { threadId: "dirga", text: "Sudah aman, Bu?", time: "18:30", storyDate: "2026-11-28" },
+          petra_second_meeting_report: { threadId: "petra", text: "WOii", time: "18:44", storyDate: "2026-11-28" },
+          dirga_wrong_send: { threadId: "dirga", text: "Is that so?", time: "18:48", storyDate: "2026-11-28" },
+          petra_wrong_send: { threadId: "petra", text: "Mana fotonyaaa pelittt", time: "18:55", storyDate: "2026-11-28" },
+          maria_late_revision: { threadId: "maria", text: "Kak, legal copy yang terakhir masih ditunggu malam ini ya", time: "20:56", storyDate: "2026-11-30" },
+          dirga_morning_check: { threadId: "dirga", text: "You done with your works?", time: "09:00", storyDate: "2026-12-01" },
+          dirga_december_meetup: { threadId: "dirga", text: "How's the shoes? Udah dicoba?", time: "18:42", storyDate: "2026-12-01" },
+          petra_december_confession: { threadId: "petra", text: "Ada resto baru nih, kesitu yuk", time: "19:05", storyDate: "2026-12-01" }
+        };
+        const rebuilt = {
+          dirga: [],
+          petra: (config.threads.find((thread) => thread.id === "petra")?.initialMessages || []).map((message) => ({
+            ...message,
+            storyDate: "2026-11-17"
+          }))
+        };
+        const seenRebuilt = new Set();
+        const appendRebuilt = (threadId, message) => {
+          if (!rebuilt[threadId]) return;
+          const signature = [threadId, message.storyDate, message.time, message.from, message.text, message.imageSrc].join("\u0000");
+          if (seenRebuilt.has(signature)) return;
+          seenRebuilt.add(signature);
+          rebuilt[threadId].push(message);
+        };
+        revisedOrder.slice(0, completedCount).forEach((scriptId) => {
+          const script = config.chatScripts?.[scriptId];
+          if (!script) return;
+          const opening = openingMessages[scriptId];
+          if (opening && ["dirga", "petra"].includes(opening.threadId)) {
+            appendRebuilt(opening.threadId, { from: "them", text: opening.text, time: opening.time, storyDate: opening.storyDate });
+          }
+          (script.steps || []).forEach((step) => {
+            if (["mc", "them"].includes(step.type)) {
+              const target = script.threadId || scriptId;
+              appendRebuilt(target, {
+                from: step.type === "mc" ? "me" : "them",
+                text: step.text,
+                time: step.time,
+                storyDate: step.storyDate || script.storyDate,
+                imageSrc: step.imageSrc,
+                imageAlt: step.imageAlt
+              });
+            }
+            if (step.type === "notification" && ["dirga", "petra"].includes(step.threadId)) {
+              appendRebuilt(step.threadId, {
+                from: "them",
+                text: step.text,
+                time: step.time,
+                storyDate: step.storyDate || script.storyDate
+              });
+            }
+          });
+        });
+        loaded.messages.dirga = rebuilt.dirga;
+        loaded.messages.petra = rebuilt.petra;
+        loaded.chatProgress = Object.fromEntries(Object.keys(config.chatScripts || {}).map((scriptId) => [scriptId, 0]));
+        revisedOrder.slice(0, completedCount).forEach((scriptId) => {
+          loaded.chatProgress[scriptId] = config.chatScripts?.[scriptId]?.steps?.length || 0;
+        });
+        loaded.completedChats = revisedOrder.slice(0, completedCount);
+        const nextScriptId = revisedOrder[completedCount] || null;
+        loaded.activeChatScripts = nextScriptId ? [nextScriptId] : [];
+        loaded.pendingChatActivations = [];
+        loaded.pendingNotifications = [];
+        loaded.pendingViewTransitions = [];
+        loaded.deliveredEvents = [];
+        loaded.storyCalendarEvents = [];
+        loaded.activeCall = null;
+        revisedOrder.slice(0, completedCount).forEach((scriptId) => {
+          const completion = config.chatScripts?.[scriptId]?.onComplete;
+          if (completion?.id) loaded.deliveredEvents.push(completion.id);
+          (completion?.calendarEvents || []).forEach((event) => {
+            if (!loaded.storyCalendarEvents.some((savedEvent) => savedEvent.id === event.id)) {
+              loaded.storyCalendarEvents.push({ ...event });
+            }
+            if (event.trigger?.id && revisedIndex.get(event.trigger.activateChatScript) < completedCount) {
+              loaded.deliveredEvents.push(event.trigger.id);
+            }
+          });
+        });
+        if (nextScriptId) {
+          const nextScript = config.chatScripts?.[nextScriptId];
+          const opening = openingMessages[nextScriptId];
+          if (opening && ["dirga", "petra"].includes(opening.threadId)) {
+            appendRebuilt(opening.threadId, {
+              from: "them",
+              text: opening.text,
+              time: opening.time,
+              storyDate: opening.storyDate
+            });
+            loaded.messages[opening.threadId] = rebuilt[opening.threadId];
+          }
+          loaded.storyDate = opening?.storyDate || nextScript?.storyDate || loaded.storyDate;
+          loaded.storyTime = opening?.time || nextScript?.steps?.[0]?.time || loaded.storyTime;
+        } else if (completedCount > 0) {
+          const lastCompleted = config.chatScripts?.[revisedOrder[completedCount - 1]];
+          loaded.storyDate = lastCompleted?.storyDate || loaded.storyDate;
+          const lastTimedStep = [...(lastCompleted?.steps || [])].reverse().find((step) => step.time);
+          loaded.storyTime = lastTimedStep?.time || loaded.storyTime;
+        } else {
+          loaded.storyDate = "2026-11-17";
+          loaded.storyTime = "10:26";
+        }
+        loaded.calendarMonth = Number(loaded.storyDate.slice(5, 7)) - 1;
+        loaded.selectedDate = loaded.storyDate;
+        loaded.storyRevision = 14;
       }
       return loaded;
     } catch (_) {
@@ -1744,6 +1914,26 @@
         advanceChatScript(threadId);
         if (!isOpen) showToast({ threadId, text: "Missed voice call", notificationTitle: getThread(threadId)?.name });
         if (isOpen || ["home", "whatsapp"].includes(state.view)) render();
+        else runChatScriptStep(threadId);
+      }, Math.max(80, step.waitBefore || 0)));
+      return;
+    }
+
+    if (step.type === "notification") {
+      chatRuntime.scheduled.add(threadId);
+      timers.push(setTimeout(() => {
+        chatRuntime.scheduled.delete(threadId);
+        setStoryClock(step.storyDate || state.storyDate, step.time || state.storyTime);
+        if (step.activateChatScript
+          && !state.activeChatScripts.includes(step.activateChatScript)
+          && !state.completedChats.includes(step.activateChatScript)) {
+          state.activeChatScripts.push(step.activateChatScript);
+        }
+        const targetOpen = state.view === "thread" && state.activeThreadId === step.threadId;
+        addMessage(step.threadId, { from: "them", text: step.text, time: state.storyTime }, !targetOpen);
+        advanceChatScript(threadId);
+        if (!targetOpen) showToast(step);
+        if (targetOpen || ["home", "whatsapp", "thread"].includes(state.view)) render();
         else runChatScriptStep(threadId);
       }, Math.max(80, step.waitBefore || 0)));
       return;

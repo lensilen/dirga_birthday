@@ -75,8 +75,8 @@ assert(petraInitial.some((message) => message.text === "Tumben langsung dibales"
 assert(petraInitial.some((message) => message.text === "Warung madura tutup, lo masih kerja"), "Banter pekerja keras Petra belum lengkap");
 
 const birthday = config.chatScripts?.dirga;
-assert(birthday?.steps?.some((step) => step.text === "May I ask dari siapa tau ulang tahun saya?"), "Kalimat ulang tahun yang diminta pengguna berubah");
-assert(birthday?.steps?.some((step) => step.text === "If I can ask you anything, then it is dangerous, buat saya maupun buat Ibu"), "Grammar dangerous offer belum diperbaiki");
+assert(birthday?.steps?.some((step) => step.text === "May I ask, Ibu tahu ulang tahun saya dari siapa?"), "Kalimat ulang tahun belum dirapikan");
+assert(birthday?.steps?.some((step) => step.text === "If I can ask you anything, that could be dangerous for both of us"), "Grammar dangerous offer belum diperbaiki");
 assert(birthday?.steps?.some((step) => step.text === "Just the two of us"), "Ajakan dinner pribadi belum lengkap");
 
 const coffee = config.chatScripts?.dirga_coffee_arrival;
@@ -90,11 +90,11 @@ assert(secondMeetingEvent?.time === "10:00 AM", "Calendar pertemuan kedua belum 
 assert(secondMeetingEvent?.trigger?.time === "09:47" && secondMeetingEvent?.trigger?.text === "Saya udah sampai", "Trigger jemput pertemuan kedua belum menjadi 09:47");
 
 const secondArrival = config.chatScripts?.dirga_second_meeting_arrival;
-assert(secondArrival?.steps?.[0]?.text === "Sebentar pak, ini masih 9.47", "Dialog kedatangan pagi belum sesuai");
+assert(secondArrival?.steps?.[0]?.text === "Sebentar, Pak. Ini masih 09.47", "Dialog kedatangan pagi belum sesuai");
 assert(secondArrival?.onComplete?.text === "Hey" && secondArrival?.onComplete?.activateChatScript === "dirga_client_meeting", "Push scene meeting client belum tersedia");
 const clientMeeting = config.chatScripts?.dirga_client_meeting;
-assert(clientMeeting?.steps?.some((step) => step.text === "Kenapa lewat chat pak? Kita hadap hadapan..."), "Scene chat saat duduk berhadapan belum tersedia");
-assert(clientMeeting?.steps?.some((step) => step.text === "Saya tidak mau mengganggu meetingnya, Bu"), "Typo mengganggu belum diperbaiki");
+assert(clientMeeting?.steps?.some((step) => step.text === "Kenapa lewat chat, Pak? Kita berhadapan langsung"), "Scene chat saat duduk berhadapan belum tersedia");
+assert(clientMeeting?.steps?.some((step) => step.text === "Saya gak mau mengganggu meetingnya"), "Dialog meeting belum dirapikan");
 assert(clientMeeting?.steps?.some((step) => step.text?.includes("I hope they don't give you hard times")), "Typo don't pada scene client belum diperbaiki");
 
 const petraReport = config.chatScripts?.petra_second_meeting_report;
@@ -117,7 +117,7 @@ const workNight = config.chatScripts?.dirga_work_night;
 assert(workNight?.steps?.some((step) => step.text === "Saya bawain kopinya ya"), "Janji traktir kopi belum dilanjutkan");
 assert(workNight?.onComplete?.activateChatOnExit === "dirga_after_work_personal", "Kerja malam belum membuka chat personal");
 const personal = config.chatScripts?.dirga_after_work_personal;
-assert(personal?.steps?.some((step) => step.text === "Dan mungkin untuk di luar kantor, you don't need to address me with 'Pak'"), "Transisi melepas panggilan Pak belum tersedia");
+assert(personal?.steps?.some((step) => step.text === "Dan mungkin kalau di luar kantor, you don't need to address me as 'Pak'"), "Transisi melepas panggilan Pak belum tersedia");
 assert(personal?.steps?.some((step) => step.text === "Lain kali saya belikan sepatu yang lebih nyaman, if you want to"), "Ajakan membeli sepatu belum tersedia");
 assert(personal?.onComplete?.storyDate === "2026-12-01" && personal?.onComplete?.text === "You done with your works?", "Outing 1 Desember belum dimulai dengan benar");
 assert(personal?.onComplete?.calendarEvents?.some((event) => event.id === "shoe-shopping-dirga-1-dec" && event.date === "2026-12-01"), "Outing beli sepatu belum masuk Calendar 1 Desember");
@@ -126,7 +126,7 @@ const outing = config.chatScripts?.dirga_morning_check;
 assert(outing?.steps?.some((step) => step.text === "Sure, lantai berapa unit kamu?"), "Dirga belum masuk ke kontrakan MC");
 assert(outing?.onComplete?.text === "How's the shoes? Udah dicoba?" && outing?.onComplete?.activateChatScript === "dirga_december_meetup", "Follow-up sepatu setelah mengantar MC belum tersedia");
 const confession = config.chatScripts?.dirga_december_meetup;
-assert(confession?.steps?.some((step) => step.text === "But I don't wake up early for someone and I don’t let anyone else into my office at night"), "Grammar confession belum diperbaiki");
+assert(confession?.steps?.some((step) => step.text === "But I don't wake up early for someone, and I don't let anyone else into my office at night"), "Grammar confession belum diperbaiki");
 assert(confession?.steps?.some((step) => step.text === "Yes, saya memang lagi dekatin kamu"), "Pengakuan Dirga belum tersedia");
 assert(confession?.steps?.some((step) => step.text === "Don't go too far"), "Penutup confession belum tersedia");
 assert(confession?.onComplete?.text === "Ada resto baru nih, kesitu yuk" && confession?.onComplete?.activateChatScript === "petra_december_confession", "Curhat Petra setelah confession belum terhubung");
@@ -136,7 +136,7 @@ assert(petraConfession?.steps?.some((step) => step.text === "Takut rumor jelek s
 assert(petraConfession?.onComplete?.exitTransition?.storyDate === "2026-12-02", "Hari sunyi setelah confession belum menjadi 2 Desember");
 assert(petraConfession?.onComplete?.exitTransition?.armTransition?.storyDate === "2026-12-03", "Rekonsiliasi tengah malam belum menjadi 3 Desember");
 const midnight = config.chatScripts?.dirga_midnight_reconciliation;
-assert(midnight?.steps?.some((step) => step.text === "Aku bukan siapa siapa, kenapa kamu bisa suka sama aku?"), "Pertanyaan inti rekonsiliasi belum tersedia");
+assert(midnight?.steps?.some((step) => step.text === "Aku bukan siapa-siapa, kenapa kamu bisa suka sama aku?"), "Pertanyaan inti rekonsiliasi belum tersedia");
 assert(midnight?.steps?.some((step) => step.type === "incoming_call"), "Incoming phone call belum tersedia");
 assert(midnight?.onComplete?.calendarEvents?.some((event) => event.id === "singapore-briefing-8-dec"), "Setup Singapore tidak dipertahankan");
 
@@ -152,6 +152,28 @@ const forbiddenGrammar = [
 ];
 for (const text of forbiddenGrammar) assert(!`${storySource}\n${appSource}`.includes(text), `Grammar lama masih ada: ${text}`);
 
+const effectiveDialogText = Object.values(config.chatScripts || {})
+  .flatMap((script) => (script.steps || []).map((step) => step.text || ""))
+  .join("\n");
+const correctedDialogueTypos = [
+  "kalua begitu",
+  "APASIH",
+  "inimah",
+  "Kembali, Pak",
+  "hadap hadapan",
+  "repot repot",
+  "Maybe next time we met",
+  "So you asking me out",
+  "as compliment",
+  "Do you.. always like this",
+  "I like that from you",
+  "kelaaman",
+  "siapa siapa"
+];
+for (const text of correctedDialogueTypos) assert(!effectiveDialogText.includes(text), `Typo dialog aktif masih ada: ${text}`);
+const clientBuCount = (clientMeeting?.steps || []).filter((step) => /\b(?:Bu|Ibu)\b/.test(step.text || "")).length;
+assert(clientBuCount <= 2, `Sapaan Bu/Ibu pada scene client masih berlebihan: ${clientBuCount}`);
+
 const callCaptionBlock = appSource.match(/const callCaptions = \[([\s\S]*?)\n  \];/)?.[1] || "";
 assert(callCaptionBlock.includes("This document suddenly decided to get complicated"), "Pembuka telepon baru belum tersedia");
 assert(callCaptionBlock.includes("So, saya masih ada kesempatan?"), "Pembahasan kesempatan hubungan belum tersedia di telepon");
@@ -161,9 +183,10 @@ assert(/function advanceCallCaption\(\)/.test(appSource) && /call-caption-next/.
 assert(!/function scheduleCallCaption\(\)/.test(appSource), "Subtitle telepon masih berjalan otomatis");
 assert(/data-replay-call/.test(appSource) && /call\.replay/.test(appSource), "Replay telepon dari Recents belum tersedia");
 
-assert(/storyRevision:\s*14/.test(appSource), "Versi progres cerita belum dinaikkan ke 14");
+assert(/storyRevision:\s*15/.test(appSource), "Versi progres cerita belum dinaikkan ke 15");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 14\)/.test(appSource) && /const revisedOrder = \[/.test(appSource), "Progress lama belum dimigrasikan ke naskah pengganti");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 14\) \{\s*const dirgaLanguageMigrations/.test(appSource), "Migrasi dialog lama masih dapat mengubah naskah baru");
+assert(/if \(\(saved\.storyRevision \|\| 0\) < 15\)/.test(appSource) && /const dialogueCorrections = new Map/.test(appSource), "Koreksi dialog belum dimigrasikan ke progres lama");
 assert(/const nextScriptId = revisedOrder\[completedCount\] \|\| null/.test(appSource), "Migrasi progres lama belum mengaktifkan fase berikutnya");
 assert(/loaded\.storyCalendarEvents\.push\(\{ \.\.\.event \}\)/.test(appSource), "Migrasi progres lama belum memulihkan event Calendar");
 assert(/formatWhatsAppDay\(message\.storyDate/.test(appSource), "WhatsApp belum memisahkan percakapan berdasarkan hari");

@@ -2392,3 +2392,876 @@ no. absolutely not.`
     if (post.availableAfterDate === "2026-12-06") post.availableAfterDate = "2026-12-02";
   });
 })();
+
+/* Singapore, hubungan rahasia, dan penutup cerita utama. */
+(() => {
+  const config = window.STORY_CONFIG;
+  const mc = (text, time, waitBefore = 500, extra = {}) => ({ type: "mc", text, time, waitBefore, ...extra });
+  const them = (text, time, waitBefore = 1400, typingMs = 1000, extra = {}) => ({ type: "them", text, time, waitBefore, typingMs, ...extra });
+  const next = (id, threadId, text, storyDate, time, activateChatScript, extra = {}) => ({
+    id,
+    threadId,
+    notificationTitle: threadId === "dirga" ? "?" : config.threads.find((thread) => thread.id === threadId)?.name,
+    text,
+    storyDate,
+    time,
+    afterMs: 5500,
+    requireAppExit: true,
+    delayAfterExit: true,
+    activateChatScript,
+    ...extra
+  });
+
+  Object.assign(config.chatScripts, {
+    dirga_singapore_pickup: {
+      threadId: "dirga",
+      storyDate: "2026-12-08",
+      active: false,
+      onComplete: next("singapore-briefing-chat", "dirga", "Stop looking at the slides like they personally offended you", "2026-12-08", "09:15", "dirga_singapore_briefing"),
+      steps: [
+        mc("Morningg", "07:05"),
+        mc("Secara fisik iya", "07:06", 350),
+        mc("Secara mental belum", "07:06", 350),
+        them("Good enough", "07:07", 1300, 700),
+        them("Aku sampai sekitar sepuluh menit lagi", "07:07", 400, 1000),
+        mc("Loh, bukannya ketemu di airport?", "07:08"),
+        them("I changed the plan", "07:08", 1400, 800),
+        them("Aku jemput", "07:08", 350, 650),
+        mc("Dirga, koper aku berat loh", "07:09"),
+        them("That's exactly why I'm picking you up", "07:09", 1400, 1100),
+        mc("Oke ini masuk akal sih", "07:10"),
+        them("Finally", "07:10", 1200, 600),
+        mc("Jangan seneng dulu, aku masih nyari charger", "07:10"),
+        them("Take your time", "07:11", 1300, 700),
+        them("Tapi jangan lebih dari sepuluh menit", "07:11", 350, 900),
+        mc("Bos legalnya mulai muncul ya", "07:12"),
+        them("Only because someone needs supervision", "07:12", 1300, 1000)
+      ]
+    },
+
+    dirga_singapore_briefing: {
+      threadId: "dirga",
+      storyDate: "2026-12-08",
+      active: false,
+      onComplete: next("singapore-petra-checkin", "petra", "Udah berangkat?", "2026-12-08", "10:40", "petra_singapore_checkin"),
+      steps: [
+        mc("Mereka memang nyebelin", "09:15"),
+        them("Smile a little", "09:16", 1300, 700),
+        them("Client-nya mulai lihat ke arah kamu", "09:16", 350, 900),
+        mc("Kamu juga duduk di depan aku, ngapain lewat chat?", "09:17"),
+        them("So I don't interrupt you", "09:17", 1400, 900),
+        mc("You are interrupting me", "09:18"),
+        them("And yet you're still replying", "09:18", 1300, 900),
+        mc("Nyebelin", "09:18"),
+        them("You're doing great, by the way", "09:19", 1400, 1000),
+        mc("Jangan muji dulu, masih ada sesi Q&A", "09:19"),
+        them("I know", "09:20", 1200, 550),
+        them("Aku tetap impressed", "09:20", 350, 750)
+      ]
+    },
+
+    petra_singapore_checkin: {
+      threadId: "petra",
+      storyDate: "2026-12-08",
+      active: false,
+      onComplete: next("singapore-hotel-checkin", "dirga", "Room okay?", "2026-12-08", "17:45", "dirga_singapore_hotel", {
+        calendarEvents: [
+          { id: "flight-singapore-8-dec", date: "2026-12-08", title: "Flight to Singapore", time: "1:20 PM", color: "#ff9f0a", type: "travel" },
+          { id: "singapore-dinner-8-dec", date: "2026-12-08", title: "Dinner with Dirga", time: "8:00 PM", color: "#ff375f", type: "personal" }
+        ]
+      }),
+      steps: [
+        mc("Udah", "10:40"),
+        mc("Gue di airport sama Dirga", "10:40", 350),
+        them("KALIAN NGAPAIN", "10:41", 1300, 750),
+        mc("Kerja, please", "10:41"),
+        them("Kerja pakai dijemput segala?", "10:42", 1300, 900),
+        mc("Koper gue berat", "10:42"),
+        them("Itu alasan dia atau alasan lo?", "10:43", 1300, 950),
+        mc("Gue mute ya", "10:43"),
+        them("Jangan dulu", "10:44", 1100, 600),
+        them("Foto orangnya", "10:44", 350, 650),
+        mc("Gak ada", "10:44"),
+        them("Bohong banget", "10:45", 1200, 700),
+        mc("Gue lagi berusaha profesional", "10:45"),
+        them("Profesional sambil salting ya", "10:46", 1300, 850)
+      ]
+    },
+
+    dirga_singapore_hotel: {
+      threadId: "dirga",
+      storyDate: "2026-12-08",
+      active: false,
+      onComplete: next("singapore-after-dinner", "dirga", "You're back in your room?", "2026-12-08", "22:48", "dirga_singapore_after_dinner"),
+      steps: [
+        mc("Udaaah", "17:45"),
+        mc("Bagus banget malah", "17:45", 350),
+        them("Good", "17:46", 1200, 600),
+        them("Rest for a while", "17:46", 350, 700),
+        mc("Kamu sendiri?", "17:47"),
+        them("Still reviewing tomorrow's documents", "17:47", 1400, 1000),
+        mc("Of course", "17:47"),
+        them("That sounded judgmental", "17:48", 1300, 800),
+        mc("Concerned", "17:48"),
+        them("I like that better", "17:49", 1200, 700),
+        them("Dinner at eight?", "17:49", 350, 800),
+        mc("Ini ajakan kerja atau pribadi?", "17:50"),
+        them("Personal", "17:50", 1300, 650),
+        them("Tapi kamu boleh bawa deck kalau itu bikin kamu merasa lebih aman", "17:51", 350, 1100),
+        mc("Gak lucu", "17:51"),
+        them("7:50 di lobby", "17:52", 1200, 700),
+        mc("Katanya jam delapan", "17:52"),
+        them("I know how long it takes you to come downstairs", "17:53", 1300, 1000),
+        mc("DIRGAAA", "17:53"),
+        them("See you at eight", "17:54", 1200, 700)
+      ]
+    },
+
+    dirga_singapore_after_dinner: {
+      threadId: "dirga",
+      storyDate: "2026-12-08",
+      active: false,
+      onComplete: next("singapore-morning-coffee", "dirga", "You don't come downstairs? Aku order kopi for you", "2026-12-09", "07:20", "dirga_singapore_coffee", {
+        imageSrc: "assets/photos/gallery/917467755359088838.jpg",
+        imageAlt: "Dirga holding a cup of coffee",
+        calendarEvents: [
+          { id: "regional-presentation-9-dec", date: "2026-12-09", title: "Regional presentation", time: "10:00 AM", color: "#0a84ff", type: "work" }
+        ]
+      }),
+      steps: [
+        mc("Udaah", "22:48"),
+        them("I had a good time tonight", "22:49", 1300, 850),
+        mc("Aku juga", "22:49"),
+        them("Even with all the client drama?", "22:50", 1300, 900),
+        mc("Especially after it", "22:50"),
+        them("About what we talked about before", "22:51", 1400, 950),
+        mc("Dirga", "22:51"),
+        them("Yes?", "22:52", 1100, 550),
+        mc("Aku masih takut", "22:52"),
+        mc("Tapi aku juga gak mau kamu mundur", "22:52", 350),
+        them("I won't", "22:53", 1300, 600),
+        them("Aku cuma akan jalan sepelan yang kamu butuhkan", "22:53", 350, 1000),
+        mc("What if I ask you not to be too slow?", "22:54"),
+        them("Then I'll be at your door in five minutes", "22:54", 1400, 1000),
+        mc("JANGAN SEKARANG", "22:55"),
+        them("I know", "22:55", 1100, 550),
+        them("Get some sleep. Besok hari yang panjang", "22:56", 350, 900),
+        mc("Good night, Dirga", "22:56"),
+        them("Good night", "22:57", 1200, 600),
+        them("And thank you for giving me a chance", "22:57", 350, 850)
+      ]
+    },
+
+    dirga_singapore_coffee: {
+      threadId: "dirga",
+      storyDate: "2026-12-09",
+      active: false,
+      onComplete: next("singapore-presentation-finished", "dirga", "You did well today", "2026-12-09", "15:40", "dirga_singapore_presentation"),
+      steps: [
+        mc("Ini sogokan biar aku gak telat?", "07:20"),
+        them("Preventive measure", "07:21", 1300, 700),
+        mc("DIRGA 😁😁😁", "07:21"),
+        mc("Makasih kopinya", "07:21", 350),
+        them("You're welcome", "07:22", 1200, 650),
+        them("Ten minutes?", "07:22", 350, 600),
+        mc("Fifteen", "07:22"),
+        them("Twelve. Final offer", "07:23", 1200, 750),
+        mc("Deal", "07:23")
+      ]
+    },
+
+    dirga_singapore_presentation: {
+      threadId: "dirga",
+      storyDate: "2026-12-09",
+      active: false,
+      onComplete: next("singapore-evening-invite", "dirga", "Are you tired?", "2026-12-09", "18:30", "dirga_singapore_evening_invite"),
+      steps: [
+        mc("Aku hampir mati waktu mereka tanya angka kuartal tiga", "15:40"),
+        them("You answered perfectly", "15:41", 1300, 800),
+        mc("Karena ada yang bisik-bisik jawabannya dari sebelah", "15:41"),
+        them("I merely confirmed what you already knew", "15:42", 1400, 1000),
+        mc("Sok bijak", "15:42"),
+        mc("Tadi kamu serem banget ke client", "15:42", 350),
+        them("They were wasting your time", "15:43", 1300, 850),
+        mc("Jadi kamu belain aku?", "15:43"),
+        them("I was protecting the project", "15:44", 1300, 850),
+        mc("Liar", "15:44"),
+        them("Fine", "15:45", 1100, 500),
+        them("I was protecting you too", "15:45", 350, 750),
+        mc("Oh", "15:45"),
+        them("Don't make it awkward now", "15:46", 1200, 800),
+        mc("Kamu yang bikin aku salting", "15:46"),
+        them("I can live with that", "15:47", 1200, 700)
+      ]
+    },
+
+    dirga_singapore_evening_invite: {
+      threadId: "dirga",
+      storyDate: "2026-12-09",
+      active: false,
+      onComplete: next("singapore-personal-evening", "dirga", "You're back in your room?", "2026-12-09", "22:15", "dirga_singapore_personal_evening", {
+        calendarEvents: [
+          { id: "singapore-evening-9-dec", date: "2026-12-09", title: "Evening with Dirga", time: "7:30 PM", color: "#ff375f", type: "personal" }
+        ]
+      }),
+      steps: [
+        mc("A little", "18:30"),
+        them("Aku nemu tempat yang mungkin kamu suka", "18:31", 1300, 900),
+        mc("Lagi-lagi tempat rahasia?", "18:31"),
+        them("Trust me", "18:32", 1200, 600),
+        mc("Itu kalimat orang mencurigakan", "18:32"),
+        them("And yet you keep saying yes", "18:33", 1300, 800),
+        mc("Karena selera kamu annoyingly good", "18:33"),
+        them("Twenty minutes. Meet me in the lobby", "18:34", 1300, 900),
+        mc("Ini ajakan atau perintah?", "18:34"),
+        them("A carefully worded invitation", "18:35", 1200, 750),
+        mc("Yaudah iya", "18:35")
+      ]
+    },
+
+    dirga_singapore_personal_evening: {
+      threadId: "dirga",
+      storyDate: "2026-12-09",
+      active: false,
+      onComplete: next("singapore-rumor-bintang", "bintang", "Kak, maaf mau tanya sesuatu", "2026-12-10", "09:15", "bintang_singapore_rumor"),
+      steps: [
+        mc("Udaah", "22:15"),
+        mc("Tempatnya bagus banget", "22:15", 350),
+        them("The place or the company?", "22:16", 1300, 800),
+        mc("Jangan mulai", "22:16"),
+        them("It was a genuine question", "22:17", 1200, 750),
+        mc("Dua-duanya", "22:17"),
+        them("Good answer", "22:18", 1100, 500),
+        them("I wish we had more time here", "22:18", 350, 850),
+        mc("Kita masih punya besok", "22:19"),
+        them("I know", "22:19", 1100, 500),
+        them("Aku cuma mulai terbiasa punya kamu di dekat aku", "22:20", 350, 900),
+        mc("Jangan ngomong gitu sembarangan", "22:20"),
+        them("I don't say things I don't mean", "22:21", 1300, 850),
+        mc("That's the problem", "22:21"),
+        them("Is it really a problem?", "22:22", 1200, 750),
+        mc("Not anymore, I think", "22:22"),
+        them("I'll take that", "22:23", 1200, 650)
+      ]
+    },
+
+    bintang_singapore_rumor: {
+      threadId: "bintang",
+      storyDate: "2026-12-10",
+      active: false,
+      onComplete: { activateChatOnExit: "dirga_singapore_rumor" },
+      steps: [
+        mc("Tanya ajaa", "09:15"),
+        them("Tadi ada yang bilang Kakak berangkat ke Singapore bareng Pak Dirga", "09:16", 1300, 1000),
+        mc("Siapa yang bilang?", "09:16"),
+        them("Katanya ada anak finance yang lihat di airport", "09:17", 1300, 900),
+        them("Aku gak bilang apa-apa kok, Kak", "09:17", 350, 750),
+        mc("Oke, makasih udah kabarin", "09:18"),
+        them("Aman, Kak", "09:18", 1100, 600)
+      ]
+    },
+
+    dirga_singapore_rumor: {
+      threadId: "dirga",
+      storyDate: "2026-12-10",
+      active: false,
+      onComplete: next("singapore-return-flight", "dirga", "Where are you?", "2026-12-10", "16:25", "dirga_singapore_return", {
+        calendarEvents: [
+          { id: "flight-home-10-dec", date: "2026-12-10", title: "Flight home", time: "6:00 PM", color: "#ff9f0a", type: "travel" }
+        ]
+      }),
+      steps: [
+        mc("Dirga", "09:20"),
+        them("That sounds serious", "09:20", 1300, 750),
+        mc("Ada yang mulai nanya soal kita", "09:21"),
+        them("Who?", "09:21", 1200, 550),
+        mc("Anak kantor katanya lihat kita di airport", "09:22"),
+        them("Are you okay?", "09:22", 1300, 700),
+        mc("Aku gak tahu", "09:23"),
+        them("Aku di lobby", "09:23", 1200, 650),
+        mc("Hah?", "09:23"),
+        them("Turun kalau kamu mau ngobrol", "09:24", 1200, 750),
+        them("If not, I'll wait here", "09:24", 350, 750),
+        mc("Kasih aku lima menit", "09:25"),
+        mc("Aku gak mau sembunyi dari kamu", "10:08", 900),
+        them("You don't have to", "10:09", 1300, 700),
+        mc("Tapi kalau di kantor aku masih belum siap", "10:09"),
+        them("Then nothing changes at the office", "10:10", 1300, 850),
+        them("We remain professional", "10:10", 350, 700),
+        them("Tapi di luar itu, aku tetap ingin punya kesempatan buat jadi milik kamu", "10:11", 350, 1100),
+        mc("That was unfairly convincing", "10:11"),
+        them("Is that a yes?", "10:12", 1200, 650),
+        mc("Itu artinya jangan bikin aku menyesal", "10:12"),
+        them("I won't", "10:13", 1200, 600),
+        mc("Jangan janji soal sesuatu yang gak bisa kamu kontrol", "10:13"),
+        them("Fair", "10:14", 1100, 500),
+        them("Then I'll promise something I can control", "10:14", 350, 850),
+        them("Aku akan selalu jujur sama kamu", "10:15", 350, 750),
+        mc("Okay", "10:15"),
+        them("Okay as in?", "10:16", 1200, 650),
+        mc("YES, DIRGA", "10:16"),
+        them("Finally", "10:17", 1200, 600),
+        mc("Jangan sombong dulu", "10:17"),
+        them("Too late", "10:18", 1100, 550)
+      ]
+    },
+
+    dirga_singapore_return: {
+      threadId: "dirga",
+      storyDate: "2026-12-10",
+      active: false,
+      onComplete: next("office-return-formal", "dirga", "Selamat pagi, Bu", "2026-12-11", "09:12", "dirga_office_return"),
+      steps: [
+        mc("Lagi beli oleh-oleh", "16:25"),
+        them("Boarding starts in twenty minutes", "16:26", 1300, 800),
+        mc("Aku tahuu", "16:26"),
+        them("You said that fifteen minutes ago", "16:27", 1300, 850),
+        mc("Tenang, aku tahu jalan pulang", "16:27"),
+        them("That's not reassuring", "16:28", 1200, 750),
+        them("Share your location", "16:28", 350, 650),
+        mc("DIRGA PLEASE", "16:29"),
+        them("Five minutes, atau aku cari kamu", "16:29", 1200, 750),
+        mc("Iyaa ini lagi jalan", "16:30"),
+        them("Good", "16:30", 1100, 500),
+        mc("Jangan good-good, aku bukan anak kecil", "16:31"),
+        them("Then stop disappearing like one", "16:31", 1200, 800),
+        mc("Aku cuma beli oleh-oleh", "16:32"),
+        them("Aku juga mau", "16:32", 1100, 600),
+        mc("Kamu mau apa?", "16:32"),
+        them("You", "16:33", 1200, 500),
+        mc("GAK LUCU", "16:33"),
+        them("I wasn't joking", "16:34", 1200, 650)
+      ]
+    },
+
+    dirga_office_return: {
+      threadId: "dirga",
+      storyDate: "2026-12-11",
+      active: false,
+      onComplete: next("petra-official-news", "petra", "Lo udah balik?", "2026-12-11", "12:30", "petra_official_news"),
+      steps: [
+        them("Saya sudah kirim revisi kontraknya lewat email", "09:12", 350, 850),
+        mc("Baik, Pak. Nanti saya cek", "09:13"),
+        them("Please review it before lunch", "09:13", 1200, 700),
+        mc("Siap, Pak Dirga", "09:14"),
+        them("You're enjoying this, aren't you?", "09:14", 1300, 800),
+        mc("Enjoying what, Pak?", "09:15"),
+        them("Calling me Pak after everything that happened in Singapore", "09:15", 1300, 900),
+        mc("Kita sedang profesional", "09:16"),
+        them("You're impossible", "09:16", 1200, 650),
+        mc("See you di meeting, Pak", "09:17"),
+        them("After work", "09:17", 1200, 600),
+        them("Don't make any plans", "09:17", 350, 650),
+        mc("Itu perintah?", "09:18"),
+        them("A carefully worded invitation", "09:18", 1200, 750),
+        mc("Katanya profesional", "09:19"),
+        them("Jam kerja berakhir pukul lima", "09:19", 1200, 700)
+      ]
+    },
+
+    petra_official_news: {
+      threadId: "petra",
+      storyDate: "2026-12-11",
+      active: false,
+      onComplete: next("first-post-trip-date", "dirga", "I'm downstairs", "2026-12-11", "17:40", "dirga_first_official_date", {
+        calendarEvents: [
+          { id: "first-official-date-11-dec", date: "2026-12-11", title: "Dinner with Dirga", time: "7:00 PM", color: "#ff375f", type: "personal" }
+        ]
+      }),
+      steps: [
+        mc("Udaah", "12:30"),
+        them("Oleh-oleh gue mana", "12:31", 1200, 650),
+        mc("Gue punya kabar lebih penting", "12:31"),
+        them("LO JADIAN?", "12:32", 1300, 700),
+        mc("Kok langsung kesimpulannya ke situ?", "12:32"),
+        them("Karena gue kenal lo", "12:33", 1200, 650),
+        them("Jadi bener?", "12:33", 350, 600),
+        mc("Kita coba jalanin", "12:34"),
+        them("GUE UDAH TAU DARI INSIDEN GANTENG BANGET", "12:34", 1300, 900),
+        mc("Jangan diungkit lagi", "12:35"),
+        them("Gimana gue bisa lupa", "12:35", 1200, 700),
+        them("Lo kirim foto cowoknya langsung ke orangnya", "12:35", 350, 750),
+        mc("Gue block beneran ya", "12:36"),
+        them("Selamat yaa, akhirnya", "12:36", 1200, 700),
+        mc("Makasih, Pet", "12:37"),
+        them("Tapi gue tetap mau oleh-oleh", "12:37", 1100, 650)
+      ]
+    },
+
+    dirga_first_official_date: {
+      threadId: "dirga",
+      storyDate: "2026-12-11",
+      active: false,
+      onComplete: next("first-date-checkin", "dirga", "One question", "2026-12-11", "22:35", "dirga_first_date_checkin"),
+      steps: [
+        mc("Kamu gak bilang mau langsung jemput", "17:40"),
+        them("I told you not to make plans", "17:41", 1300, 800),
+        mc("Itu bukan berarti langsung datang", "17:41"),
+        them("Too late", "17:42", 1200, 600),
+        mc("Aku belum ganti baju", "17:42"),
+        them("Take your time", "17:43", 1200, 650),
+        mc("Sejak kapan kamu sabar?", "17:43"),
+        them("Since you", "17:44", 1300, 600),
+        mc("Cheesy banget", "17:44"),
+        them("Still true", "17:45", 1100, 550),
+        mc("Sepuluh menit", "17:45"),
+        them("Make it fifteen", "17:46", 1100, 600),
+        mc("Tumben", "17:46"),
+        them("Aku sedang berusaha jadi boyfriend yang pengertian", "17:47", 1300, 850),
+        mc("Jangan pede dulu", "17:47"),
+        them("You haven't denied it", "17:48", 1200, 700)
+      ]
+    },
+
+    dirga_first_date_checkin: {
+      threadId: "dirga",
+      storyDate: "2026-12-11",
+      active: false,
+      onComplete: next("secret-coffee-bintang", "bintang", "Kak, ini kopinya dari Pak Dirga?", "2026-12-14", "09:20", "bintang_secret_coffee"),
+      steps: [
+        mc("Serius banget?", "22:35"),
+        them("Are you happy?", "22:36", 1300, 700),
+        mc("About what?", "22:36"),
+        them("About us", "22:37", 1200, 600),
+        mc("I am", "22:37"),
+        mc("Takutnya masih ada, tapi aku seneng", "22:37", 350),
+        them("That's enough for me", "22:38", 1300, 750),
+        mc("Kamu sendiri?", "22:38"),
+        them("More than I expected to be", "22:39", 1300, 800),
+        mc("Good", "22:39"),
+        them("That's all?", "22:40", 1100, 600),
+        mc("Good night, boyfriend", "22:40"),
+        them("...", "22:41", 1300, 500),
+        them("Say that again", "22:41", 350, 650),
+        mc("Good night, Dirga", "22:42"),
+        them("Cruel", "22:42", 1100, 550),
+        mc("Tidur sana", "22:42"),
+        them("Good night, girlfriend", "22:43", 1100, 650)
+      ]
+    },
+
+    bintang_secret_coffee: {
+      threadId: "bintang",
+      storyDate: "2026-12-14",
+      active: false,
+      onComplete: { activateChatOnExit: "dirga_secret_coffee" },
+      steps: [
+        mc("Hah?", "09:20"),
+        them("Tadi beliau yang titip ke aku", "09:21", 1200, 700),
+        them("Pesanannya juga sama persis kayak punya Kakak", "09:21", 350, 850),
+        mc("Oh, mungkin beliau ingat waktu meeting kemarin", "09:22"),
+        them("Pak Dirga hafal pesanan kopi Kakak?", "09:22", 1200, 800),
+        mc("Kayaknya kebetulan aja", "09:23"),
+        them("Ooh, oke, Kak", "09:23", 1100, 600)
+      ]
+    },
+
+    dirga_secret_coffee: {
+      threadId: "dirga",
+      storyDate: "2026-12-14",
+      active: false,
+      onComplete: {
+        exitTransition: {
+          id: "secret-distance-later",
+          fromViews: ["whatsapp", "thread"],
+          storyDate: "2026-12-14",
+          storyTime: "17:45",
+          activateChatScript: "dirga_secret_distance"
+        }
+      },
+      steps: [
+        mc("Kamu hampir bikin kita ketahuan", "09:25"),
+        them("Because of coffee?", "09:25", 1300, 700),
+        mc("Bintang nanya kenapa kamu tahu pesanan aku", "09:26"),
+        them("Next time aku pura-pura gak tahu", "09:26", 1300, 800),
+        mc("Jangan gitu juga", "09:27"),
+        them("Secret relationships are complicated", "09:27", 1200, 750),
+        mc("Baru sadar?", "09:28"),
+        them("No", "09:28", 1100, 500),
+        them("Still worth it, though", "09:28", 350, 650),
+        mc("Untung jawabannya benar", "09:29"),
+        them("I know my girlfriend", "09:29", 1200, 650)
+      ]
+    },
+
+    dirga_secret_distance: {
+      threadId: "dirga",
+      storyDate: "2026-12-14",
+      active: false,
+      onComplete: next("secret-rules", "dirga", "We need rules", "2026-12-14", "19:10", "dirga_secret_rules"),
+      steps: [
+        mc("Kamu marah sama aku?", "17:45"),
+        them("No. Why would you think that?", "17:46", 1300, 800),
+        mc("Dari pagi kamu kayak gak kenal aku", "17:46"),
+        them("I was trying to be careful", "17:47", 1300, 750),
+        mc("Careful bukan berarti harus pura-pura asing", "17:47"),
+        them("You're right", "17:48", 1200, 600),
+        them("Aku terlalu berlebihan", "17:48", 350, 650),
+        mc("Aku ngerti kita harus profesional", "17:49"),
+        mc("Tapi aku gak mau ngerasa kamu malu punya hubungan sama aku", "17:49", 350),
+        them("Never", "17:50", 1300, 550),
+        them("Jangan pernah berpikir begitu", "17:50", 350, 700),
+        them("Aku cuma takut satu kesalahan dari aku malah jadi beban buat kamu", "17:51", 350, 900),
+        mc("Then don't disappear", "17:51"),
+        them("I won't", "17:52", 1200, 600),
+        them("Come downstairs", "17:52", 350, 650),
+        mc("Sekarang?", "17:53"),
+        them("Aku mau minta maaf dengan benar", "17:53", 1200, 750),
+        mc("Kasih aku lima menit", "17:54"),
+        them("Take your time. Aku tunggu", "17:54", 1200, 700)
+      ]
+    },
+
+    dirga_secret_rules: {
+      threadId: "dirga",
+      storyDate: "2026-12-14",
+      active: false,
+      onComplete: next("secret-meeting-tease", "dirga", "You haven't looked at me for twenty minutes", "2026-12-15", "10:20", "dirga_secret_meeting"),
+      steps: [
+        mc("Romantis banget", "19:10"),
+        them("I'm serious", "19:11", 1200, 600),
+        mc("Oke, Pak Legal. Sebutkan peraturannya", "19:11"),
+        them("Pertama, no special treatment at the office", "19:12", 1300, 800),
+        mc("Setuju", "19:12"),
+        them("No personal calls during working hours unless it's important", "19:13", 1300, 900),
+        mc("Setuju", "19:13"),
+        them("Jangan sengaja lembur sendirian cuma supaya bisa pulang sama aku", "19:14", 1300, 900),
+        mc("Itu terlalu spesifik", "19:14"),
+        them("Because you've done it twice", "19:15", 1200, 700),
+        mc("Allegedly", "19:15"),
+        them("And no calling me Pak outside the office", "19:16", 1200, 750),
+        mc("Yang itu opsional", "19:16"),
+        them("Non-negotiable", "19:17", 1200, 650),
+        mc("Giliran aku", "19:17"),
+        them("Go ahead", "19:18", 1100, 550),
+        mc("Jangan pura-pura gak kenal aku lagi", "19:18"),
+        them("Agreed", "19:19", 1100, 550),
+        mc("Kita masih boleh makan siang bareng kalau sama tim", "19:19"),
+        them("Agreed", "19:20", 1100, 550),
+        mc("Jangan kirim hadiah ke kantor", "19:20"),
+        them("That one is difficult", "19:21", 1200, 700),
+        mc("Dirga", "19:21"),
+        them("Fine", "19:22", 1100, 500),
+        them("Anything else?", "19:22", 350, 600),
+        mc("Kalau cuma kita berdua, gak ada aturan", "19:23"),
+        them("That sounds dangerous", "19:23", 1200, 700),
+        mc("Katanya still worth it", "19:24"),
+        them("It is", "19:24", 1100, 550)
+      ]
+    },
+
+    dirga_secret_meeting: {
+      threadId: "dirga",
+      storyDate: "2026-12-15",
+      active: false,
+      onComplete: next("serious-rumor-maria", "maria", "Kak, maaf ganggu", "2026-12-16", "14:15", "maria_serious_rumor"),
+      steps: [
+        mc("Kita lagi meeting", "10:20"),
+        them("I noticed", "10:21", 1200, 550),
+        mc("Katanya harus profesional", "10:21"),
+        them("I'm starting to regret the rules", "10:22", 1200, 750),
+        mc("Baru satu hari", "10:22"),
+        them("Exactly", "10:23", 1100, 500),
+        mc("Fokus ke presentasi", "10:23"),
+        them("I am", "10:24", 1100, 500),
+        mc("Slide-nya di depan", "10:24"),
+        them("I wasn't talking about the slide", "10:25", 1300, 750),
+        mc("DIRGAAA", "10:25"),
+        them("Don't smile", "10:26", 1200, 600),
+        them("Bintang mulai lihat ke arah kamu", "10:26", 350, 700),
+        mc("INI SALAH SIAPA", "10:27"),
+        them("Yours", "10:27", 1100, 500),
+        mc("Kok aku?", "10:27"),
+        them("You're too easy to tease", "10:28", 1200, 650),
+        them("Dinner tonight?", "17:05", 1500, 700),
+        mc("Kita baru bikin aturan", "17:05"),
+        them("Working hours are over", "17:06", 1200, 650),
+        mc("Cepat banget hitungannya", "17:06"),
+        them("I'm a lawyer", "17:07", 1200, 550),
+        them("Details matter", "17:07", 350, 600),
+        mc("Jam berapa?", "17:08"),
+        them("Seven", "17:08", 1100, 500),
+        mc("Jemput aku?", "17:08"),
+        them("Always", "17:09", 1100, 550)
+      ]
+    },
+
+    maria_serious_rumor: {
+      threadId: "maria",
+      storyDate: "2026-12-16",
+      active: false,
+      onComplete: { activateChatOnExit: "dirga_serious_rumor" },
+      steps: [
+        mc("Gapapa, ada apa?", "14:15"),
+        them("Aku dengar sesuatu dari tim finance", "14:16", 1200, 750),
+        them("Mereka bilang approval legal campaign kita cepat karena Kakak dekat sama Pak Dirga", "14:16", 350, 1000),
+        mc("Siapa yang bilang?", "14:17"),
+        them("Aku gak tahu awalnya dari siapa", "14:17", 1200, 700),
+        them("Tapi beberapa orang sudah bahas", "14:18", 350, 700),
+        them("Aku tahu itu gak benar, Kak", "14:18", 350, 700),
+        mc("Makasih udah kasih tahu", "14:19"),
+        them("Kakak gapapa?", "14:19", 1100, 600),
+        mc("Gapapa kok", "14:20"),
+        mc("Tolong jangan bahas ke yang lain dulu ya", "14:20", 350),
+        them("Siap, Kak", "14:21", 1100, 600)
+      ]
+    },
+
+    dirga_serious_rumor: {
+      threadId: "dirga",
+      storyDate: "2026-12-16",
+      active: false,
+      onComplete: {
+        exitTransition: {
+          id: "rumor-petra-evening",
+          fromViews: ["whatsapp", "thread"],
+          storyDate: "2026-12-16",
+          storyTime: "20:30",
+          activateChatScript: "petra_rumor_support"
+        }
+      },
+      steps: [
+        mc("Kamu udah tahu soal rumor kantor?", "14:24"),
+        them("Yes", "14:24", 1200, 500),
+        mc("Sejak kapan?", "14:25"),
+        them("This afternoon", "14:25", 1200, 600),
+        mc("Kenapa kamu gak bilang?", "14:26"),
+        them("Aku sedang cari tahu dari mana asalnya", "14:26", 1300, 800),
+        mc("Tanpa bilang ke aku?", "14:27"),
+        them("I didn't want you to worry before I had the facts", "14:27", 1400, 900),
+        mc("Tapi ini tentang aku juga", "14:28"),
+        them("You're right", "14:28", 1200, 600),
+        mc("Orang-orang jadi mikir kerjaan aku lolos karena kamu", "14:29"),
+        them("I know that isn't true", "14:29", 1300, 750),
+        mc("Kamu tahu, tapi mereka enggak", "14:30"),
+        them("Aku bisa mundur dari project ini", "14:30", 1300, 750),
+        mc("Jangan", "14:31"),
+        mc("Itu malah bikin rumornya kelihatan benar", "14:31", 350),
+        them("Then tell me what you need", "14:32", 1300, 750),
+        mc("Jangan selesaikan semuanya sendirian", "14:32"),
+        mc("Talk to me first", "14:32", 350),
+        them("Okay", "14:33", 1200, 500),
+        them("We'll handle it together", "14:33", 350, 650)
+      ]
+    },
+
+    petra_rumor_support: {
+      threadId: "petra",
+      storyDate: "2026-12-16",
+      active: false,
+      onComplete: next("final-review-bintang", "bintang", "KAK", "2026-12-18", "10:04", "bintang_final_review", {
+        calendarEvents: [
+          { id: "campaign-final-review-18-dec", date: "2026-12-18", title: "Campaign final review", time: "10:00 AM", color: "#0a84ff", type: "work" },
+          { id: "marketing-team-lunch-18-dec", date: "2026-12-18", title: "Team lunch", time: "12:30 PM", color: "#30d158", type: "work" }
+        ]
+      }),
+      steps: [
+        mc("Pet", "20:30"),
+        them("Kenapa?", "20:31", 1100, 550),
+        mc("Rumor soal gue sama Dirga mulai nyebar", "20:31"),
+        them("Rumor apaan?", "20:32", 1200, 600),
+        mc("Katanya campaign gue gampang lolos karena deket sama dia", "20:32"),
+        them("Najis banget mulut orang", "20:33", 1300, 700),
+        mc("Gue tahu kerjaan gue bagus", "20:33"),
+        mc("Tapi sekarang gue jadi mempertanyakan semuanya", "20:34", 350),
+        them("Jangan", "20:34", 1100, 500),
+        them("Lo kerja sampai lupa makan, kurang tidur, dan hampir nangis gara-gara revisi", "20:35", 350, 900),
+        them("Jangan kasih semua hasil kerja itu ke orang yang cuma bisa ngomong", "20:35", 350, 900),
+        mc("Tapi kalau ini ngaruh ke tim gimana?", "20:36"),
+        them("Hadapi, jangan mundur", "20:36", 1200, 650),
+        them("Buktiin campaign itu berhasil karena lo dan tim lo", "20:37", 350, 750),
+        mc("Tumben bijak", "20:37"),
+        them("Gue screenshot ya", "20:38", 1100, 550),
+        mc("Jangan aneh-aneh", "20:38")
+      ]
+    },
+
+    bintang_final_review: {
+      threadId: "bintang",
+      storyDate: "2026-12-18",
+      active: false,
+      onComplete: next("final-review-maria", "maria", "Kak, hasil testing caption juga bagus banget", "2026-12-18", "10:12", "maria_final_review"),
+      steps: [
+        them("FINAL REVIEW-NYA LOLOS", "10:04", 350, 700),
+        mc("SERIUS?", "10:05"),
+        them("SERIUS", "10:05", 1100, 550),
+        them("Gak ada revisi tambahan", "10:05", 350, 650),
+        mc("Akhirnyaaa", "10:06"),
+        mc("Good job banget", "10:06", 350),
+        mc("Nanti makan siang aku traktir, kabarin yang lain ya", "10:07", 350),
+        them("SIAP, KAK", "10:07", 1100, 550),
+        them("Aku screenshot dulu sebagai bukti", "10:08", 350, 650)
+      ]
+    },
+
+    maria_final_review: {
+      threadId: "maria",
+      storyDate: "2026-12-18",
+      active: false,
+      onComplete: next("final-review-adelina", "adelina", "Kak, engagement teaser-nya lewat target", "2026-12-18", "10:20", "adelina_final_review"),
+      steps: [
+        them("Responsnya lebih natural dibanding versi sebelumnya", "10:12", 350, 750),
+        mc("Aku udah dengar kabar final review dari Bintang", "10:13"),
+        mc("Good job yaa, revisi kemarin ternyata worth it", "10:13", 350),
+        them("Makasih, Kak", "10:14", 1100, 550),
+        them("Berarti aman lanjut sesuai jadwal ya?", "10:14", 350, 650),
+        mc("Aman", "10:15"),
+        mc("Tinggal monitor respons setelah naik nanti", "10:15", 350),
+        them("Siap, Kak", "10:16", 1100, 550)
+      ]
+    },
+
+    adelina_final_review: {
+      threadId: "adelina",
+      storyDate: "2026-12-18",
+      active: false,
+      onComplete: next("final-review-dirga", "dirga", "Congratulations, Bu", "2026-12-18", "10:30", "dirga_final_review"),
+      steps: [
+        mc("Niceee", "10:20"),
+        them("Komennya juga lebih positif dari perkiraan", "10:21", 1200, 700),
+        mc("Good job ya", "10:21"),
+        mc("Bintang udah bilang soal makan siang?", "10:22", 350),
+        them("UDAH KAK", "10:22", 1100, 550),
+        them("Itu informasi pertama yang dia sampaikan", "10:23", 350, 650),
+        mc("Tentu saja 😭", "10:23")
+      ]
+    },
+
+    dirga_final_review: {
+      threadId: "dirga",
+      storyDate: "2026-12-18",
+      active: false,
+      onComplete: {
+        exitTransition: {
+          id: "story-resolution-evening",
+          fromViews: ["whatsapp", "thread"],
+          storyDate: "2026-12-18",
+          storyTime: "19:30",
+          activateChatScript: "dirga_story_resolution"
+        }
+      },
+      steps: [
+        them("Campaign-nya sudah lolos final review", "10:30", 350, 700),
+        mc("Thank you, Pak", "10:31"),
+        mc("Terima kasih juga sudah membantu proses legalnya", "10:31", 350),
+        them("Your team did an excellent job", "10:32", 1200, 750),
+        mc("Saya sampaikan ke mereka", "10:32"),
+        them("Now, can I talk to my girlfriend?", "10:35", 1500, 800),
+        mc("Tergantung", "10:35"),
+        them("I'm proud of you", "10:36", 1200, 650),
+        mc("Karena campaign-nya atau karena aku berhasil gak ngamuk di kantor?", "10:36"),
+        them("Both", "10:37", 1100, 500),
+        mc("Kamu gak bantu approval-nya diam-diam, kan?", "10:37"),
+        them("No", "10:38", 1100, 500),
+        them("Aku bahkan meminta satu orang lain ikut review supaya prosesnya tetap objektif", "10:38", 350, 900),
+        mc("Kenapa gak bilang?", "10:39"),
+        them("Because this is your achievement", "10:39", 1200, 750),
+        them("I didn't want my name anywhere near it", "10:40", 350, 750),
+        mc("Thank you", "10:40"),
+        them("You did this yourself", "10:41", 1200, 650),
+        mc("Jangan bikin aku nangis di kantor", "10:41"),
+        them("Save it for after work", "10:42", 1200, 650)
+      ]
+    },
+
+    dirga_story_resolution: {
+      threadId: "dirga",
+      storyDate: "2026-12-18",
+      active: false,
+      onComplete: next("story-epilogue", "dirga", "You're home?", "2026-12-19", "22:15", "dirga_story_epilogue", {
+        calendarEvents: [
+          { id: "final-dinner-19-dec", date: "2026-12-19", title: "Dinner with Dirga", time: "7:00 PM", color: "#ff375f", type: "personal" }
+        ]
+      }),
+      steps: [
+        mc("Aku sudah mikir soal kita", "19:30"),
+        them("Should I be worried?", "19:31", 1300, 700),
+        mc("Sedikit", "19:31"),
+        them("Go on", "19:32", 1100, 550),
+        mc("Aku masih mau hubungan kita tetap private", "19:32"),
+        mc("Tapi aku gak mau terus-terusan bohong atau pura-pura gak kenal kamu", "19:33", 350),
+        them("I agree", "19:33", 1200, 600),
+        mc("Kita gak perlu ngumumin ke semua orang", "19:34"),
+        mc("Tapi kalau ada yang tanya, aku gak mau merasa malu", "19:34", 350),
+        them("You should never feel ashamed of us", "19:35", 1300, 750),
+        mc("Kamu juga jangan terlalu protektif", "19:35"),
+        them("I'll try", "19:36", 1100, 550),
+        mc("Try harder", "19:36"),
+        them("Yes, ma'am", "19:37", 1100, 550),
+        mc("Jangan mulai", "19:37"),
+        them("One question", "19:38", 1200, 600),
+        mc("Apa?", "19:38"),
+        them("Kalau campaign-nya berhasil, kamu dapat hadiah apa?", "19:39", 1300, 850),
+        mc("Belum kepikiran", "19:39"),
+        them("May I ask for something?", "19:40", 1200, 700),
+        mc("Balik lagi ke sini?", "19:40"),
+        them("I want your time", "19:41", 1300, 650),
+        mc("You already have it", "19:41"),
+        them("Still my favorite gift", "19:42", 1200, 700),
+        mc("Dinner besok?", "19:42"),
+        them("Just the two of us?", "19:43", 1200, 650),
+        mc("Just the two of us", "19:43"),
+        them("Then it's a date", "19:44", 1200, 650)
+      ]
+    },
+
+    dirga_story_epilogue: {
+      threadId: "dirga",
+      storyDate: "2026-12-19",
+      active: false,
+      steps: [
+        mc("Udaah", "22:15"),
+        them("Thank you for tonight", "22:16", 1200, 700),
+        mc("Waktuku buat kamu", "22:16"),
+        them("Finally", "22:17", 1200, 600),
+        mc("Padahal dari kemarin-kemarin juga udah", "22:17"),
+        them("I know", "22:18", 1100, 500),
+        them("Tapi sekarang kamu memberikannya tanpa ragu", "22:18", 350, 750),
+        mc("Jangan bikin aku malu sendiri", "22:19"),
+        them("Too late", "22:19", 1100, 550),
+        them("Happy birthday to me, apparently", "22:20", 350, 700),
+        mc("Ulang tahun kamu udah lewat", "22:20"),
+        them("The best gifts arrive late", "22:21", 1200, 650)
+      ]
+    }
+  });
+
+  config.chatScripts.dirga_midnight_reconciliation.onComplete = next(
+    "singapore-pickup-opening",
+    "dirga",
+    "Morning. Kamu sudah siap?",
+    "2026-12-08",
+    "07:05",
+    "dirga_singapore_pickup",
+    {
+      blockedViews: ["whatsapp", "thread", "phone"],
+      calendarEvents: [
+        { id: "singapore-briefing-8-dec", date: "2026-12-08", title: "Regional project briefing", time: "9:00 AM", color: "#0a84ff", type: "work" }
+      ]
+    }
+  );
+
+  config.storyChatMedia = (config.storyChatMedia || []).filter((media) => media.id !== "dirga-january-photo");
+  if (!(config.photos || []).some((photo) => photo.id === "photo-24")) {
+    config.photos.push({
+      id: "photo-24",
+      title: "19 December 2026",
+      caption: "19 December 2026 · 8:42 PM",
+      src: "assets/photos/gallery/dinner-17-second.jpg",
+      albums: ["favorites"],
+      availableAfter: "dirga_story_epilogue",
+      availableAfterDate: "2026-12-19"
+    });
+  }
+  if (!(config.xApp?.posts || []).some((post) => post.availableAfter === "dirga_story_epilogue")) {
+    config.xApp.posts.unshift({
+      time: "19 Dec",
+      text: "ternyata ngasih waktu ke seseorang gak selalu berarti kehilangan waktu sendiri",
+      replies: 0,
+      reposts: 0,
+      likes: 0,
+      views: 1,
+      availableAfter: "dirga_story_epilogue"
+    });
+  }
+})();

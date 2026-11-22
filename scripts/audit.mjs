@@ -183,10 +183,11 @@ assert(/function advanceCallCaption\(\)/.test(appSource) && /call-caption-next/.
 assert(!/function scheduleCallCaption\(\)/.test(appSource), "Subtitle telepon masih berjalan otomatis");
 assert(/data-replay-call/.test(appSource) && /call\.replay/.test(appSource), "Replay telepon dari Recents belum tersedia");
 
-assert(/storyRevision:\s*15/.test(appSource), "Versi progres cerita belum dinaikkan ke 15");
+assert(/storyRevision:\s*16/.test(appSource), "Versi progres cerita belum dinaikkan ke 16");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 14\)/.test(appSource) && /const revisedOrder = \[/.test(appSource), "Progress lama belum dimigrasikan ke naskah pengganti");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 14\) \{\s*const dirgaLanguageMigrations/.test(appSource), "Migrasi dialog lama masih dapat mengubah naskah baru");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 15\)/.test(appSource) && /const dialogueCorrections = new Map/.test(appSource), "Koreksi dialog belum dimigrasikan ke progres lama");
+assert(/if \(\(saved\.storyRevision \|\| 0\) < 16\)/.test(appSource), "Arc Singapore belum dimigrasikan ke progres lama");
 assert(/const nextScriptId = revisedOrder\[completedCount\] \|\| null/.test(appSource), "Migrasi progres lama belum mengaktifkan fase berikutnya");
 assert(/loaded\.storyCalendarEvents\.push\(\{ \.\.\.event \}\)/.test(appSource), "Migrasi progres lama belum memulihkan event Calendar");
 assert(/formatWhatsAppDay\(message\.storyDate/.test(appSource), "WhatsApp belum memisahkan percakapan berdasarkan hari");
@@ -204,7 +205,66 @@ assert((config.notes || []).some((note) => note.title === "MINGGU DEPAN" && note
 
 const removedGalleryAssets = ["1140747780608893244", "987343918331237220", "917467755359088838"];
 assert(removedGalleryAssets.every((asset) => !(config.photos || []).some((photo) => photo.src?.includes(asset))), "Foto yang diminta dihapus masih masuk Galeri");
-assert((config.storyChatMedia || []).some((media) => media.imageSrc?.includes("917467755359088838")), "Foto Januari belum dipindahkan ke chat");
+assert(!(config.storyChatMedia || []).some((media) => media.id === "dirga-january-photo"), "Foto kopi lama masih terduplikasi sebagai media terjadwal");
+
+const singaporeOpening = config.chatScripts?.dirga_midnight_reconciliation?.onComplete;
+assert(singaporeOpening?.text === "Morning. Kamu sudah siap?" && singaporeOpening?.activateChatScript === "dirga_singapore_pickup", "Arc Singapore belum tersambung dari rekonsiliasi");
+assert(singaporeOpening?.storyDate === "2026-12-08" && singaporeOpening?.time === "07:05", "Pembuka Singapore belum memakai timeline 8 Desember");
+assert(["whatsapp", "thread", "phone"].every((view) => singaporeOpening?.blockedViews?.includes(view)), "Push Singapore belum menunggu user keluar dari WhatsApp dan Phone Recents");
+const singaporeCoffeeOpening = config.chatScripts?.dirga_singapore_after_dinner?.onComplete;
+assert(singaporeCoffeeOpening?.text === "You don't come downstairs? Aku order kopi for you", "Push kopi Singapore belum sesuai revisi");
+assert(singaporeCoffeeOpening?.imageSrc?.includes("917467755359088838"), "Foto kopi belum terpasang pada push Dirga");
+assert(/imageSrc:\s*event\.imageSrc/.test(appSource) && /imageAlt:\s*event\.imageAlt/.test(appSource), "Foto dari push notification belum diteruskan ke bubble WhatsApp");
+
+const singaporeCoffee = config.chatScripts?.dirga_singapore_coffee;
+assert(singaporeCoffee?.steps?.[0]?.text === "Ini sogokan biar aku gak telat?", "Balasan pertama scene kopi belum sesuai");
+assert(singaporeCoffee?.steps?.some((step) => step.text === "Preventive measure"), "Preventive measure scene kopi hilang");
+assert(singaporeCoffee?.steps?.some((step) => step.text === "DIRGA 😁😁😁"), "Reaksi MC pada scene kopi belum sesuai");
+assert(!singaporeCoffee?.steps?.some((step) => ["Turun", "Aku udah pesanin kopi kamu", "Morningg"].includes(step.text)), "Dialog yang sudah dihapus masih ada di scene kopi Singapore");
+const singaporePresentation = config.chatScripts?.dirga_singapore_presentation;
+assert(!singaporePresentation?.steps?.some((step) => step.text === "Occupational hazard"), "Occupational hazard belum dihapus dari scene presentasi");
+
+const secretCoffee = config.chatScripts?.dirga_secret_coffee;
+assert(!secretCoffee?.steps?.some((step) => ["Fair question", "DIRGA"].includes(step.text)), "Dialog yang dihapus masih ada di scene hubungan rahasia");
+assert(config.chatScripts?.bintang_final_review?.onComplete?.activateChatScript === "maria_final_review", "Update final review Bintang belum tersambung ke Maria");
+assert(config.chatScripts?.maria_final_review?.onComplete?.activateChatScript === "adelina_final_review", "Update final review Maria belum tersambung ke Adelina");
+assert(config.chatScripts?.adelina_final_review?.onComplete?.activateChatScript === "dirga_final_review", "Update final review Adelina belum tersambung ke Dirga");
+assert(!threads.some((thread) => /group/i.test(thread.id || "")), "Final review tidak boleh dibuat sebagai grup baru");
+
+const newArcScripts = [
+  "dirga_singapore_pickup", "dirga_singapore_briefing", "petra_singapore_checkin",
+  "dirga_singapore_hotel", "dirga_singapore_after_dinner", "dirga_singapore_coffee",
+  "dirga_singapore_presentation", "dirga_singapore_evening_invite", "dirga_singapore_personal_evening",
+  "bintang_singapore_rumor", "dirga_singapore_rumor", "dirga_singapore_return",
+  "dirga_office_return", "petra_official_news", "dirga_first_official_date", "dirga_first_date_checkin",
+  "bintang_secret_coffee", "dirga_secret_coffee", "dirga_secret_distance", "dirga_secret_rules",
+  "dirga_secret_meeting", "maria_serious_rumor", "dirga_serious_rumor", "petra_rumor_support",
+  "bintang_final_review", "maria_final_review", "adelina_final_review", "dirga_final_review",
+  "dirga_story_resolution", "dirga_story_epilogue"
+];
+newArcScripts.forEach((scriptId) => assert(Boolean(config.chatScripts?.[scriptId]), `Fase baru belum tersedia: ${scriptId}`));
+for (const scriptId of newArcScripts) {
+  const completion = config.chatScripts?.[scriptId]?.onComplete;
+  if (completion?.text) {
+    assert(completion.afterMs === 5500, `Jeda push ${scriptId} bukan 5,5 detik`);
+    assert(completion.requireAppExit === true && completion.delayAfterExit === true, `Push ${scriptId} belum menunggu user keluar WhatsApp`);
+  }
+}
+
+const finalPhoto = (config.photos || []).find((photo) => photo.id === "photo-24");
+assert(finalPhoto?.src?.includes("dinner-17-second") && finalPhoto?.availableAfter === "dirga_story_epilogue", "Foto dinner penutup belum mengikuti epilog");
+assert((config.xApp?.posts || []).some((post) => post.availableAfter === "dirga_story_epilogue" && post.text === "ternyata ngasih waktu ke seseorang gak selalu berarti kehilangan waktu sendiri"), "Tweet penutup belum tersedia");
+assert(config.chatScripts?.dirga_story_resolution?.steps?.some((step) => step.text === "Still my favorite gift"), "Motif hadiah waktu belum kembali di resolusi");
+assert(config.chatScripts?.dirga_story_epilogue?.steps?.some((step) => step.text === "The best gifts arrive late"), "Penutup epilog belum tersedia");
+
+const expectedCalendarEvents = [
+  "singapore-briefing-8-dec", "flight-singapore-8-dec", "singapore-dinner-8-dec",
+  "regional-presentation-9-dec", "singapore-evening-9-dec", "flight-home-10-dec",
+  "first-official-date-11-dec", "campaign-final-review-18-dec", "marketing-team-lunch-18-dec",
+  "final-dinner-19-dec"
+];
+const storyCalendarIds = Object.values(config.chatScripts || {}).flatMap((script) => script.onComplete?.calendarEvents || []).map((event) => event.id);
+expectedCalendarEvents.forEach((eventId) => assert(storyCalendarIds.includes(eventId), `Calendar event belum tersedia: ${eventId}`));
 
 const assetRefs = new Set();
 function collectAssets(value) {

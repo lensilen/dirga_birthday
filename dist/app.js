@@ -69,7 +69,7 @@
   ];
 
   const defaultState = () => ({
-    storyRevision: 15,
+    storyRevision: 16,
     unlocked: false,
     pinVisible: false,
     view: "lock",
@@ -1170,6 +1170,9 @@
         });
         loaded.storyRevision = 15;
       }
+      if ((saved.storyRevision || 0) < 16) {
+        loaded.storyRevision = 16;
+      }
       return loaded;
     } catch (_) {
       return defaultState();
@@ -1932,7 +1935,9 @@
     addMessage(event.threadId, {
       from: "them",
       text: event.text,
-      time: state.storyTime
+      time: state.storyTime,
+      imageSrc: event.imageSrc,
+      imageAlt: event.imageAlt
     }, !isOpen);
     if (!isOpen) showToast(event);
     if (isOpen || ["home", "whatsapp", "thread"].includes(state.view)) render();

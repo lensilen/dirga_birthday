@@ -3600,3 +3600,31 @@ no. absolutely not.`
   window.STORY_CONFIG.chatScripts.dirga_story_epilogue = revisedEnding.epilogue;
   delete window.__BREAK_ENDING__;
 })();
+
+(() => {
+  const replacements = new Map([
+    [
+      "dia bilang with you i don't have to be impressive to be worth staying for\n\nGUE MAU NANGIS TAPI BESOK TETEP KERJA",
+      "dia bilang sama gue dia gak perlu kelihatan hebat dulu supaya merasa cukup\n\nGUE MAU NANGIS TAPI BESOK TETEP KERJA"
+    ],
+    [
+      "DIA BILANG YES I'M PURSUING YOU TERUS OTAK GUE RESMI BERHENTI",
+      "DIA BILANG ‘IYA, SAYA MEMANG LAGI DEKATIN KAMU’ TERUS OTAK GUE RESMI BERHENTI"
+    ],
+    [
+      "dia udah di bawah kantor dan gue bahkan belum sempat pura-pura sibuk",
+      "dia bilang jangan pergi terlalu jauh dan sekarang gue yang bingung harus sejauh apa"
+    ],
+    [
+      "baru jam 8 pagi udah disuruh latihan manggil nama\n\nsantai banget ya hidup orang",
+      "jam 9 pagi orangnya udah di bawah kontrakan. kalender gue kalah sama niat dia"
+    ],
+    [
+      "ternyata ‘only to me’ bisa bikin orang mendadak lupa cara tidur",
+      "ternyata ‘saya memang berharap kamu mikir begitu’ bisa bikin orang mendadak lupa cara tidur"
+    ]
+  ]);
+  (window.STORY_CONFIG.xApp?.posts || []).forEach((post) => {
+    if (replacements.has(post.text)) post.text = replacements.get(post.text);
+  });
+})();

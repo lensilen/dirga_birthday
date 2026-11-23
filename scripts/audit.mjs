@@ -270,6 +270,9 @@ assert(config.chatScripts?.dirga_break_request?.steps?.at(-1)?.text === "Please"
 
 const confessionTweets = (config.xApp?.posts || []).filter((post) => post.availableAfter === "dirga_december_meetup");
 assert(confessionTweets.length > 0 && confessionTweets.every((post) => post.time === "1 Dec" && post.availableAfterDate === "2026-12-01"), "Tweet confession belum dipindahkan ke 1 Desember");
+assert(confessionTweets.some((post) => post.text.includes("SAYA MEMANG LAGI DEKATIN KAMU")), "Tweet confession belum mengikuti dialog terbaru");
+assert(!confessionTweets.some((post) => post.text.includes("YES I'M PURSUING YOU")), "Tweet confession versi lama masih tersedia");
+assert(!(config.xApp?.posts || []).some((post) => post.text.includes("only to me") || post.text.includes("baru jam 8 pagi udah disuruh latihan")), "Tweet dari dialog lama masih tersedia");
 const distanceTweets = (config.xApp?.posts || []).filter((post) => post.availableAfter === "petra_december_confession");
 assert(distanceTweets.length > 0 && distanceTweets.every((post) => post.time === "2 Dec" && post.availableAfterDate === "2026-12-02"), "Tweet masa menjaga jarak belum dipindahkan ke 2 Desember");
 [

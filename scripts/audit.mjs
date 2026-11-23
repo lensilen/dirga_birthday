@@ -70,6 +70,80 @@ for (const [scriptId, script] of Object.entries(config.chatScripts || {})) {
 }
 unique(triggerIds, "ID trigger cerita");
 
+// Pemeriksaan lintas-fase: target transisi harus nyata dan waktu dalam satu chat
+// tidak boleh bergerak mundur. Ini menangkap bug yang tidak terlihat dari syntax check.
+for (const [scriptId, script] of Object.entries(config.chatScripts || {})) {
+  let previousMinute = -1;
+  for (const [index, step] of (script.steps || []).entries()) {
+    if (!/^\d{2}:\d{2}$/.test(step.time || "")) continue;
+    const [hour, minute] = step.time.split(":").map(Number);
+    const currentMinute = hour * 60 + minute;
+    assert(currentMinute >= previousMinute, `Waktu ${scriptId}[${index}] bergerak mundur ke ${step.time}`);
+    previousMinute = currentMinute;
+  }
+  const completion = script.onComplete || {};
+  const transitionTargets = [
+    completion.activateChatScript,
+    completion.activateChatOnExit,
+    completion.exitTransition?.activateChatScript,
+    completion.exitTransition?.armTransition?.activateChatScript
+  ].filter(Boolean);
+  for (const target of transitionTargets) {
+    assert(Boolean(config.chatScripts?.[target]), `Transisi ${scriptId} mengarah ke fase yang tidak ada: ${target}`);
+  }
+}
+
+const storyGraph = new Map();
+for (const [scriptId, script] of Object.entries(config.chatScripts || {})) {
+  const completion = script.onComplete || {};
+  const targets = [
+    ...(script.steps || []).map((step) => step.activateChatScript),
+    completion.activateChatScript,
+    completion.activateChatOnExit,
+    completion.exitTransition?.activateChatScript,
+    completion.exitTransition?.armTransition?.activateChatScript,
+    ...(completion.calendarEvents || []).map((event) => event.trigger?.activateChatScript)
+  ].filter(Boolean);
+  storyGraph.set(scriptId, targets);
+}
+const reachableScripts = new Set();
+const pendingScripts = Object.entries(config.chatScripts || {})
+  .filter(([, script]) => script.active !== false)
+  .map(([scriptId]) => scriptId);
+while (pendingScripts.length) {
+  const scriptId = pendingScripts.pop();
+  if (reachableScripts.has(scriptId)) continue;
+  reachableScripts.add(scriptId);
+  pendingScripts.push(...(storyGraph.get(scriptId) || []));
+}
+for (const scriptId of storyGraph.keys()) {
+  assert(reachableScripts.has(scriptId), `Fase chat tidak dapat dicapai dari awal cerita: ${scriptId}`);
+}
+
+unique((config.xApp?.posts || []).map((post) => post.text), "Teks tweet X");
+for (const post of config.xApp?.posts || []) {
+  if (!post.availableAfter) continue;
+  const checkpointDate = config.chatScripts?.[post.availableAfter]?.storyDate;
+  assert(Boolean(checkpointDate), `Tweet X mengarah ke fase yang tidak ada: ${post.availableAfter}`);
+  if (post.availableAfterDate && checkpointDate) {
+    assert(post.availableAfterDate >= checkpointDate, `Tweet X muncul sebelum fasenya: ${post.text}`);
+  }
+}
+for (const photo of config.photos || []) {
+  if (!photo.availableAfter) continue;
+  const checkpointDate = config.chatScripts?.[photo.availableAfter]?.storyDate;
+  assert(Boolean(checkpointDate), `Foto ${photo.id} mengarah ke fase yang tidak ada: ${photo.availableAfter}`);
+  if (photo.availableAfterDate && checkpointDate) {
+    assert(photo.availableAfterDate >= checkpointDate, `Foto ${photo.id} muncul sebelum fasenya`);
+  }
+}
+for (const note of config.notes || []) {
+  if (note.availableAfter) assert(Boolean(config.chatScripts?.[note.availableAfter]), `Notes ${note.title} mengarah ke fase yang tidak ada`);
+}
+for (const email of config.gmail?.emails || []) {
+  if (email.availableAfter) assert(Boolean(config.chatScripts?.[email.availableAfter]), `Email ${email.id} mengarah ke fase yang tidak ada`);
+}
+
 const petraInitial = threads.find((thread) => thread.id === "petra")?.initialMessages || [];
 assert(petraInitial.some((message) => message.text === "Tumben langsung dibales"), "Chat pembuka Petra belum memakai revisi terbaru");
 assert(petraInitial.some((message) => message.text === "Warung madura tutup, lo masih kerja"), "Banter pekerja keras Petra belum lengkap");
@@ -270,8 +344,9 @@ assert(config.chatScripts?.dirga_break_request?.steps?.at(-1)?.text === "Please"
 
 const confessionTweets = (config.xApp?.posts || []).filter((post) => post.availableAfter === "dirga_december_meetup");
 assert(confessionTweets.length > 0 && confessionTweets.every((post) => post.time === "1 Dec" && post.availableAfterDate === "2026-12-01"), "Tweet confession belum dipindahkan ke 1 Desember");
-assert(confessionTweets.some((post) => post.text.includes("SAYA MEMANG LAGI DEKATIN KAMU")), "Tweet confession belum mengikuti dialog terbaru");
+assert(confessionTweets.some((post) => post.text.includes("‘YES, SAYA MEMANG LAGI DEKATIN KAMU’")), "Tweet confession belum mengutip dialog terbaru secara persis");
 assert(!confessionTweets.some((post) => post.text.includes("YES I'M PURSUING YOU")), "Tweet confession versi lama masih tersedia");
+assert(!confessionTweets.some((post) => post.text.includes("‘IYA, SAYA MEMANG LAGI DEKATIN KAMU’")), "Tweet confession masih memakai terjemahan yang tidak ada di chat");
 assert(!(config.xApp?.posts || []).some((post) => post.text.includes("only to me") || post.text.includes("baru jam 8 pagi udah disuruh latihan")), "Tweet dari dialog lama masih tersedia");
 const distanceTweets = (config.xApp?.posts || []).filter((post) => post.availableAfter === "petra_december_confession");
 assert(distanceTweets.length > 0 && distanceTweets.every((post) => post.time === "2 Dec" && post.availableAfterDate === "2026-12-02"), "Tweet masa menjaga jarak belum dipindahkan ke 2 Desember");

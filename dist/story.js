@@ -3609,7 +3609,7 @@ no. absolutely not.`
     ],
     [
       "DIA BILANG YES I'M PURSUING YOU TERUS OTAK GUE RESMI BERHENTI",
-      "DIA BILANG ‘IYA, SAYA MEMANG LAGI DEKATIN KAMU’ TERUS OTAK GUE RESMI BERHENTI"
+      "DIA BILANG ‘YES, SAYA MEMANG LAGI DEKATIN KAMU’ TERUS OTAK GUE RESMI BERHENTI"
     ],
     [
       "dia udah di bawah kantor dan gue bahkan belum sempat pura-pura sibuk",

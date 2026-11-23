@@ -69,7 +69,7 @@
   ];
 
   const defaultState = () => ({
-    storyRevision: 16,
+    storyRevision: 17,
     unlocked: false,
     pinVisible: false,
     view: "lock",
@@ -1172,6 +1172,55 @@
       }
       if ((saved.storyRevision || 0) < 16) {
         loaded.storyRevision = 16;
+      }
+      if ((saved.storyRevision || 0) < 17) {
+        const retiredEndingTexts = new Set([
+          "You're home?",
+          "Thank you for tonight",
+          "Waktuku buat kamu",
+          "Padahal dari kemarin-kemarin juga udah",
+          "Tapi sekarang kamu memberikannya tanpa ragu",
+          "Jangan bikin aku malu sendiri",
+          "Happy birthday to me, apparently",
+          "Ulang tahun kamu udah lewat",
+          "The best gifts arrive late"
+        ]);
+        const retiredEndingWasStarted = (loaded.messages.dirga || []).some((message) => (
+          message.storyDate === "2026-12-19" && retiredEndingTexts.has(message.text)
+        ));
+        loaded.messages.dirga = (loaded.messages.dirga || []).filter((message) => !(
+          message.storyDate === "2026-12-19" && (retiredEndingWasStarted || retiredEndingTexts.has(message.text))
+        ));
+        loaded.completedChats = (loaded.completedChats || []).filter((scriptId) => ![
+          "dirga_story_epilogue",
+          "maria_lunch_exposed",
+          "dirga_break_request"
+        ].includes(scriptId));
+        loaded.activeChatScripts = (loaded.activeChatScripts || []).filter((scriptId) => ![
+          "dirga_story_epilogue",
+          "maria_lunch_exposed",
+          "dirga_break_request"
+        ].includes(scriptId));
+        loaded.pendingChatActivations = (loaded.pendingChatActivations || []).filter((scriptId) => ![
+          "dirga_story_epilogue",
+          "maria_lunch_exposed",
+          "dirga_break_request"
+        ].includes(scriptId));
+        ["dirga_story_epilogue", "maria_lunch_exposed", "dirga_break_request"].forEach((scriptId) => {
+          loaded.chatProgress[scriptId] = 0;
+        });
+        loaded.deliveredEvents = (loaded.deliveredEvents || []).filter((eventId) => ![
+          "story-epilogue",
+          "story-final-lunch",
+          "lunch-exposed"
+        ].includes(eventId));
+        loaded.pendingNotifications = (loaded.pendingNotifications || []).filter((event) => ![
+          "story-epilogue",
+          "story-final-lunch",
+          "lunch-exposed"
+        ].includes(event.id));
+        loaded.storyCalendarEvents = (loaded.storyCalendarEvents || []).filter((event) => event.id !== "final-dinner-19-dec");
+        loaded.storyRevision = 17;
       }
       return loaded;
     } catch (_) {

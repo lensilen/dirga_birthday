@@ -183,11 +183,12 @@ assert(/function advanceCallCaption\(\)/.test(appSource) && /call-caption-next/.
 assert(!/function scheduleCallCaption\(\)/.test(appSource), "Subtitle telepon masih berjalan otomatis");
 assert(/data-replay-call/.test(appSource) && /call\.replay/.test(appSource), "Replay telepon dari Recents belum tersedia");
 
-assert(/storyRevision:\s*16/.test(appSource), "Versi progres cerita belum dinaikkan ke 16");
+assert(/storyRevision:\s*17/.test(appSource), "Versi progres cerita belum dinaikkan ke 17");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 14\)/.test(appSource) && /const revisedOrder = \[/.test(appSource), "Progress lama belum dimigrasikan ke naskah pengganti");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 14\) \{\s*const dirgaLanguageMigrations/.test(appSource), "Migrasi dialog lama masih dapat mengubah naskah baru");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 15\)/.test(appSource) && /const dialogueCorrections = new Map/.test(appSource), "Koreksi dialog belum dimigrasikan ke progres lama");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 16\)/.test(appSource), "Arc Singapore belum dimigrasikan ke progres lama");
+assert(/if \(\(saved\.storyRevision \|\| 0\) < 17\)/.test(appSource), "Revisi ending break belum dimigrasikan ke progres lama");
 assert(/const nextScriptId = revisedOrder\[completedCount\] \|\| null/.test(appSource), "Migrasi progres lama belum mengaktifkan fase berikutnya");
 assert(/loaded\.storyCalendarEvents\.push\(\{ \.\.\.event \}\)/.test(appSource), "Migrasi progres lama belum memulihkan event Calendar");
 assert(/formatWhatsAppDay\(message\.storyDate/.test(appSource), "WhatsApp belum memisahkan percakapan berdasarkan hari");
@@ -240,7 +241,7 @@ const newArcScripts = [
   "bintang_secret_coffee", "dirga_secret_coffee", "dirga_secret_distance", "dirga_secret_rules",
   "dirga_secret_meeting", "maria_serious_rumor", "dirga_serious_rumor", "petra_rumor_support",
   "bintang_final_review", "maria_final_review", "adelina_final_review", "dirga_final_review",
-  "dirga_story_resolution", "dirga_story_epilogue"
+  "dirga_story_resolution", "dirga_story_epilogue", "maria_lunch_exposed", "dirga_break_request"
 ];
 newArcScripts.forEach((scriptId) => assert(Boolean(config.chatScripts?.[scriptId]), `Fase baru belum tersedia: ${scriptId}`));
 for (const scriptId of newArcScripts) {
@@ -252,16 +253,36 @@ for (const scriptId of newArcScripts) {
 }
 
 const finalPhoto = (config.photos || []).find((photo) => photo.id === "photo-24");
-assert(finalPhoto?.src?.includes("dinner-17-second") && finalPhoto?.availableAfter === "dirga_story_epilogue", "Foto dinner penutup belum mengikuti epilog");
-assert((config.xApp?.posts || []).some((post) => post.availableAfter === "dirga_story_epilogue" && post.text === "ternyata ngasih waktu ke seseorang gak selalu berarti kehilangan waktu sendiri"), "Tweet penutup belum tersedia");
+assert(finalPhoto?.src?.includes("download (29).jpg") && finalPhoto?.availableAfter === "dirga_story_epilogue", "Foto buket lunch penutup belum mengikuti epilog");
+assert((config.photos || []).some((photo) => photo.src?.includes("Airport vibes.jpg") && photo.availableAfter === "petra_singapore_checkin"), "Foto airport belum terhubung ke perjalanan Singapore");
+assert((config.photos || []).some((photo) => photo.src?.includes("download (27).jpg") && photo.availableAfter === "dirga_singapore_after_dinner"), "Foto makan Singapore belum terhubung");
+assert((config.photos || []).some((photo) => photo.src?.includes("download (28).jpg") && photo.availableAfter === "dirga_singapore_presentation"), "Foto ruang meeting belum terhubung");
+assert(!(config.xApp?.posts || []).some((post) => post.text === "ternyata ngasih waktu ke seseorang gak selalu berarti kehilangan waktu sendiri"), "Tweet ending romantis lama masih tersedia");
+assert((config.xApp?.posts || []).some((post) => post.availableAfter === "dirga_break_request" && post.text === "i need to disappear before i start hating everything i worked for"), "Tweet setelah break belum tersedia");
 assert(config.chatScripts?.dirga_story_resolution?.steps?.some((step) => step.text === "Still my favorite gift"), "Motif hadiah waktu belum kembali di resolusi");
-assert(config.chatScripts?.dirga_story_epilogue?.steps?.some((step) => step.text === "The best gifts arrive late"), "Penutup epilog belum tersedia");
+assert(config.chatScripts?.dirga_story_resolution?.steps?.some((step) => step.text === "Lunch besok?"), "Ajakan terakhir belum diubah menjadi lunch");
+assert(!config.chatScripts?.dirga_story_resolution?.steps?.some((step) => step.text === "Dinner besok?"), "Ajakan dinner lama masih tersedia");
+assert(config.chatScripts?.dirga_story_epilogue?.steps?.some((step) => step.text === "It's just flowers"), "Buket bunga belum masuk ke scene lunch");
+assert(config.chatScripts?.dirga_story_epilogue?.onComplete?.activateChatScript === "maria_lunch_exposed", "Lunch belum membuka scene hubungan terbongkar");
+assert(config.chatScripts?.maria_lunch_exposed?.onComplete?.activateChatOnExit === "dirga_break_request", "Konfrontasi belum membuka chat break dengan Dirga");
+assert(config.chatScripts?.dirga_break_request?.steps?.[0]?.text === "Aku mau kita break dulu", "Chat break belum dimulai oleh MC");
+assert(config.chatScripts?.dirga_break_request?.steps?.at(-1)?.text === "Please" && !config.chatScripts?.dirga_break_request?.onComplete, "Cerita belum berhenti pada reassurance Dirga");
+
+const confessionTweets = (config.xApp?.posts || []).filter((post) => post.availableAfter === "dirga_december_meetup");
+assert(confessionTweets.length > 0 && confessionTweets.every((post) => post.time === "1 Dec" && post.availableAfterDate === "2026-12-01"), "Tweet confession belum dipindahkan ke 1 Desember");
+const distanceTweets = (config.xApp?.posts || []).filter((post) => post.availableAfter === "petra_december_confession");
+assert(distanceTweets.length > 0 && distanceTweets.every((post) => post.time === "2 Dec" && post.availableAfterDate === "2026-12-02"), "Tweet masa menjaga jarak belum dipindahkan ke 2 Desember");
+[
+  "petra_singapore_checkin", "dirga_singapore_coffee", "dirga_singapore_rumor",
+  "dirga_office_return", "bintang_secret_coffee", "maria_serious_rumor",
+  "adelina_final_review", "dirga_story_epilogue", "maria_lunch_exposed", "dirga_break_request"
+].forEach((checkpoint) => assert((config.xApp?.posts || []).some((post) => post.availableAfter === checkpoint), `Timeline X belum memiliki tweet untuk ${checkpoint}`));
 
 const expectedCalendarEvents = [
   "singapore-briefing-8-dec", "flight-singapore-8-dec", "singapore-dinner-8-dec",
   "regional-presentation-9-dec", "singapore-evening-9-dec", "flight-home-10-dec",
   "first-official-date-11-dec", "campaign-final-review-18-dec", "marketing-team-lunch-18-dec",
-  "final-dinner-19-dec"
+  "final-lunch-19-dec"
 ];
 const storyCalendarIds = Object.values(config.chatScripts || {}).flatMap((script) => script.onComplete?.calendarEvents || []).map((event) => event.id);
 expectedCalendarEvents.forEach((eventId) => assert(storyCalendarIds.includes(eventId), `Calendar event belum tersedia: ${eventId}`));

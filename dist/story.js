@@ -2393,6 +2393,333 @@ no. absolutely not.`
   });
 })();
 
+/* Pastikan revisi break menjadi ending aktif setelah seluruh arc dimuat. */
+(() => {
+  const config = window.STORY_CONFIG;
+  const mc = (text, time, waitBefore = 500, extra = {}) => ({ type: "mc", text, time, waitBefore, ...extra });
+  const them = (text, time, waitBefore = 1400, typingMs = 1000, extra = {}) => ({ type: "them", text, time, waitBefore, typingMs, ...extra });
+  const next = (id, threadId, text, storyDate, time, activateChatScript, extra = {}) => ({
+    id,
+    threadId,
+    notificationTitle: threadId === "dirga" ? "?" : config.threads.find((thread) => thread.id === threadId)?.name,
+    text,
+    storyDate,
+    time,
+    afterMs: 5500,
+    requireAppExit: true,
+    delayAfterExit: true,
+    activateChatScript,
+    ...extra
+  });
+
+  config.chatScripts.dirga_story_resolution = {
+    threadId: "dirga",
+    storyDate: "2026-12-18",
+    active: false,
+    onComplete: next("story-final-lunch", "dirga", "I'm downstairs", "2026-12-19", "12:05", "dirga_story_epilogue", {
+      calendarEvents: [
+        { id: "final-lunch-19-dec", date: "2026-12-19", title: "Lunch with Dirga", time: "12:30 PM", color: "#ff375f", type: "personal" }
+      ]
+    }),
+    steps: [
+      mc("Aku sudah mikir soal kita", "19:30"),
+      them("Should I be worried?", "19:31", 1300, 700),
+      mc("Sedikit", "19:31"),
+      them("Go on", "19:32", 1100, 550),
+      mc("Aku masih mau hubungan kita tetap private", "19:32"),
+      mc("Tapi aku gak mau terus-terusan bohong atau pura-pura gak kenal kamu", "19:33", 350),
+      them("I agree", "19:33", 1200, 600),
+      mc("Kita gak perlu ngumumin ke semua orang", "19:34"),
+      mc("Tapi kalau ada yang tanya, aku gak mau merasa malu", "19:34", 350),
+      them("You should never feel ashamed of us", "19:35", 1300, 750),
+      mc("Kamu juga jangan terlalu protektif", "19:35"),
+      them("I'll try", "19:36", 1100, 550),
+      mc("Try harder", "19:36"),
+      them("Yes, ma'am", "19:37", 1100, 550),
+      mc("Jangan mulai", "19:37"),
+      them("One question", "19:38", 1200, 600),
+      mc("Apa?", "19:38"),
+      them("Kalau campaign-nya berhasil, kamu dapat hadiah apa?", "19:39", 1300, 850),
+      mc("Belum kepikiran", "19:39"),
+      them("May I ask for something?", "19:40", 1200, 700),
+      mc("Balik lagi ke sini?", "19:40"),
+      them("I want your time", "19:41", 1300, 650),
+      mc("You already have it", "19:41"),
+      them("Still my favorite gift", "19:42", 1200, 700),
+      mc("Lunch besok?", "19:42"),
+      them("Just the two of us?", "19:43", 1200, 650),
+      mc("Just the two of us", "19:43"),
+      them("Then it's a date", "19:44", 1200, 650)
+    ]
+  };
+
+  config.chatScripts.dirga_story_epilogue = {
+    threadId: "dirga",
+    storyDate: "2026-12-19",
+    active: false,
+    onComplete: next("lunch-exposed", "maria", "Kak, jangan panik ya", "2026-12-19", "14:18", "maria_lunch_exposed"),
+    steps: [
+      mc("Kamu terlalu cepat", "12:05"),
+      them("I'm exactly on time", "12:06", 1200, 650),
+      mc("Kamu bawa apa?", "12:06"),
+      them("Come downstairs and see", "12:07", 1300, 750),
+      mc("Dirga jangan bilang...", "12:07"),
+      them("It's just flowers", "12:08", 1200, 650),
+      mc("JUST FLOWERS KATANYA", "12:08"),
+      them("I wanted to do this properly", "12:09", 1300, 800),
+      mc("Kita kan masih rahasia", "12:09"),
+      them("We're outside the office", "12:10", 1200, 650),
+      mc("Kalau ada yang lihat?", "12:10"),
+      them("Then they'll see me taking my girlfriend to lunch", "12:11", 1400, 900),
+      mc("Kamu nekat banget", "12:11"),
+      them("For you? Yes", "12:12", 1200, 600)
+    ]
+  };
+})();
+
+/* Revisi ending: lunch dengan bunga, hubungan terbongkar, lalu break. */
+(() => {
+  const config = window.STORY_CONFIG;
+  const mc = (text, time, waitBefore = 500, extra = {}) => ({ type: "mc", text, time, waitBefore, ...extra });
+  const them = (text, time, waitBefore = 1400, typingMs = 1000, extra = {}) => ({ type: "them", text, time, waitBefore, typingMs, ...extra });
+  const next = (id, threadId, text, storyDate, time, activateChatScript, extra = {}) => ({
+    id,
+    threadId,
+    notificationTitle: threadId === "dirga" ? "?" : config.threads.find((thread) => thread.id === threadId)?.name,
+    text,
+    storyDate,
+    time,
+    afterMs: 5500,
+    requireAppExit: true,
+    delayAfterExit: true,
+    activateChatScript,
+    ...extra
+  });
+
+  config.chatScripts.dirga_story_resolution = {
+    threadId: "dirga",
+    storyDate: "2026-12-18",
+    active: false,
+    onComplete: next("story-final-lunch", "dirga", "I'm downstairs", "2026-12-19", "12:05", "dirga_story_epilogue", {
+      calendarEvents: [
+        { id: "final-lunch-19-dec", date: "2026-12-19", title: "Lunch with Dirga", time: "12:30 PM", color: "#ff375f", type: "personal" }
+      ]
+    }),
+    steps: [
+      mc("Aku sudah mikir soal kita", "19:30"),
+      them("Should I be worried?", "19:31", 1300, 700),
+      mc("Sedikit", "19:31"),
+      them("Go on", "19:32", 1100, 550),
+      mc("Aku masih mau hubungan kita tetap private", "19:32"),
+      mc("Tapi aku gak mau terus-terusan bohong atau pura-pura gak kenal kamu", "19:33", 350),
+      them("I agree", "19:33", 1200, 600),
+      mc("Kita gak perlu ngumumin ke semua orang", "19:34"),
+      mc("Tapi kalau ada yang tanya, aku gak mau merasa malu", "19:34", 350),
+      them("You should never feel ashamed of us", "19:35", 1300, 750),
+      mc("Kamu juga jangan terlalu protektif", "19:35"),
+      them("I'll try", "19:36", 1100, 550),
+      mc("Try harder", "19:36"),
+      them("Yes, ma'am", "19:37", 1100, 550),
+      mc("Jangan mulai", "19:37"),
+      them("One question", "19:38", 1200, 600),
+      mc("Apa?", "19:38"),
+      them("Kalau campaign-nya berhasil, kamu dapat hadiah apa?", "19:39", 1300, 850),
+      mc("Belum kepikiran", "19:39"),
+      them("May I ask for something?", "19:40", 1200, 700),
+      mc("Balik lagi ke sini?", "19:40"),
+      them("I want your time", "19:41", 1300, 650),
+      mc("You already have it", "19:41"),
+      them("Still my favorite gift", "19:42", 1200, 700),
+      mc("Lunch besok?", "19:42"),
+      them("Just the two of us?", "19:43", 1200, 650),
+      mc("Just the two of us", "19:43"),
+      them("Then it's a date", "19:44", 1200, 650)
+    ]
+  };
+
+  config.chatScripts.dirga_story_epilogue = {
+    threadId: "dirga",
+    storyDate: "2026-12-19",
+    active: false,
+    onComplete: next("lunch-exposed", "maria", "Kak, jangan panik ya", "2026-12-19", "14:18", "maria_lunch_exposed"),
+    steps: [
+      mc("Kamu terlalu cepat", "12:05"),
+      them("I'm exactly on time", "12:06", 1200, 650),
+      mc("Kamu bawa apa?", "12:06"),
+      them("Come downstairs and see", "12:07", 1300, 750),
+      mc("Dirga jangan bilang...", "12:07"),
+      them("It's just flowers", "12:08", 1200, 650),
+      mc("JUST FLOWERS KATANYA", "12:08"),
+      them("I wanted to do this properly", "12:09", 1300, 800),
+      mc("Kita kan masih rahasia", "12:09"),
+      them("We're outside the office", "12:10", 1200, 650),
+      mc("Kalau ada yang lihat?", "12:10"),
+      them("Then they'll see me taking my girlfriend to lunch", "12:11", 1400, 900),
+      mc("Kamu nekat banget", "12:11"),
+      them("For you? Yes", "12:12", 1200, 600)
+    ]
+  };
+
+  config.chatScripts.maria_lunch_exposed = {
+    threadId: "maria",
+    storyDate: "2026-12-19",
+    active: false,
+    onComplete: { activateChatOnExit: "dirga_break_request" },
+    steps: [
+      mc("Kenapa?", "14:18"),
+      them("Ada yang foto Kakak sama Pak Dirga waktu lunch", "14:19", 1400, 900),
+      them("Buketnya kelihatan jelas", "14:19", 350, 700),
+      mc("Siapa yang punya fotonya?", "14:20"),
+      them("Aku gak tahu awalnya dari siapa", "14:20", 1300, 750),
+      them("Tapi Brand Director sudah lihat", "14:21", 350, 700),
+      mc("Aku baru aja diminta ke ruangannya", "14:21"),
+      them("Kak...", "14:22", 1200, 550),
+      mc("Aku masuk dulu", "14:22"),
+      mc("Aku baru keluar", "15:04", 1100),
+      them("Gimana, Kak?", "15:04", 1300, 650),
+      mc("Mereka bilang final review itu gak bersih", "15:05"),
+      mc("Katanya aku manfaatin hubungan pribadi supaya campaign-nya lolos", "15:05", 350),
+      them("Itu gak bener, Kak", "15:06", 1300, 700),
+      mc("Mereka gak peduli benar atau enggak", "15:06"),
+      mc("Buket tadi aja dibawa-bawa seolah itu barang bukti", "15:07", 350),
+      them("Kakak sekarang di mana?", "15:07", 1200, 650),
+      mc("Aku mau pulang", "15:08"),
+      them("Mau aku temenin?", "15:08", 1200, 650),
+      mc("Gak usah, Mar", "15:09"),
+      mc("Aku perlu sendiri dulu", "15:09", 350)
+    ]
+  };
+
+  config.chatScripts.dirga_break_request = {
+    threadId: "dirga",
+    storyDate: "2026-12-19",
+    active: false,
+    steps: [
+      mc("Aku mau kita break dulu", "15:14"),
+      them("What happened?", "15:15", 1500, 650),
+      mc("Tadi aku dipanggil karena ada yang lihat kita waktu lunch", "15:15"),
+      mc("Mereka bilang campaign aku lolos karena kamu", "15:16", 350),
+      them("That's not true, and you know that", "15:16", 1400, 850),
+      mc("Aku tahu", "15:17"),
+      mc("Tapi mereka gak peduli", "15:17", 350),
+      mc("Aku perlu hilang dulu dari semua ini", "15:18", 350),
+      them("Don't disappear", "15:18", 1500, 650),
+      them("Let me come over. Kita bicarakan ini pelan-pelan", "15:19", 350, 1000),
+      mc("Please don't", "15:19"),
+      them("You didn't get that campaign because of me", "15:20", 1400, 850),
+      them("Kamu dapat itu karena kamu kerja lebih keras dari siapa pun di ruangan itu", "15:20", 350, 1100),
+      them("Aku bahkan minta orang lain ikut review supaya keputusan akhirnya tetap objektif", "15:21", 350, 1200),
+      mc("Aku gak bisa denger ini sekarang", "15:21"),
+      them("Then don't decide everything tonight", "15:22", 1400, 850),
+      mc("Aku udah terlalu capek", "15:22"),
+      them("You can be tired", "15:23", 1300, 650),
+      them("Tapi jangan hukum diri kamu untuk sesuatu yang gak kamu lakukan", "15:23", 350, 1000),
+      mc("Dirga, please", "15:24"),
+      them("Okay", "15:24", 1400, 500),
+      them("I won't push", "15:25", 350, 600),
+      them("But I need you to know I don't believe a word they said about you", "15:25", 350, 1100),
+      them("And I'm still here whenever you're ready", "15:26", 350, 900),
+      mc("Aku gak tahu kapan", "15:26"),
+      them("I'll wait", "15:27", 1300, 550),
+      mc("Jangan", "15:27"),
+      them("I can't promise that", "15:28", 1300, 650),
+      mc("Aku matiin HP dulu", "15:28"),
+      them("Please let Petra know you're safe", "15:29", 1400, 750),
+      mc("I will", "15:29"),
+      them("Take care of yourself", "15:30", 1300, 700),
+      them("Please", "15:30", 350, 500)
+    ]
+  };
+
+  config.photos = (config.photos || []).filter((photo) => !["photo-24", "photo-25", "photo-26", "photo-27"].includes(photo.id));
+  config.photos.push(
+    {
+      id: "photo-25",
+      title: "8 December 2026",
+      caption: "8 December 2026 · 1:05 PM",
+      src: "assets/photos/gallery/Airport vibes.jpg",
+      albums: ["places"],
+      availableAfter: "petra_singapore_checkin",
+      availableAfterDate: "2026-12-08"
+    },
+    {
+      id: "photo-26",
+      title: "8 December 2026",
+      caption: "8 December 2026 · 8:44 PM",
+      src: "assets/photos/gallery/download (27).jpg",
+      albums: [],
+      availableAfter: "dirga_singapore_after_dinner",
+      availableAfterDate: "2026-12-08"
+    },
+    {
+      id: "photo-27",
+      title: "9 December 2026",
+      caption: "9 December 2026 · 9:26 AM",
+      src: "assets/photos/gallery/download (28).jpg",
+      albums: ["work"],
+      availableAfter: "dirga_singapore_presentation",
+      availableAfterDate: "2026-12-09"
+    },
+    {
+      id: "photo-24",
+      title: "19 December 2026",
+      caption: "19 December 2026 · 12:58 PM",
+      src: "assets/photos/gallery/download (29).jpg",
+      albums: ["favorites"],
+      availableAfter: "dirga_story_epilogue",
+      availableAfterDate: "2026-12-19"
+    }
+  );
+
+  (config.xApp?.posts || []).forEach((post) => {
+    if (post.availableAfter === "dirga_december_meetup") {
+      post.time = "1 Dec";
+      post.availableAfterDate = "2026-12-01";
+    }
+    if (post.availableAfter === "petra_december_confession") {
+      post.time = "2 Dec";
+      post.availableAfterDate = "2026-12-02";
+    }
+  });
+
+  config.xApp.posts = (config.xApp?.posts || []).filter((post) => (
+    post.text !== "ternyata ngasih waktu ke seseorang gak selalu berarti kehilangan waktu sendiri"
+  ));
+  const xPost = (time, text, availableAfter, availableAfterDate, views = 1) => ({
+    time,
+    text,
+    replies: 0,
+    reposts: 0,
+    likes: 0,
+    views,
+    availableAfter,
+    availableAfterDate
+  });
+  config.xApp.posts.unshift(
+    xPost("19 Dec", "i need to disappear before i start hating everything i worked for", "dirga_break_request", "2026-12-19", 2),
+    xPost("19 Dec", "ternyata orang bisa mengubah satu buket bunga jadi barang bukti", "maria_lunch_exposed", "2026-12-19", 3),
+    xPost("19 Dec", "dia bawa bunga ke lunch. subtlety has officially left the building", "dirga_story_epilogue", "2026-12-19", 2),
+    xPost("18 Dec", "hari ini gue menang dan ternyata rasanya tetap pahit kalau harus terus membuktikan diri", "dirga_final_review", "2026-12-18", 4),
+    xPost("18 Dec", "FINAL REVIEW LOLOS. i would like to thank caffeine, spite, and my team", "adelina_final_review", "2026-12-18", 5),
+    xPost("16 Dec", "i know what i did to earn this. kenapa sekarang gue yang harus ikut ragu", "dirga_serious_rumor", "2026-12-16", 4),
+    xPost("16 Dec", "orang-orang lebih gampang percaya gue dibantu cowok daripada percaya gue emang jago kerja", "maria_serious_rumor", "2026-12-16", 6),
+    xPost("15 Dec", "bikin relationship rules sama lawyer adalah kesalahan karena dia benar-benar bikin pasal", "dirga_secret_rules", "2026-12-15", 3),
+    xPost("14 Dec", "professional at work apparently means pretending you don't know your own boyfriend. hated it", "dirga_secret_distance", "2026-12-14", 4),
+    xPost("14 Dec", "secret relationship day three: hampir ketahuan gara-gara pesanan kopi", "bintang_secret_coffee", "2026-12-14", 3),
+    xPost("11 Dec", "good night boyfriend diketik sekali efeknya orang minta diulang terus", "dirga_first_date_checkin", "2026-12-11", 3),
+    xPost("11 Dec", "pacaran sama orang kantor ternyata paginya tetap dipanggil Bu", "dirga_office_return", "2026-12-11", 2),
+    xPost("10 Dec", "officially trying this. secretly. what could possibly go wrong", "dirga_singapore_rumor", "2026-12-10", 4),
+    xPost("9 Dec", "someone said he was protecting the project then admitted he was protecting me too. normal", "dirga_singapore_presentation", "2026-12-09", 3),
+    xPost("9 Dec", "dibawain kopi di negara orang ternyata tetap efektif bikin salting", "dirga_singapore_coffee", "2026-12-09", 2),
+    xPost("8 Dec", "koper gue diangkatin, kopi gue diinget, profesionalisme gue ditinggal di jakarta", "dirga_singapore_hotel", "2026-12-08", 3),
+    xPost("8 Dec", "business trip katanya tapi satu orang malah ngotot jemput gue dari rumah", "petra_singapore_checkin", "2026-12-08", 2)
+  );
+  window.__BREAK_ENDING__ = {
+    resolution: config.chatScripts.dirga_story_resolution,
+    epilogue: config.chatScripts.dirga_story_epilogue
+  };
+})();
+
 /* Singapore, hubungan rahasia, dan penutup cerita utama. */
 (() => {
   const config = window.STORY_CONFIG;
@@ -3264,4 +3591,12 @@ no. absolutely not.`
       availableAfter: "dirga_story_epilogue"
     });
   }
+})();
+
+(() => {
+  const revisedEnding = window.__BREAK_ENDING__;
+  if (!revisedEnding) return;
+  window.STORY_CONFIG.chatScripts.dirga_story_resolution = revisedEnding.resolution;
+  window.STORY_CONFIG.chatScripts.dirga_story_epilogue = revisedEnding.epilogue;
+  delete window.__BREAK_ENDING__;
 })();

@@ -1624,9 +1624,27 @@
     if (deleteButton) deleteButton.textContent = state.pinInput ? "Hapus" : "Batal";
   }
 
+  function storyWeatherForTime(time = state.storyTime) {
+    const hour = Number.parseInt(String(time || "12:00").split(":")[0], 10);
+    if (hour >= 0 && hour < 5) {
+      return { period: "late-night", icon: "☾", secondaryIcon: "☁", temperature: "24°", high: "27°", low: "23°", condition: "Mostly Clear", feelsLike: "25°" };
+    }
+    if (hour >= 5 && hour < 11) {
+      return { period: "morning", icon: "☁", secondaryIcon: "☀", temperature: "26°", high: "30°", low: "24°", condition: "Partly Cloudy", feelsLike: "28°" };
+    }
+    if (hour >= 11 && hour < 17) {
+      return { period: "day", icon: "☀", secondaryIcon: "☁", temperature: "30°", high: "32°", low: "24°", condition: "Mostly Sunny", feelsLike: "33°" };
+    }
+    if (hour >= 17 && hour < 19) {
+      return { period: "evening", icon: "☁", secondaryIcon: "☾", temperature: "27°", high: "30°", low: "24°", condition: "Cloudy", feelsLike: "29°" };
+    }
+    return { period: "night", icon: "☾", secondaryIcon: "✦", temperature: "25°", high: "29°", low: "23°", condition: "Clear Night", feelsLike: "26°" };
+  }
+
   function renderHome() {
     const unreadTotal = Object.values(state.unread).reduce((sum, value) => sum + value, 0);
     const storyCalendar = storyCalendarParts();
+    const weather = storyWeatherForTime();
     screen.innerHTML = `
       <section class="view home-screen" aria-label="Home Screen">
         <div class="home-widgets" aria-label="Home screen widgets">
@@ -1637,13 +1655,13 @@
             </span>
             <small>Calendar</small>
           </button>
-          <button class="home-widget" type="button" data-app="weather" aria-label="Buka Weather">
-            <span class="widget-card weather-widget">
-              <span class="weather-widget__top"><i aria-hidden="true">☁</i><strong>27°</strong><em>☀<br>H:29°<br>L:24°</em></span>
-              <span class="weather-widget__copy">Mostly Cloudy<br>Feels Like<br><b>29°</b></span>
+          <div class="home-widget home-widget--static" aria-label="Weather: ${escapeAttribute(weather.condition)}, ${escapeAttribute(weather.temperature)}">
+            <span class="widget-card weather-widget" data-weather-period="${escapeAttribute(weather.period)}">
+              <span class="weather-widget__top"><i aria-hidden="true">${weather.icon}</i><strong>${weather.temperature}</strong><em>${weather.secondaryIcon}<br>H:${weather.high}<br>L:${weather.low}</em></span>
+              <span class="weather-widget__copy">${escapeHtml(weather.condition)}<br>Feels Like<br><b>${weather.feelsLike}</b></span>
             </span>
             <small>Weather</small>
-          </button>
+          </div>
         </div>
         <div class="app-grid">
           ${config.apps.map((app) => appIconMarkup(app, app.id === "whatsapp" ? unreadTotal : 0)).join("")}

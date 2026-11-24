@@ -315,6 +315,7 @@ body {
 .home-screen > * { position: relative; }
 .home-widgets { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .home-widget { min-width: 0; display: grid; gap: 5px; padding: 0; border: 0; background: transparent; color: #fff; cursor: pointer; }
+.home-widget--static { cursor: default; user-select: none; }
 .home-widget > small { font-size: 9px; line-height: 1; text-align: center; text-shadow: 0 1px 5px rgba(0,0,0,.9); }
 .widget-card { position: relative; height: 118px; overflow: hidden; display: block; border: 1px solid rgba(255,255,255,.09); border-radius: 19px; box-shadow: 0 9px 25px rgba(0,0,0,.2); text-align: left; }
 .calendar-widget { padding: 13px 14px 10px; background: rgba(24,24,27,.88); backdrop-filter: blur(18px); }
@@ -323,6 +324,11 @@ body {
 .calendar-widget__heading em { color: #aaaab0; font-style: normal; font-weight: 650; }
 .calendar-widget > strong { display: block; margin-top: 4px; color: #fff; font-size: 57px; font-weight: 400; line-height: .95; letter-spacing: -.065em; }
 .weather-widget { padding: 10px 11px; background: linear-gradient(155deg, #16427d 0%, #3767a0 48%, #81769b 100%); }
+.weather-widget[data-weather-period="morning"] { background: linear-gradient(155deg, #356da6 0%, #6ea2ce 55%, #d0a482 100%); }
+.weather-widget[data-weather-period="day"] { background: linear-gradient(155deg, #2677bd 0%, #4e9bd1 56%, #7cb5d8 100%); }
+.weather-widget[data-weather-period="evening"] { background: linear-gradient(155deg, #34466e 0%, #7a607e 54%, #b56e65 100%); }
+.weather-widget[data-weather-period="night"] { background: linear-gradient(155deg, #111b38 0%, #26375d 55%, #504a72 100%); }
+.weather-widget[data-weather-period="late-night"] { background: linear-gradient(155deg, #080f25 0%, #182548 58%, #343758 100%); }
 .weather-widget__top { display: grid; grid-template-columns: 34px 1fr auto; align-items: start; }
 .weather-widget__top i { margin-top: -5px; color: #fff; font-size: 30px; font-style: normal; filter: drop-shadow(0 2px 3px rgba(0,0,0,.18)); }
 .weather-widget__top > strong { margin-left: -3px; color: #fff; font-size: 25px; font-weight: 400; line-height: 1; letter-spacing: -.04em; }

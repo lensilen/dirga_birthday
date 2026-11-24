@@ -286,6 +286,10 @@ assert(callCaptionBlock.includes("Okay then\\nI promise"), "Janji penutup telepo
 assert(/function advanceCallCaption\(\)/.test(appSource) && /call-caption-next/.test(appSource), "Subtitle telepon manual belum tersedia");
 assert(!/function scheduleCallCaption\(\)/.test(appSource), "Subtitle telepon masih berjalan otomatis");
 assert(/data-replay-call/.test(appSource) && /call\.replay/.test(appSource), "Replay telepon dari Recents belum tersedia");
+assert(/function storyWeatherForTime\(time = state\.storyTime\)/.test(appSource), "Weather belum mengikuti waktu cerita");
+assert(!appSource.includes('data-app="weather"'), "Widget Weather masih dapat ditekan");
+assert(appSource.includes('class="home-widget home-widget--static"'), "Weather belum ditandai sebagai widget statis");
+assert(["late-night", "morning", "day", "evening", "night"].every((period) => appSource.includes(`period: "${period}"`) && cssSource.includes(`data-weather-period="${period}"`)), "Fase visual Weather belum lengkap");
 
 assert(/storyRevision:\s*24/.test(appSource), "Versi progres cerita belum dinaikkan ke 24");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 14\)/.test(appSource) && /const revisedOrder = \[/.test(appSource), "Progress lama belum dimigrasikan ke naskah pengganti");

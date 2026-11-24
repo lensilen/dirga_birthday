@@ -241,7 +241,7 @@ assert(petraConfession?.onComplete?.exitTransition?.armTransition?.storyDate ===
 const midnight = config.chatScripts?.dirga_midnight_reconciliation;
 assert(midnight?.steps?.some((step) => step.text === "Aku bukan siapa-siapa, kenapa kamu bisa suka sama aku?"), "Pertanyaan inti rekonsiliasi belum tersedia");
 assert(midnight?.steps?.some((step) => step.type === "incoming_call"), "Incoming phone call belum tersedia");
-assert(midnight?.onComplete?.calendarEvents?.some((event) => event.id === "singapore-briefing-8-dec"), "Setup Singapore tidak dipertahankan");
+assert(config.chatScripts?.dirga_singapore_briefing?.onComplete?.calendarEvents?.some((event) => event.id === "singapore-briefing-8-dec"), "Setup Singapore belum dipindahkan setelah chat briefing");
 
 const forbiddenGrammar = [
   "If i can ask you anything than",
@@ -287,7 +287,7 @@ assert(/function advanceCallCaption\(\)/.test(appSource) && /call-caption-next/.
 assert(!/function scheduleCallCaption\(\)/.test(appSource), "Subtitle telepon masih berjalan otomatis");
 assert(/data-replay-call/.test(appSource) && /call\.replay/.test(appSource), "Replay telepon dari Recents belum tersedia");
 
-assert(/storyRevision:\s*20/.test(appSource), "Versi progres cerita belum dinaikkan ke 20");
+assert(/storyRevision:\s*21/.test(appSource), "Versi progres cerita belum dinaikkan ke 21");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 14\)/.test(appSource) && /const revisedOrder = \[/.test(appSource), "Progress lama belum dimigrasikan ke naskah pengganti");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 14\) \{\s*const dirgaLanguageMigrations/.test(appSource), "Migrasi dialog lama masih dapat mengubah naskah baru");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 15\)/.test(appSource) && /const dialogueCorrections = new Map/.test(appSource), "Koreksi dialog belum dimigrasikan ke progres lama");
@@ -345,6 +345,40 @@ assert(!secretCoffee?.steps?.some((step) => ["Fair question", "DIRGA"].includes(
 const removedSecretDinnerTexts = ["Dinner tonight?", "Kita baru bikin aturan", "Working hours are over", "Cepat banget hitungannya", "I'm a lawyer", "Details matter", "Jam berapa?", "Seven", "Jemput aku?", "Always"];
 assert(!config.chatScripts?.dirga_secret_meeting?.steps?.some((step) => removedSecretDinnerTexts.includes(step.text)), "Dialog dinner yang diminta dihapus masih ada");
 assert(appSource.includes("const removedSecretDinnerTexts = new Set(["), "Migrasi dialog dinner lama belum tersedia");
+assert(config.chatScripts?.dirga_after_work_personal?.steps?.some((step) => step.text === "Yaa boleh, besok yaa"), "Rencana 1 Desember masih disebut Sabtu");
+
+const expectedCalendarAnchors = {
+  "dinner-dirga-17-nov": "petra",
+  "coffee-dirga-21-nov": "dirga_after_dinner",
+  "second-meeting-dirga-28-nov": "dirga_after_coffee",
+  "late-work-30-nov": "dirga_work_night",
+  "shoe-shopping-dirga-1-dec": "dirga_after_work_personal",
+  "singapore-briefing-8-dec": "dirga_singapore_briefing",
+  "flight-singapore-8-dec": "petra_singapore_checkin",
+  "singapore-dinner-8-dec": "dirga_singapore_hotel",
+  "regional-presentation-9-dec": "dirga_singapore_presentation",
+  "singapore-evening-9-dec": "dirga_singapore_evening_invite",
+  "flight-home-10-dec": "dirga_singapore_return",
+  "first-official-date-11-dec": "petra_official_news",
+  "campaign-meeting-15-dec": "dirga_secret_meeting",
+  "campaign-final-review-18-dec": "bintang_final_review",
+  "marketing-team-lunch-18-dec": "bintang_final_review",
+  "final-lunch-19-dec": "dirga_story_resolution"
+};
+assert(JSON.stringify(config.calendarEventAnchors) === JSON.stringify(expectedCalendarAnchors), "Peta pemicu Calendar belum lengkap atau urutannya berubah");
+assert(!(config.calendar?.events || []).some((event) => event.date === "2026-12-17" && event.title === "Year-end campaign review"), "Event review statis lama masih mendahului chat final review");
+const dynamicEventOwners = new Map();
+Object.entries(config.chatScripts || {}).forEach(([scriptId, script]) => {
+  (script.onComplete?.calendarEvents || []).forEach((event) => {
+    const owners = dynamicEventOwners.get(event.id) || [];
+    owners.push(scriptId);
+    dynamicEventOwners.set(event.id, owners);
+  });
+});
+Object.entries(expectedCalendarAnchors).forEach(([eventId, scriptId]) => {
+  assert(JSON.stringify(dynamicEventOwners.get(eventId)) === JSON.stringify([scriptId]), `Event Calendar ${eventId} tidak hanya dimiliki chat ${scriptId}`);
+});
+assert(appSource.includes("const calendarEventAnchors = config.calendarEventAnchors || {}"), "Migrasi sinkronisasi Calendar belum tersedia");
 assert(config.chatScripts?.bintang_final_review?.onComplete?.activateChatScript === "maria_final_review", "Update final review Bintang belum tersambung ke Maria");
 assert(config.chatScripts?.maria_final_review?.onComplete?.activateChatScript === "adelina_final_review", "Update final review Maria belum tersambung ke Adelina");
 assert(config.chatScripts?.adelina_final_review?.onComplete?.activateChatScript === "dirga_final_review", "Update final review Adelina belum tersambung ke Dirga");
@@ -420,6 +454,7 @@ assert(distanceTweets.length > 0 && distanceTweets.every((post) => post.time ===
 ].forEach((checkpoint) => assert((config.xApp?.posts || []).some((post) => post.availableAfter === checkpoint), `Timeline X belum memiliki tweet untuk ${checkpoint}`));
 
 const expectedCalendarEvents = [
+  "late-work-30-nov", "campaign-meeting-15-dec",
   "singapore-briefing-8-dec", "flight-singapore-8-dec", "singapore-dinner-8-dec",
   "regional-presentation-9-dec", "singapore-evening-9-dec", "flight-home-10-dec",
   "first-official-date-11-dec", "campaign-final-review-18-dec", "marketing-team-lunch-18-dec",

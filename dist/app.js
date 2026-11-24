@@ -76,7 +76,7 @@
   ];
 
   const defaultState = () => ({
-    storyRevision: 20,
+    storyRevision: 21,
     unlocked: false,
     pinVisible: false,
     view: "lock",
@@ -1273,6 +1273,29 @@
           loaded.activeChatScripts = (loaded.activeChatScripts || []).filter((activeId) => activeId !== scriptId);
         }
         loaded.storyRevision = 20;
+      }
+      if ((saved.storyRevision || 0) < 21) {
+        (loaded.messages.dirga || []).forEach((message) => {
+          if (message.storyDate === "2026-11-30" && message.text === "Yaa boleh, Sabtu yaa") {
+            message.text = "Yaa boleh, besok yaa";
+          }
+        });
+
+        const calendarEventAnchors = config.calendarEventAnchors || {};
+        const anchoredEventIds = new Set(Object.keys(calendarEventAnchors));
+        const canonicalEvents = new Map();
+        Object.values(config.chatScripts || {}).forEach((script) => {
+          (script.onComplete?.calendarEvents || []).forEach((event) => canonicalEvents.set(event.id, event));
+        });
+        loaded.storyCalendarEvents = (loaded.storyCalendarEvents || []).filter((event) => !anchoredEventIds.has(event.id));
+        Object.entries(calendarEventAnchors).forEach(([eventId, scriptId]) => {
+          const script = config.chatScripts?.[scriptId];
+          const scriptFinished = (loaded.completedChats || []).includes(scriptId)
+            || (loaded.chatProgress?.[scriptId] || 0) >= (script?.steps?.length || 0);
+          const event = canonicalEvents.get(eventId);
+          if (scriptFinished && event) loaded.storyCalendarEvents.push({ ...event });
+        });
+        loaded.storyRevision = 21;
       }
       return loaded;
     } catch (_) {

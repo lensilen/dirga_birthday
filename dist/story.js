@@ -985,7 +985,6 @@ window.STORY_CONFIG = {
       { date: "2026-11-10", title: "Hari Pahlawan", time: "all-day", color: "#bf5af2", type: "national" },
       { date: "2026-11-17", title: "Birthday Pak Dirga", time: "all-day", color: "#ff9f0a", type: "birthday" },
       { date: "2026-11-18", title: "Shade teaser embargo lifts", time: "10:00 AM", color: "#0a84ff", type: "work" },
-      { date: "2026-12-17", title: "Year-end campaign review", time: "1:30 PM", color: "#0a84ff", type: "work" },
       { date: "2026-12-22", title: "Hari Ibu", time: "all-day", color: "#bf5af2", type: "national" },
       { date: "2026-12-25", title: "Christmas Day", time: "all-day", color: "#30d158", type: "national" },
       { date: "2026-12-31", title: "New Year’s Eve", time: "all-day", color: "#bf5af2", type: "national" }
@@ -3661,6 +3660,7 @@ no. absolutely not.`
   const personalSteps = config.chatScripts.dirga_after_work_personal.steps;
   personalSteps.find((step) => step.text === "Jangann, aku bisa beli sendiri kok").text = "Jangann, saya bisa beli sendiri kok";
   personalSteps.find((step) => step.text === "I know, but I want to").text = "Sure, but I want to";
+  personalSteps.find((step) => step.text === "Yaa boleh, Sabtu yaa").text = "Yaa boleh, besok yaa";
 
   const morningSteps = config.chatScripts.dirga_morning_check.steps;
   morningSteps.find((step) => step.text === "Pas banget").type = "mc";
@@ -3741,4 +3741,67 @@ no. absolutely not.`
     .map((post) => post.text === "being perceived by someone who remembers every tiny thing I said is actually terrifying\n\nvery inconvenient"
       ? { ...post, text: "being perceived by someone who remembers every tiny thing I said is actually terrifying" }
       : post);
+})();
+
+/* Sinkronisasi Calendar: setiap agenda cerita baru muncul setelah chat yang mengenalkannya selesai. */
+(() => {
+  const config = window.STORY_CONFIG;
+  if (!config) return;
+
+  const anchors = {
+    "dinner-dirga-17-nov": "petra",
+    "coffee-dirga-21-nov": "dirga_after_dinner",
+    "second-meeting-dirga-28-nov": "dirga_after_coffee",
+    "late-work-30-nov": "dirga_work_night",
+    "shoe-shopping-dirga-1-dec": "dirga_after_work_personal",
+    "singapore-briefing-8-dec": "dirga_singapore_briefing",
+    "flight-singapore-8-dec": "petra_singapore_checkin",
+    "singapore-dinner-8-dec": "dirga_singapore_hotel",
+    "regional-presentation-9-dec": "dirga_singapore_presentation",
+    "singapore-evening-9-dec": "dirga_singapore_evening_invite",
+    "flight-home-10-dec": "dirga_singapore_return",
+    "first-official-date-11-dec": "petra_official_news",
+    "campaign-meeting-15-dec": "dirga_secret_meeting",
+    "campaign-final-review-18-dec": "bintang_final_review",
+    "marketing-team-lunch-18-dec": "bintang_final_review",
+    "final-lunch-19-dec": "dirga_story_resolution"
+  };
+
+  const eventById = new Map();
+  Object.values(config.chatScripts || {}).forEach((script) => {
+    (script.onComplete?.calendarEvents || []).forEach((event) => eventById.set(event.id, event));
+  });
+  eventById.set("late-work-30-nov", {
+    id: "late-work-30-nov",
+    date: "2026-11-30",
+    title: "Late work with Dirga",
+    time: "9:00 PM",
+    color: "#0a84ff",
+    type: "work"
+  });
+  eventById.set("campaign-meeting-15-dec", {
+    id: "campaign-meeting-15-dec",
+    date: "2026-12-15",
+    title: "Campaign meeting",
+    time: "10:00 AM",
+    color: "#0a84ff",
+    type: "work"
+  });
+
+  const anchoredIds = new Set(Object.keys(anchors));
+  Object.values(config.chatScripts || {}).forEach((script) => {
+    if (!script.onComplete?.calendarEvents) return;
+    script.onComplete.calendarEvents = script.onComplete.calendarEvents.filter((event) => !anchoredIds.has(event.id));
+    if (!script.onComplete.calendarEvents.length) delete script.onComplete.calendarEvents;
+  });
+
+  Object.entries(anchors).forEach(([eventId, scriptId]) => {
+    const script = config.chatScripts?.[scriptId];
+    const event = eventById.get(eventId);
+    if (!script || !event) return;
+    script.onComplete = script.onComplete || {};
+    script.onComplete.calendarEvents = [...(script.onComplete.calendarEvents || []), event];
+  });
+
+  config.calendarEventAnchors = anchors;
 })();

@@ -43,7 +43,7 @@
     { speaker: "You", text: "Pede banget", duration: 2100 },
     { speaker: "Dirga", text: "Only with you", duration: 2600 },
     { speaker: "You", text: "That was smooth", duration: 2300 },
-    { speaker: "Dirga", text: "[laughs] Saya punya cukup banyak waktu untuk berpikir apa yang mau saya bilang kalau kamu beneran nelepon", duration: 4700 },
+    { speaker: "Dirga", text: "[laughs] I had plenty of time buat mikirin apa yang mau saya bilang kalau kamu beneran nelepon", duration: 4700 },
     { speaker: "You", text: "Dan yang kepilih itu?", duration: 2400 },
     { speaker: "Dirga", text: "Nope, ada satu yang lebih bagus", duration: 2400 },
     { speaker: "Dirga", text: "But you might hang up kalau saya benar-benar bilang", duration: 3200 },

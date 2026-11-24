@@ -20,6 +20,8 @@ const appSource = fs.readFileSync(path.join(dist, "app.js"), "utf8");
 const cssSource = fs.readFileSync(path.join(dist, "styles.css"), "utf8");
 const htmlSource = fs.readFileSync(path.join(dist, "index.html"), "utf8");
 assert(appSource.includes("if (state.activeCall) return;"), "Panggilan aktif harus menghentikan penjadwalan ulang chat");
+assert(appSource.includes('{ speaker: "Dirga", text: "Yes", duration: 1500 }'), "Subtitle Yes harus menjadi baris tersendiri");
+assert(appSource.includes('{ speaker: "Dirga", text: "This document suddenly decided to get complicated in the middle of the night", duration: 3600 }'), "Subtitle dokumen harus menjadi baris tersendiri");
 new vm.Script(storySource, { filename: "story.js" });
 new vm.Script(appSource, { filename: "app.js" });
 const sandbox = { window: {} };

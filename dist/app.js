@@ -24,7 +24,8 @@
   ]);
   const callCaptions = [
     { speaker: "You", text: "Kamu masih kerja?", duration: 2400 },
-    { speaker: "Dirga", text: "Yes\nThis document suddenly decided to get complicated in the middle of the night", duration: 4700 },
+    { speaker: "Dirga", text: "Yes", duration: 1500 },
+    { speaker: "Dirga", text: "This document suddenly decided to get complicated in the middle of the night", duration: 3600 },
     { speaker: "You", text: "Kerjaan legal selalu seseru ini?", duration: 2800 },
     { speaker: "Dirga", text: "Only when people ignore my emails for three days\nand suddenly discover urgency", duration: 4300 },
     { speaker: "You", text: "Jadi basically kamu dibayar buat baca masalah orang?", duration: 3300 },

@@ -39,7 +39,7 @@
     { speaker: "Dirga", text: "Occupational hazard", duration: 2400 },
     { speaker: "You", text: "Hari aku biasa aja... sampai ada orang ngajak telepon tengah malam", duration: 3800 },
     { speaker: "Dirga", text: "That's not exactly how the story went", duration: 2600 },
-    { speaker: "Dirga", text: "Tapi itu harusnya jadi bagian terbaik hari kamu, kan?", duration: 3100 },
+    { speaker: "Dirga", text: "Tapi harusnya that was the best part of your day, kan?", duration: 3100 },
     { speaker: "You", text: "Pede banget", duration: 2100 },
     { speaker: "Dirga", text: "Only with you", duration: 2600 },
     { speaker: "You", text: "That was smooth", duration: 2300 },

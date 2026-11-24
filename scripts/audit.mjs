@@ -30,7 +30,7 @@ assert(appSource.includes('{ speaker: "Dirga", text: "You", duration: 1400 }'), 
 assert(appSource.includes('{ speaker: "Dirga", text: "Right now", duration: 1700 }'), "Subtitle Right now harus menjadi baris tersendiri");
 assert(appSource.includes('{ speaker: "Dirga", text: "You\'re right", duration: 1700 }'), "Subtitle You're right harus menjadi baris tersendiri");
 assert(appSource.includes('{ speaker: "Dirga", text: "I was too busy expecting the worst", duration: 2700 }'), "Subtitle ekspektasi buruk harus menjadi baris tersendiri");
-assert(appSource.includes('{ speaker: "Dirga", text: "[laughs] I had plenty of time buat mikirin apa yang mau saya bilang kalau kamu beneran nelepon", duration: 4700 }'), "Subtitle tawa Dirga harus menggunakan campuran Inggris dan Indonesia");
+assert(appSource.includes('{ speaker: "Dirga", text: "Hahaha, you know I had plenty of time untuk berpikir apa yang mau saya katakan kalau kamu benar benar menghubungi saya", duration: 4700 }'), "Subtitle tawa Dirga harus sesuai naskah terbaru");
 assert(appSource.includes('{ speaker: "Dirga", text: "Then tell me", duration: 1700 }'), "Subtitle Then tell me harus menjadi baris tersendiri");
 assert(appSource.includes('{ speaker: "Dirga", text: "Apa yang membuat kamu berpikir seperti itu?", duration: 2800 }'), "Pertanyaan Dirga harus menjadi subtitle tersendiri");
 assert(appSource.includes('{ speaker: "You", text: "Nothing, Dirga", duration: 1700 }'), "Subtitle Nothing, Dirga harus menjadi baris tersendiri");

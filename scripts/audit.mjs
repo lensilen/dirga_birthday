@@ -35,6 +35,8 @@ assert(appSource.includes('{ speaker: "Dirga", text: "Then tell me", duration: 1
 assert(appSource.includes('{ speaker: "Dirga", text: "Apa yang membuat kamu berpikir seperti itu?", duration: 2800 }'), "Pertanyaan Dirga harus menjadi subtitle tersendiri");
 assert(appSource.includes('{ speaker: "You", text: "Nothing, Dirga", duration: 1700 }'), "Subtitle Nothing, Dirga harus menjadi baris tersendiri");
 assert(appSource.includes('{ speaker: "You", text: "Aku cuma berjaga-jaga", duration: 2200 }'), "Jawaban MC harus menjadi subtitle tersendiri");
+assert(appSource.includes('captionIsLast ? "end call" : "tap"'), "Subtitle terakhir harus menampilkan petunjuk end call");
+assert(appSource.includes('if (call.captionIndex >= callCaptions.length - 1) {\n      finishActiveCall();'), "Tap subtitle terakhir harus mengakhiri panggilan");
 new vm.Script(storySource, { filename: "story.js" });
 new vm.Script(appSource, { filename: "app.js" });
 const sandbox = { window: {} };

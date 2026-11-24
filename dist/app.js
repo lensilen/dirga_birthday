@@ -2997,6 +2997,7 @@
     }
     const thread = getThread(call.threadId);
     const caption = call.connected && Number.isInteger(call.captionIndex) ? callCaptions[call.captionIndex] : null;
+    const captionIsLast = Boolean(caption) && call.captionIndex === callCaptions.length - 1;
     screen.innerHTML = `
       <section class="view wa-incoming-call ${call.connected ? "is-connected" : ""}" aria-label="${call.connected ? "Call connected" : "Incoming call"}">
         <div class="wa-incoming-call__wash"></div>
@@ -3006,7 +3007,7 @@
         </div>
         ${call.connected ? `
           <button class="iphone-call-info" type="button" disabled aria-label="Call information"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 10.5v6M12 7.5h.01"/></svg></button>
-          ${caption ? `<button class="iphone-live-caption" id="call-caption-next" type="button" aria-label="Next subtitle" aria-live="polite"><span><small>${escapeHtml(caption.speaker)}</small><em>tap</em></span><p>${escapeHtml(caption.text)}</p></button>` : ""}
+          ${caption ? `<button class="iphone-live-caption" id="call-caption-next" type="button" aria-label="${captionIsLast ? "End call" : "Next subtitle"}" aria-live="polite"><span><small>${escapeHtml(caption.speaker)}</small><em>${captionIsLast ? "end call" : "tap"}</em></span><p>${escapeHtml(caption.text)}</p></button>` : ""}
           <div class="iphone-connected-controls">
             <button type="button" disabled aria-label="Speaker"><span><svg viewBox="0 0 32 32" aria-hidden="true"><path class="is-filled" d="M5 13h5l7-6v18l-7-6H5Z"/><path d="M21 11c2.8 2.7 2.8 7.3 0 10M24.5 7.5c4.8 4.7 4.8 12.3 0 17"/></svg></span><small>Speaker</small></button>
             <button type="button" disabled aria-label="FaceTime"><span><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="5" y="8" width="16" height="16" rx="3"/><path class="is-filled" d="m21 13 7-4v14l-7-4Z"/></svg></span><small>FaceTime</small></button>
@@ -3068,7 +3069,11 @@
 
   function advanceCallCaption() {
     const call = state.activeCall;
-    if (!call?.connected || !Number.isInteger(call.captionIndex) || call.captionIndex >= callCaptions.length - 1) return;
+    if (!call?.connected || !Number.isInteger(call.captionIndex)) return;
+    if (call.captionIndex >= callCaptions.length - 1) {
+      finishActiveCall();
+      return;
+    }
     call.captionIndex += 1;
     saveState();
     render();

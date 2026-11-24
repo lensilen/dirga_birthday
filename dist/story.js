@@ -2623,8 +2623,7 @@ no. absolutely not.`
       mc("Jangan", "15:27"),
       them("I can't promise that", "15:28", 1300, 650),
       mc("Aku matiin HP dulu", "15:28"),
-      them("Please let Petra know you're safe", "15:29", 1400, 750),
-      mc("I will", "15:29"),
+      them("Please let someone know you're safe", "15:29", 1400, 750),
       them("Take care of yourself", "15:30", 1300, 700),
       them("Please", "15:30", 350, 500)
     ]

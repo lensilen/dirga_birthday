@@ -76,7 +76,7 @@
   ];
 
   const defaultState = () => ({
-    storyRevision: 23,
+    storyRevision: 24,
     unlocked: false,
     pinVisible: false,
     view: "lock",
@@ -1340,6 +1340,23 @@
           }
         });
         loaded.storyRevision = 23;
+      }
+      if ((saved.storyRevision || 0) < 24) {
+        const breakScriptId = "dirga_break_request";
+        const revisedTakeCareIndex = config.chatScripts?.[breakScriptId]?.steps
+          ?.findIndex((step) => step.text === "Take care of yourself") ?? -1;
+        (loaded.messages.dirga || []).forEach((message) => {
+          if (message.storyDate === "2026-12-19" && message.text === "Please let Petra know you're safe") {
+            message.text = "Please let someone know you're safe";
+          }
+        });
+        loaded.messages.dirga = (loaded.messages.dirga || []).filter((message) => !(
+          message.storyDate === "2026-12-19" && message.text === "I will"
+        ));
+        if (revisedTakeCareIndex >= 0 && (loaded.chatProgress?.[breakScriptId] || 0) > revisedTakeCareIndex) {
+          loaded.chatProgress[breakScriptId] -= 1;
+        }
+        loaded.storyRevision = 24;
       }
       return loaded;
     } catch (_) {

@@ -287,7 +287,7 @@ assert(/function advanceCallCaption\(\)/.test(appSource) && /call-caption-next/.
 assert(!/function scheduleCallCaption\(\)/.test(appSource), "Subtitle telepon masih berjalan otomatis");
 assert(/data-replay-call/.test(appSource) && /call\.replay/.test(appSource), "Replay telepon dari Recents belum tersedia");
 
-assert(/storyRevision:\s*23/.test(appSource), "Versi progres cerita belum dinaikkan ke 23");
+assert(/storyRevision:\s*24/.test(appSource), "Versi progres cerita belum dinaikkan ke 24");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 14\)/.test(appSource) && /const revisedOrder = \[/.test(appSource), "Progress lama belum dimigrasikan ke naskah pengganti");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 14\) \{\s*const dirgaLanguageMigrations/.test(appSource), "Migrasi dialog lama masih dapat mengubah naskah baru");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 15\)/.test(appSource) && /const dialogueCorrections = new Map/.test(appSource), "Koreksi dialog belum dimigrasikan ke progres lama");
@@ -436,6 +436,10 @@ assert(appSource.includes('const followUpSceneId = "maria_lunch_exposed_after_me
 assert(appSource.includes("const saturdayCallCorrections = new Map(["), "Progres lama belum dimigrasikan dari kantor ke telepon Sabtu");
 assert(config.chatScripts?.dirga_break_request?.steps?.[0]?.text === "Aku mau kita break dulu", "Chat break belum dimulai oleh MC");
 assert(!config.chatScripts?.dirga_break_request?.steps?.some((step) => step.text === "Aku bahkan minta orang lain ikut review supaya keputusan akhirnya tetap objektif"), "Dialog review objektif belum dihapus dari scene break");
+assert(config.chatScripts?.dirga_break_request?.steps?.some((step) => step.text === "Please let someone know you're safe"), "Dirga masih menyebut Petra pada penutup break");
+assert(!config.chatScripts?.dirga_break_request?.steps?.some((step) => step.text === "Please let Petra know you're safe"), "Nama Petra belum dihapus dari penutup break");
+assert(!config.chatScripts?.dirga_break_request?.steps?.some((step) => step.type === "mc" && step.text === "I will"), "Balasan I will belum dihapus dari penutup break");
+assert(appSource.includes('message.text === "I will"'), "Balasan I will lama belum dibersihkan dari progres tersimpan");
 assert(config.chatScripts?.dirga_break_request?.steps?.at(-1)?.text === "Please" && !config.chatScripts?.dirga_break_request?.onComplete, "Cerita belum berhenti pada reassurance Dirga");
 
 const confessionTweets = (config.xApp?.posts || []).filter((post) => post.availableAfter === "dirga_december_meetup");

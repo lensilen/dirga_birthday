@@ -28,6 +28,8 @@ assert(appSource.includes('{ speaker: "Dirga", text: "Nope, ada satu yang lebih 
 assert(appSource.includes('{ speaker: "Dirga", text: "But you might hang up kalau saya benar-benar bilang", duration: 3200 }'), "Subtitle penutup rayuan harus campuran dan terpisah");
 assert(appSource.includes('{ speaker: "Dirga", text: "You", duration: 1400 }'), "Subtitle You harus menjadi baris tersendiri");
 assert(appSource.includes('{ speaker: "Dirga", text: "Right now", duration: 1700 }'), "Subtitle Right now harus menjadi baris tersendiri");
+assert(appSource.includes('{ speaker: "Dirga", text: "You\'re right", duration: 1700 }'), "Subtitle You're right harus menjadi baris tersendiri");
+assert(appSource.includes('{ speaker: "Dirga", text: "I was too busy expecting the worst", duration: 2700 }'), "Subtitle ekspektasi buruk harus menjadi baris tersendiri");
 new vm.Script(storySource, { filename: "story.js" });
 new vm.Script(appSource, { filename: "app.js" });
 const sandbox = { window: {} };

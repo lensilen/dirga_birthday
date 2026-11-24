@@ -24,6 +24,8 @@ assert(appSource.includes('{ speaker: "Dirga", text: "Yes", duration: 1500 }'), 
 assert(appSource.includes('{ speaker: "Dirga", text: "This document suddenly decided to get complicated in the middle of the night", duration: 3600 }'), "Subtitle dokumen harus menjadi baris tersendiri");
 assert(appSource.includes('{ speaker: "Dirga", text: "That\'s not exactly how the story went", duration: 2600 }'), "Subtitle koreksi cerita harus berbahasa Inggris dan terpisah");
 assert(appSource.includes('{ speaker: "Dirga", text: "Tapi itu harusnya jadi bagian terbaik hari kamu, kan?", duration: 3100 }'), "Subtitle rayuan harus berbahasa Indonesia dan terpisah");
+assert(appSource.includes('{ speaker: "Dirga", text: "Nope, ada satu yang lebih bagus", duration: 2400 }'), "Subtitle pembuka rayuan harus campuran dan terpisah");
+assert(appSource.includes('{ speaker: "Dirga", text: "But you might hang up kalau saya benar-benar bilang", duration: 3200 }'), "Subtitle penutup rayuan harus campuran dan terpisah");
 new vm.Script(storySource, { filename: "story.js" });
 new vm.Script(appSource, { filename: "app.js" });
 const sandbox = { window: {} };

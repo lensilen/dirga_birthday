@@ -336,7 +336,7 @@ assert(config.chatScripts?.dirga_singapore_evening_invite?.steps?.some((step) =>
 assert(config.chatScripts?.dirga_office_return?.steps?.some((step) => step.text === "Not for you" && step.time === "09:18"), "Balasan invitation 11 Desember belum direvisi");
 assert(config.chatScripts?.dirga_secret_distance?.steps?.some((step) => step.text === "I’m just afraid that a single mistake on my part might end up becoming a burden for you"), "Kekhawatiran Dirga belum diterjemahkan");
 assert(config.chatScripts?.dirga_serious_rumor?.steps?.some((step) => step.text === "You know that isn't true"), "Balasan rumor Dirga belum direvisi");
-assert(config.chatScripts?.dirga_serious_rumor?.steps?.some((step) => step.text === "Kamu tahu tapi mereka enggak"), "Tanda baca balasan MC belum dirapikan");
+assert(config.chatScripts?.dirga_serious_rumor?.steps?.some((step) => step.text === "Aku tahu tapi mereka enggak"), "Balasan MC pada rumor belum direvisi");
 assert(config.chatScripts?.adelina_final_review?.steps?.some((step) => step.text === "😭"), "Balasan final review MC belum menjadi emoji saja");
 for (const scriptId of newArcScripts) {
   const completion = config.chatScripts?.[scriptId]?.onComplete;

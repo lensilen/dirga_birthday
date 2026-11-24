@@ -3669,7 +3669,7 @@ no. absolutely not.`
 
   const seriousRumorSteps = config.chatScripts.dirga_serious_rumor.steps;
   seriousRumorSteps.find((step) => step.text === "I know that isn't true").text = "You know that isn't true";
-  seriousRumorSteps.find((step) => step.text === "Kamu tahu, tapi mereka enggak").text = "Kamu tahu tapi mereka enggak";
+  seriousRumorSteps.find((step) => step.text === "Kamu tahu, tapi mereka enggak").text = "Aku tahu tapi mereka enggak";
   config.chatScripts.adelina_final_review.steps.find((step) => step.text === "Tentu saja 😭").text = "😭";
 
   const removedResolutionLines = new Set([

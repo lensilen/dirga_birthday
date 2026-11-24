@@ -3805,3 +3805,32 @@ no. absolutely not.`
 
   config.calendarEventAnchors = anchors;
 })();
+
+/* Konfrontasi Maria dijeda: keluar dari WhatsApp dulu, baru lanjutkan draft setelah waktu berubah. */
+(() => {
+  const config = window.STORY_CONFIG;
+  const scene = config?.chatScripts?.maria_lunch_exposed;
+  if (!scene) return;
+
+  const splitIndex = scene.steps.findIndex((step) => step.text === "Gimana, Kak?") + 1;
+  if (splitIndex <= 0 || splitIndex >= scene.steps.length) return;
+  const followUpSteps = scene.steps.slice(splitIndex);
+  scene.steps = scene.steps.slice(0, splitIndex);
+  scene.onComplete = {
+    exitTransition: {
+      id: "lunch-confrontation-after-exit",
+      fromViews: ["whatsapp", "thread"],
+      storyDate: "2026-12-19",
+      storyTime: "15:05",
+      activateChatScript: "maria_lunch_exposed_after_meeting"
+    }
+  };
+
+  config.chatScripts.maria_lunch_exposed_after_meeting = {
+    threadId: "maria",
+    storyDate: "2026-12-19",
+    active: false,
+    onComplete: { activateChatOnExit: "dirga_break_request" },
+    steps: followUpSteps
+  };
+})();

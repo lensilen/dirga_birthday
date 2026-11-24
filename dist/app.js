@@ -76,7 +76,7 @@
   ];
 
   const defaultState = () => ({
-    storyRevision: 21,
+    storyRevision: 22,
     unlocked: false,
     pinVisible: false,
     view: "lock",
@@ -1296,6 +1296,36 @@
           if (scriptFinished && event) loaded.storyCalendarEvents.push({ ...event });
         });
         loaded.storyRevision = 21;
+      }
+      if ((saved.storyRevision || 0) < 22) {
+        const firstSceneId = "maria_lunch_exposed";
+        const followUpSceneId = "maria_lunch_exposed_after_meeting";
+        const firstSceneLength = config.chatScripts?.[firstSceneId]?.steps?.length || 0;
+        const followUpLength = config.chatScripts?.[followUpSceneId]?.steps?.length || 0;
+        const oldProgress = loaded.chatProgress?.[firstSceneId] || 0;
+        const oldSceneCompleted = (loaded.completedChats || []).includes(firstSceneId);
+
+        if (oldProgress >= firstSceneLength) {
+          loaded.chatProgress[firstSceneId] = firstSceneLength;
+          loaded.activeChatScripts = (loaded.activeChatScripts || []).filter((scriptId) => scriptId !== firstSceneId);
+
+          if (oldProgress > firstSceneLength || oldSceneCompleted) {
+            const followUpProgress = Math.min(followUpLength, Math.max(0, oldProgress - firstSceneLength));
+            loaded.chatProgress[followUpSceneId] = followUpProgress;
+            if (!loaded.completedChats.includes(firstSceneId)) loaded.completedChats.push(firstSceneId);
+            if (!loaded.deliveredEvents.includes("lunch-confrontation-after-exit")) {
+              loaded.deliveredEvents.push("lunch-confrontation-after-exit");
+            }
+            loaded.pendingViewTransitions = (loaded.pendingViewTransitions || [])
+              .filter((transition) => transition.id !== "lunch-confrontation-after-exit");
+            if (followUpProgress < followUpLength) {
+              if (!loaded.activeChatScripts.includes(followUpSceneId)) loaded.activeChatScripts.push(followUpSceneId);
+            } else if (!loaded.completedChats.includes(followUpSceneId)) {
+              loaded.completedChats.push(followUpSceneId);
+            }
+          }
+        }
+        loaded.storyRevision = 22;
       }
       return loaded;
     } catch (_) {

@@ -287,7 +287,7 @@ assert(/function advanceCallCaption\(\)/.test(appSource) && /call-caption-next/.
 assert(!/function scheduleCallCaption\(\)/.test(appSource), "Subtitle telepon masih berjalan otomatis");
 assert(/data-replay-call/.test(appSource) && /call\.replay/.test(appSource), "Replay telepon dari Recents belum tersedia");
 
-assert(/storyRevision:\s*22/.test(appSource), "Versi progres cerita belum dinaikkan ke 22");
+assert(/storyRevision:\s*23/.test(appSource), "Versi progres cerita belum dinaikkan ke 23");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 14\)/.test(appSource) && /const revisedOrder = \[/.test(appSource), "Progress lama belum dimigrasikan ke naskah pengganti");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 14\) \{\s*const dirgaLanguageMigrations/.test(appSource), "Migrasi dialog lama masih dapat mengubah naskah baru");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 15\)/.test(appSource) && /const dialogueCorrections = new Map/.test(appSource), "Koreksi dialog belum dimigrasikan ke progres lama");
@@ -425,11 +425,15 @@ assert(!config.chatScripts?.dirga_story_resolution?.steps?.some((step) => ["One 
 assert(config.chatScripts?.dirga_story_epilogue?.steps?.some((step) => step.text === "It's just flowers"), "Buket bunga belum masuk ke scene lunch");
 assert(config.chatScripts?.dirga_story_epilogue?.onComplete?.activateChatScript === "maria_lunch_exposed", "Lunch belum membuka scene hubungan terbongkar");
 assert(config.chatScripts?.maria_lunch_exposed?.steps?.at(-1)?.text === "Gimana, Kak?", "Scene pertama konfrontasi belum berhenti setelah balasan Maria");
+assert(config.chatScripts?.maria_lunch_exposed?.steps?.some((step) => step.text === "Brand Director baru aja telepon aku"), "Konfrontasi Sabtu belum dilakukan lewat telepon");
+assert(config.chatScripts?.maria_lunch_exposed?.steps?.some((step) => step.text === "Aku baru selesai telepon"), "Penutup telepon Brand Director belum tersedia");
+assert(!config.chatScripts?.maria_lunch_exposed?.steps?.some((step) => ["Aku baru aja diminta ke ruangannya", "Aku masuk dulu", "Aku baru keluar"].includes(step.text)), "Scene Sabtu masih menyebut masuk ke kantor");
 assert(config.chatScripts?.maria_lunch_exposed?.onComplete?.exitTransition?.activateChatScript === "maria_lunch_exposed_after_meeting", "Kelanjutan konfrontasi belum menunggu user keluar WhatsApp");
 assert(config.chatScripts?.maria_lunch_exposed?.onComplete?.exitTransition?.storyTime === "15:05", "Waktu cerita belum berubah sebelum draft lanjutan");
 assert(config.chatScripts?.maria_lunch_exposed_after_meeting?.steps?.[0]?.text === "Mereka bilang final review itu gak bersih", "Draft setelah kembali ke WhatsApp belum sesuai");
 assert(config.chatScripts?.maria_lunch_exposed_after_meeting?.onComplete?.activateChatOnExit === "dirga_break_request", "Kelanjutan konfrontasi belum membuka chat break dengan Dirga");
 assert(appSource.includes('const followUpSceneId = "maria_lunch_exposed_after_meeting"'), "Progres lama belum dimigrasikan ke konfrontasi dua fase");
+assert(appSource.includes("const saturdayCallCorrections = new Map(["), "Progres lama belum dimigrasikan dari kantor ke telepon Sabtu");
 assert(config.chatScripts?.dirga_break_request?.steps?.[0]?.text === "Aku mau kita break dulu", "Chat break belum dimulai oleh MC");
 assert(!config.chatScripts?.dirga_break_request?.steps?.some((step) => step.text === "Aku bahkan minta orang lain ikut review supaya keputusan akhirnya tetap objektif"), "Dialog review objektif belum dihapus dari scene break");
 assert(config.chatScripts?.dirga_break_request?.steps?.at(-1)?.text === "Please" && !config.chatScripts?.dirga_break_request?.onComplete, "Cerita belum berhenti pada reassurance Dirga");

@@ -76,7 +76,7 @@
   ];
 
   const defaultState = () => ({
-    storyRevision: 22,
+    storyRevision: 23,
     unlocked: false,
     pinVisible: false,
     view: "lock",
@@ -1326,6 +1326,20 @@
           }
         }
         loaded.storyRevision = 22;
+      }
+      if ((saved.storyRevision || 0) < 23) {
+        const saturdayCallCorrections = new Map([
+          ["Aku baru aja diminta ke ruangannya", "Brand Director baru aja telepon aku"],
+          ["Kak...", "Sekarang?"],
+          ["Aku masuk dulu", "Iya, aku angkat dulu"],
+          ["Aku baru keluar", "Aku baru selesai telepon"]
+        ]);
+        (loaded.messages.maria || []).forEach((message) => {
+          if (message.storyDate === "2026-12-19" && saturdayCallCorrections.has(message.text)) {
+            message.text = saturdayCallCorrections.get(message.text);
+          }
+        });
+        loaded.storyRevision = 23;
       }
       return loaded;
     } catch (_) {

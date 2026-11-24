@@ -76,7 +76,7 @@
   ];
 
   const defaultState = () => ({
-    storyRevision: 18,
+    storyRevision: 19,
     unlocked: false,
     pinVisible: false,
     view: "lock",
@@ -1241,6 +1241,14 @@
           loaded.storyCalendarEvents = (loaded.storyCalendarEvents || []).filter((event) => event.id !== "singapore-dinner-8-dec");
         }
         loaded.storyRevision = 18;
+      }
+      if ((saved.storyRevision || 0) < 19) {
+        (loaded.messages.dirga || []).forEach((message) => {
+          if (message.text === "Aku cuma akan jalan sepelan yang kamu butuhkan") {
+            message.text = "Aku akan berjalan sepelan mungkin, following your pace";
+          }
+        });
+        loaded.storyRevision = 19;
       }
       return loaded;
     } catch (_) {

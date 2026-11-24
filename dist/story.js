@@ -2870,7 +2870,7 @@ no. absolutely not.`
         mc("Aku masih takut", "22:52"),
         mc("Tapi aku juga gak mau kamu mundur", "22:52", 350),
         them("I won't", "22:53", 1300, 600),
-        them("Aku cuma akan jalan sepelan yang kamu butuhkan", "22:53", 350, 1000),
+        them("Aku akan berjalan sepelan mungkin, following your pace", "22:53", 350, 1000),
         mc("What if I ask you not to be too slow?", "22:54"),
         them("Then I'll be at your door in five minutes", "22:54", 1400, 1000),
         mc("JANGAN SEKARANG", "22:55"),

@@ -287,7 +287,7 @@ assert(/function advanceCallCaption\(\)/.test(appSource) && /call-caption-next/.
 assert(!/function scheduleCallCaption\(\)/.test(appSource), "Subtitle telepon masih berjalan otomatis");
 assert(/data-replay-call/.test(appSource) && /call\.replay/.test(appSource), "Replay telepon dari Recents belum tersedia");
 
-assert(/storyRevision:\s*18/.test(appSource), "Versi progres cerita belum dinaikkan ke 18");
+assert(/storyRevision:\s*19/.test(appSource), "Versi progres cerita belum dinaikkan ke 19");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 14\)/.test(appSource) && /const revisedOrder = \[/.test(appSource), "Progress lama belum dimigrasikan ke naskah pengganti");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 14\) \{\s*const dirgaLanguageMigrations/.test(appSource), "Migrasi dialog lama masih dapat mengubah naskah baru");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 15\)/.test(appSource) && /const dialogueCorrections = new Map/.test(appSource), "Koreksi dialog belum dimigrasikan ke progres lama");
@@ -335,6 +335,8 @@ const dinnerInviteEvents = config.chatScripts?.dirga_singapore_hotel?.onComplete
 assert(!earlySingaporeEvents.some((event) => event.id === "singapore-dinner-8-dec"), "Dinner Singapore masih muncul sebelum undangan chat");
 assert(dinnerInviteEvents.some((event) => event.id === "singapore-dinner-8-dec"), "Dinner Singapore belum muncul setelah undangan chat selesai");
 assert(appSource.includes('event.id !== "singapore-dinner-8-dec"'), "Migrasi belum menghapus event dinner yang telanjur muncul terlalu awal");
+assert(config.chatScripts?.dirga_singapore_after_dinner?.steps?.some((step) => step.text === "Aku akan berjalan sepelan mungkin, following your pace"), "Dialog following your pace belum diperbarui");
+assert(appSource.includes('message.text === "Aku cuma akan jalan sepelan yang kamu butuhkan"'), "Dialog lama belum dimigrasikan untuk progres tersimpan");
 
 const secretCoffee = config.chatScripts?.dirga_secret_coffee;
 assert(!secretCoffee?.steps?.some((step) => ["Fair question", "DIRGA"].includes(step.text)), "Dialog yang dihapus masih ada di scene hubungan rahasia");

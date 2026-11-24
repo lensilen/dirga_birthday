@@ -58,7 +58,7 @@
     { speaker: "Dirga", text: "You're right\nI was too busy expecting the worst", duration: 3600 },
     { speaker: "You", text: "Can you promise me one thing?", duration: 2700 },
     { speaker: "Dirga", text: "Of course", duration: 2100 },
-    { speaker: "You", text: "Let’s remain professional at the office\nI’m afraid of what might happen kalau ada yang tahu tentang kita", duration: 5000 },
+    { speaker: "You", text: "I’m afraid of what might happen kalau ada yang tahu tentang kita", duration: 4200 },
     { speaker: "Dirga", text: "I won't let anything happen to us", duration: 3000 },
     { speaker: "You", text: "I know, I know, for our own good", duration: 2800 },
     { speaker: "Dirga", text: "You know, you can tell me about anything, right?", duration: 3500 },

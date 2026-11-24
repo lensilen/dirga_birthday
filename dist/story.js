@@ -3628,3 +3628,114 @@ no. absolutely not.`
     if (replacements.has(post.text)) post.text = replacements.get(post.text);
   });
 })();
+
+/* Revisi dialog dan timeline konten 24 November. */
+(() => {
+  const config = window.STORY_CONFIG;
+  if (!config) return;
+  const mc = (text, time, waitBefore = 350) => ({ type: "mc", text, time, waitBefore });
+  const them = (text, time, waitBefore = 1200, typingMs = 800) => ({ type: "them", text, time, waitBefore, typingMs });
+
+  config.chatScripts.dirga_work_night.steps = [
+    mc("Pak masih di kantor?", "20:58"),
+    them("Unfortunately", "20:58"),
+    mc("Masih lama?", "20:59"),
+    them("Sekitar satu jam", "20:59"),
+    them("Maybe two", "21:00", 350, 650),
+    mc("Saya mau cek beberapa dokumen yang mungkin masih ada di Bapak", "21:00"),
+    mc("Sekalian saya bawain kopi ya", "21:01"),
+    mc("Janji yang kemarin", "21:01"),
+    them("You don't have to", "21:02"),
+    mc("But I want to", "21:02"),
+    them("Saya bisa bantu cek dokumennya sekarang dan kirim ke kamu", "21:03"),
+    mc("Saya mau temenin Bapak lembur", "21:03"),
+    mc("Saya yang mau, Bapak nggak bisa nolak", "21:04"),
+    them("...", "21:04", 900, 900),
+    them("Okay then, just come to my office", "21:05"),
+    them("You know where it is", "21:05", 350, 650),
+    mc("OTW, Pak", "21:06")
+  ];
+
+  const personalSteps = config.chatScripts.dirga_after_work_personal.steps;
+  personalSteps.find((step) => step.text === "Jangann, aku bisa beli sendiri kok").text = "Jangann, saya bisa beli sendiri kok";
+  personalSteps.find((step) => step.text === "I know, but I want to").text = "Sure, but I want to";
+
+  const morningSteps = config.chatScripts.dirga_morning_check.steps;
+  morningSteps.find((step) => step.text === "Pas banget").type = "mc";
+
+  config.chatScripts.dirga_singapore_evening_invite.steps.find((step) => step.text === "Itu kalimat orang mencurigakan").text = "Suspicious";
+  config.chatScripts.dirga_office_return.steps.find((step) => step.text === "A carefully worded invitation").text = "Not for you";
+  config.chatScripts.dirga_secret_distance.steps.find((step) => step.text === "Aku cuma takut satu kesalahan dari aku malah jadi beban buat kamu").text = "I’m just afraid that a single mistake on my part might end up becoming a burden for you";
+
+  const seriousRumorSteps = config.chatScripts.dirga_serious_rumor.steps;
+  seriousRumorSteps.find((step) => step.text === "I know that isn't true").text = "You know that isn't true";
+  seriousRumorSteps.find((step) => step.text === "Kamu tahu, tapi mereka enggak").text = "Kamu tahu tapi mereka enggak";
+  config.chatScripts.adelina_final_review.steps.find((step) => step.text === "Tentu saja 😭").text = "😭";
+
+  const removedResolutionLines = new Set([
+    "One question",
+    "Apa?",
+    "Kalau campaign-nya berhasil, kamu dapat hadiah apa?",
+    "Belum kepikiran"
+  ]);
+  config.chatScripts.dirga_story_resolution.steps = config.chatScripts.dirga_story_resolution.steps
+    .filter((step) => !removedResolutionLines.has(step.text));
+  config.chatScripts.dirga_break_request.steps = config.chatScripts.dirga_break_request.steps
+    .filter((step) => step.text !== "Aku bahkan minta orang lain ikut review supaya keputusan akhirnya tetap objektif");
+
+  config.chatScripts.dirga_singapore_coffee.steps = [
+    mc("Kamu foto kopinya niat atau nggak sih?", "07:20"),
+    them("Why? You like it?", "07:21"),
+    mc("Diajarin siapa?", "07:21"),
+    them("Otodidak", "07:21", 350, 650),
+    mc("Jadi ini cara biar aku gak telat?", "07:22"),
+    them("Preventive measure", "07:22"),
+    mc("DIRGA 😁😁😁", "07:22"),
+    mc("Makasih kopinya", "07:23"),
+    them("You're welcome", "07:23"),
+    them("Ten minutes?", "07:24", 350, 650),
+    mc("Fifteen", "07:24"),
+    them("Twelve. Final offer", "07:24"),
+    mc("Deal", "07:25")
+  ];
+
+  const posts = config.xApp?.posts || [];
+  const splitPost = (text, replacements) => {
+    const index = posts.findIndex((post) => post.text === text);
+    if (index < 0) return;
+    const original = posts[index];
+    posts.splice(index, 1, ...replacements.map((replacement, offset) => ({
+      ...original,
+      text: replacement,
+      views: offset === 0 ? original.views : 1
+    })));
+  };
+
+  splitPost(
+    "aku belum jawab apa-apa tapi dia malah minta maaf karena takut bikin gue uncomfortable\n\nHOW AM I SUPPOSED TO BE NORMAL ABOUT THIS",
+    [
+      "gue belum jawab apa-apa tapi dia malah minta maaf karena takut bikin gue uncomfortable",
+      "HOW AM I SUPPOSED TO BE NORMAL ABOUT THIS"
+    ]
+  );
+  splitPost(
+    "saya menawarkan diri untuk lembur\n\nvoluntary conscious no one forced me",
+    [
+      "Saya mau temenin Bapak lembur",
+      "voluntary conscious no one forced me"
+    ]
+  );
+  splitPost(
+    "gue cuma mau kerja, pulang, mandi, tidur\nkenapa sekarang malah harus mikirin nada chat orang",
+    [
+      "gue cuma mau kerja, pulang, mandi, tidur",
+      "kenapa sekarang malah harus mikirin nada chat orang"
+    ]
+  );
+
+  config.xApp.posts = posts
+    .filter((post) => post.text !== "orang normal nggak datang delapan menit lebih awal terus bilang itu bukan early")
+    .map((post) => post.text === "being perceived by someone who remembers every tiny thing I said is actually terrifying\n\nvery inconvenient"
+      ? { ...post, text: "being perceived by someone who remembers every tiny thing I said is actually terrifying" }
+      : post);
+})();

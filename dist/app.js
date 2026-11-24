@@ -76,7 +76,7 @@
   ];
 
   const defaultState = () => ({
-    storyRevision: 17,
+    storyRevision: 18,
     unlocked: false,
     pinVisible: false,
     view: "lock",
@@ -1232,6 +1232,15 @@
         ].includes(event.id));
         loaded.storyCalendarEvents = (loaded.storyCalendarEvents || []).filter((event) => event.id !== "final-dinner-19-dec");
         loaded.storyRevision = 17;
+      }
+      if ((saved.storyRevision || 0) < 18) {
+        const dinnerInviteScript = config.chatScripts?.dirga_singapore_hotel;
+        const dinnerInviteFinished = (loaded.completedChats || []).includes("dirga_singapore_hotel")
+          || (loaded.chatProgress?.dirga_singapore_hotel || 0) >= (dinnerInviteScript?.steps?.length || 0);
+        if (!dinnerInviteFinished) {
+          loaded.storyCalendarEvents = (loaded.storyCalendarEvents || []).filter((event) => event.id !== "singapore-dinner-8-dec");
+        }
+        loaded.storyRevision = 18;
       }
       return loaded;
     } catch (_) {

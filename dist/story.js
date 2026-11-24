@@ -2793,8 +2793,7 @@ no. absolutely not.`
       active: false,
       onComplete: next("singapore-hotel-checkin", "dirga", "Room okay?", "2026-12-08", "17:45", "dirga_singapore_hotel", {
         calendarEvents: [
-          { id: "flight-singapore-8-dec", date: "2026-12-08", title: "Flight to Singapore", time: "1:20 PM", color: "#ff9f0a", type: "travel" },
-          { id: "singapore-dinner-8-dec", date: "2026-12-08", title: "Dinner with Dirga", time: "8:00 PM", color: "#ff375f", type: "personal" }
+          { id: "flight-singapore-8-dec", date: "2026-12-08", title: "Flight to Singapore", time: "1:20 PM", color: "#ff9f0a", type: "travel" }
         ]
       }),
       steps: [
@@ -2819,7 +2818,11 @@ no. absolutely not.`
       threadId: "dirga",
       storyDate: "2026-12-08",
       active: false,
-      onComplete: next("singapore-after-dinner", "dirga", "You're back in your room?", "2026-12-08", "22:48", "dirga_singapore_after_dinner"),
+      onComplete: next("singapore-after-dinner", "dirga", "You're back in your room?", "2026-12-08", "22:48", "dirga_singapore_after_dinner", {
+        calendarEvents: [
+          { id: "singapore-dinner-8-dec", date: "2026-12-08", title: "Dinner with Dirga", time: "8:00 PM", color: "#ff375f", type: "personal" }
+        ]
+      }),
       steps: [
         mc("Udaaah", "17:45"),
         mc("Bagus banget malah", "17:45", 350),

@@ -287,7 +287,7 @@ assert(/function advanceCallCaption\(\)/.test(appSource) && /call-caption-next/.
 assert(!/function scheduleCallCaption\(\)/.test(appSource), "Subtitle telepon masih berjalan otomatis");
 assert(/data-replay-call/.test(appSource) && /call\.replay/.test(appSource), "Replay telepon dari Recents belum tersedia");
 
-assert(/storyRevision:\s*17/.test(appSource), "Versi progres cerita belum dinaikkan ke 17");
+assert(/storyRevision:\s*18/.test(appSource), "Versi progres cerita belum dinaikkan ke 18");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 14\)/.test(appSource) && /const revisedOrder = \[/.test(appSource), "Progress lama belum dimigrasikan ke naskah pengganti");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 14\) \{\s*const dirgaLanguageMigrations/.test(appSource), "Migrasi dialog lama masih dapat mengubah naskah baru");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 15\)/.test(appSource) && /const dialogueCorrections = new Map/.test(appSource), "Koreksi dialog belum dimigrasikan ke progres lama");
@@ -330,6 +330,11 @@ assert(singaporeCoffee?.steps?.some((step) => step.text === "DIRGA 😁😁😁"
 assert(!singaporeCoffee?.steps?.some((step) => ["Turun", "Aku udah pesanin kopi kamu", "Morningg"].includes(step.text)), "Dialog yang sudah dihapus masih ada di scene kopi Singapore");
 const singaporePresentation = config.chatScripts?.dirga_singapore_presentation;
 assert(!singaporePresentation?.steps?.some((step) => step.text === "Occupational hazard"), "Occupational hazard belum dihapus dari scene presentasi");
+const earlySingaporeEvents = config.chatScripts?.petra_singapore_checkin?.onComplete?.calendarEvents || [];
+const dinnerInviteEvents = config.chatScripts?.dirga_singapore_hotel?.onComplete?.calendarEvents || [];
+assert(!earlySingaporeEvents.some((event) => event.id === "singapore-dinner-8-dec"), "Dinner Singapore masih muncul sebelum undangan chat");
+assert(dinnerInviteEvents.some((event) => event.id === "singapore-dinner-8-dec"), "Dinner Singapore belum muncul setelah undangan chat selesai");
+assert(appSource.includes('event.id !== "singapore-dinner-8-dec"'), "Migrasi belum menghapus event dinner yang telanjur muncul terlalu awal");
 
 const secretCoffee = config.chatScripts?.dirga_secret_coffee;
 assert(!secretCoffee?.steps?.some((step) => ["Fair question", "DIRGA"].includes(step.text)), "Dialog yang dihapus masih ada di scene hubungan rahasia");

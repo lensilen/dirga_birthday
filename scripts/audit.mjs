@@ -31,6 +31,8 @@ assert(appSource.includes('{ speaker: "Dirga", text: "Right now", duration: 1700
 assert(appSource.includes('{ speaker: "Dirga", text: "You\'re right", duration: 1700 }'), "Subtitle You're right harus menjadi baris tersendiri");
 assert(appSource.includes('{ speaker: "Dirga", text: "I was too busy expecting the worst", duration: 2700 }'), "Subtitle ekspektasi buruk harus menjadi baris tersendiri");
 assert(appSource.includes('{ speaker: "Dirga", text: "[laughs] I had plenty of time buat mikirin apa yang mau saya bilang kalau kamu beneran nelepon", duration: 4700 }'), "Subtitle tawa Dirga harus menggunakan campuran Inggris dan Indonesia");
+assert(appSource.includes('{ speaker: "Dirga", text: "Then tell me", duration: 1700 }'), "Subtitle Then tell me harus menjadi baris tersendiri");
+assert(appSource.includes('{ speaker: "Dirga", text: "Apa yang membuat kamu berpikir seperti itu?", duration: 2800 }'), "Pertanyaan Dirga harus menjadi subtitle tersendiri");
 new vm.Script(storySource, { filename: "story.js" });
 new vm.Script(appSource, { filename: "app.js" });
 const sandbox = { window: {} };

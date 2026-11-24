@@ -68,7 +68,8 @@
     { speaker: "You", text: "I know, I know, for our own good", duration: 2800 },
     { speaker: "Dirga", text: "You know, you can tell me about anything, right?", duration: 3500 },
     { speaker: "You", text: "Yes, I trust you more than anyone", duration: 3000 },
-    { speaker: "Dirga", text: "Then tell me\nApa yang membuat kamu berpikir seperti itu?", duration: 3900 },
+    { speaker: "Dirga", text: "Then tell me", duration: 1700 },
+    { speaker: "Dirga", text: "Apa yang membuat kamu berpikir seperti itu?", duration: 2800 },
     { speaker: "You", text: "Nothing, Dirga\nAku cuma berjaga-jaga", duration: 3000 },
     { speaker: "Dirga", text: "Okay then\nI promise", duration: 2800 }
   ];

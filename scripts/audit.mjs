@@ -308,9 +308,11 @@ for (const post of gatedXPosts) assert(Boolean(config.chatScripts?.[post.availab
 assert((config.gmail?.emails || []).some((email) => email.id === "legal-copy-tonight" && email.availableAfter === "maria_late_revision"), "Email revisi malam belum terhubung");
 assert((config.notes || []).some((note) => note.title === "MINGGU DEPAN" && note.availableAfter === "dirga_wrong_send"), "Notes setelah salah kirim belum terhubung");
 
-const removedGalleryAssets = ["1140747780608893244", "987343918331237220", "917467755359088838"];
+const removedGalleryAssets = ["1140747780608893244", "987343918331237220"];
 assert(removedGalleryAssets.every((asset) => !(config.photos || []).some((photo) => photo.src?.includes(asset))), "Foto yang diminta dihapus masih masuk Galeri");
 assert(!(config.storyChatMedia || []).some((media) => media.id === "dirga-january-photo"), "Foto kopi lama masih terduplikasi sebagai media terjadwal");
+const singaporeCoffeePhoto = (config.photos || []).find((photo) => photo.src?.includes("917467755359088838"));
+assert(singaporeCoffeePhoto?.availableAfter === "dirga_singapore_after_dinner" && singaporeCoffeePhoto?.availableAfterDate === "2026-12-09", "Foto kopi chat belum masuk Galeri tepat saat pesannya muncul");
 
 const singaporeOpening = config.chatScripts?.dirga_midnight_reconciliation?.onComplete;
 assert(singaporeOpening?.text === "Morning. Kamu sudah siap?" && singaporeOpening?.activateChatScript === "dirga_singapore_pickup", "Arc Singapore belum tersambung dari rekonsiliasi");

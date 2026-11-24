@@ -2652,6 +2652,15 @@ no. absolutely not.`
       availableAfterDate: "2026-12-08"
     },
     {
+      id: "photo-28",
+      title: "9 December 2026",
+      caption: "9 December 2026 · 7:20 AM",
+      src: "assets/photos/gallery/917467755359088838.jpg",
+      albums: [],
+      availableAfter: "dirga_singapore_after_dinner",
+      availableAfterDate: "2026-12-09"
+    },
+    {
       id: "photo-27",
       title: "9 December 2026",
       caption: "9 December 2026 · 9:26 AM",

@@ -165,6 +165,10 @@
         pinVisible: false,
         pinInput: ""
       };
+      // Preserve a ringing or connected call across renders/page restores.
+      // Otherwise its pending chat step can recreate the incoming screen and
+      // overwrite the connected state immediately after Accept is pressed.
+      if (loaded.activeCall) loaded.view = "incoming-call";
       if ((saved.storyRevision || 0) < 1) {
         const extendedScriptId = "dirga_home_arrival";
         const extendedProgress = loaded.chatProgress?.[extendedScriptId] || 0;
@@ -1913,6 +1917,9 @@
   }
 
   function resumeChatScripts() {
+    // The incoming-call step advances only after the call ends. Pausing chat
+    // scheduling here prevents that same step from firing again mid-call.
+    if (state.activeCall) return;
     const threadIds = [...new Set(state.activeChatScripts.map(chatScriptTarget))];
     threadIds.forEach((threadId) => {
       const step = getChatScriptStep(threadId);
@@ -2123,6 +2130,7 @@
       chatRuntime.scheduled.add(threadId);
       timers.push(setTimeout(() => {
         chatRuntime.scheduled.delete(threadId);
+        if (state.activeCall) return;
         state.activeCall = {
           threadId,
           scriptId,

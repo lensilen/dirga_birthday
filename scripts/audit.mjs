@@ -19,6 +19,7 @@ const storySource = fs.readFileSync(path.join(dist, "story.js"), "utf8");
 const appSource = fs.readFileSync(path.join(dist, "app.js"), "utf8");
 const cssSource = fs.readFileSync(path.join(dist, "styles.css"), "utf8");
 const htmlSource = fs.readFileSync(path.join(dist, "index.html"), "utf8");
+assert(appSource.includes("if (state.activeCall) return;"), "Panggilan aktif harus menghentikan penjadwalan ulang chat");
 new vm.Script(storySource, { filename: "story.js" });
 new vm.Script(appSource, { filename: "app.js" });
 const sandbox = { window: {} };

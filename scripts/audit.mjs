@@ -207,6 +207,7 @@ assert(personal?.onComplete?.calendarEvents?.some((event) => event.id === "shoe-
 
 const outing = config.chatScripts?.dirga_morning_check;
 assert(outing?.steps?.some((step) => step.text === "Pas banget" && step.type === "mc"), "Pas banget belum menjadi chat MC");
+assert(outing?.steps?.some((step) => step.text === "Kontrakan cuma tiga lantai, Dirga. Saya di lantai tiga ya"), "Sapaan Pak pada chat kontrakan belum diganti menjadi Dirga");
 assert(outing?.steps?.some((step) => step.text === "Sure, lantai berapa unit kamu?"), "Dirga belum masuk ke kontrakan MC");
 assert(outing?.onComplete?.text === "How's the shoes? Udah dicoba?" && outing?.onComplete?.activateChatScript === "dirga_december_meetup", "Follow-up sepatu setelah mengantar MC belum tersedia");
 const confession = config.chatScripts?.dirga_december_meetup;

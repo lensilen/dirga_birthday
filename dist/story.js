@@ -3662,6 +3662,7 @@ no. absolutely not.`
 
   const morningSteps = config.chatScripts.dirga_morning_check.steps;
   morningSteps.find((step) => step.text === "Pas banget").type = "mc";
+  morningSteps.find((step) => step.text === "Kontrakan cuma tiga lantai, Pak. Saya di lantai tiga ya").text = "Kontrakan cuma tiga lantai, Dirga. Saya di lantai tiga ya";
 
   config.chatScripts.dirga_singapore_evening_invite.steps.find((step) => step.text === "Itu kalimat orang mencurigakan").text = "Suspicious";
   config.chatScripts.dirga_office_return.steps.find((step) => step.text === "A carefully worded invitation").text = "Not for you";

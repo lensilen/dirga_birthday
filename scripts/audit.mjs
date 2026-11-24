@@ -287,7 +287,7 @@ assert(/function advanceCallCaption\(\)/.test(appSource) && /call-caption-next/.
 assert(!/function scheduleCallCaption\(\)/.test(appSource), "Subtitle telepon masih berjalan otomatis");
 assert(/data-replay-call/.test(appSource) && /call\.replay/.test(appSource), "Replay telepon dari Recents belum tersedia");
 
-assert(/storyRevision:\s*19/.test(appSource), "Versi progres cerita belum dinaikkan ke 19");
+assert(/storyRevision:\s*20/.test(appSource), "Versi progres cerita belum dinaikkan ke 20");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 14\)/.test(appSource) && /const revisedOrder = \[/.test(appSource), "Progress lama belum dimigrasikan ke naskah pengganti");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 14\) \{\s*const dirgaLanguageMigrations/.test(appSource), "Migrasi dialog lama masih dapat mengubah naskah baru");
 assert(/if \(\(saved\.storyRevision \|\| 0\) < 15\)/.test(appSource) && /const dialogueCorrections = new Map/.test(appSource), "Koreksi dialog belum dimigrasikan ke progres lama");
@@ -342,6 +342,9 @@ assert(appSource.includes('message.text === "Aku cuma akan jalan sepelan yang ka
 
 const secretCoffee = config.chatScripts?.dirga_secret_coffee;
 assert(!secretCoffee?.steps?.some((step) => ["Fair question", "DIRGA"].includes(step.text)), "Dialog yang dihapus masih ada di scene hubungan rahasia");
+const removedSecretDinnerTexts = ["Dinner tonight?", "Kita baru bikin aturan", "Working hours are over", "Cepat banget hitungannya", "I'm a lawyer", "Details matter", "Jam berapa?", "Seven", "Jemput aku?", "Always"];
+assert(!config.chatScripts?.dirga_secret_meeting?.steps?.some((step) => removedSecretDinnerTexts.includes(step.text)), "Dialog dinner yang diminta dihapus masih ada");
+assert(appSource.includes("const removedSecretDinnerTexts = new Set(["), "Migrasi dialog dinner lama belum tersedia");
 assert(config.chatScripts?.bintang_final_review?.onComplete?.activateChatScript === "maria_final_review", "Update final review Bintang belum tersambung ke Maria");
 assert(config.chatScripts?.maria_final_review?.onComplete?.activateChatScript === "adelina_final_review", "Update final review Maria belum tersambung ke Adelina");
 assert(config.chatScripts?.adelina_final_review?.onComplete?.activateChatScript === "dirga_final_review", "Update final review Adelina belum tersambung ke Dirga");

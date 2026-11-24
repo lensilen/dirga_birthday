@@ -3311,17 +3311,7 @@ no. absolutely not.`
         mc("INI SALAH SIAPA", "10:27"),
         them("Yours", "10:27", 1100, 500),
         mc("Kok aku?", "10:27"),
-        them("You're too easy to tease", "10:28", 1200, 650),
-        them("Dinner tonight?", "17:05", 1500, 700),
-        mc("Kita baru bikin aturan", "17:05"),
-        them("Working hours are over", "17:06", 1200, 650),
-        mc("Cepat banget hitungannya", "17:06"),
-        them("I'm a lawyer", "17:07", 1200, 550),
-        them("Details matter", "17:07", 350, 600),
-        mc("Jam berapa?", "17:08"),
-        them("Seven", "17:08", 1100, 500),
-        mc("Jemput aku?", "17:08"),
-        them("Always", "17:09", 1100, 550)
+        them("You're too easy to tease", "10:28", 1200, 650)
       ]
     },
 

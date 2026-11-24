@@ -76,7 +76,7 @@
   ];
 
   const defaultState = () => ({
-    storyRevision: 19,
+    storyRevision: 20,
     unlocked: false,
     pinVisible: false,
     view: "lock",
@@ -1249,6 +1249,30 @@
           }
         });
         loaded.storyRevision = 19;
+      }
+      if ((saved.storyRevision || 0) < 20) {
+        const removedSecretDinnerTexts = new Set([
+          "Dinner tonight?",
+          "Kita baru bikin aturan",
+          "Working hours are over",
+          "Cepat banget hitungannya",
+          "I'm a lawyer",
+          "Details matter",
+          "Jam berapa?",
+          "Seven",
+          "Jemput aku?",
+          "Always"
+        ]);
+        const isRemovedSecretDinner = (message) => message.storyDate === "2026-12-15" && removedSecretDinnerTexts.has(message.text);
+        const hadRemovedSecretDinner = (loaded.messages.dirga || []).some(isRemovedSecretDinner);
+        loaded.messages.dirga = (loaded.messages.dirga || []).filter((message) => !isRemovedSecretDinner(message));
+        if (hadRemovedSecretDinner) {
+          const scriptId = "dirga_secret_meeting";
+          loaded.chatProgress[scriptId] = config.chatScripts?.[scriptId]?.steps?.length || 0;
+          if (!(loaded.completedChats || []).includes(scriptId)) loaded.completedChats.push(scriptId);
+          loaded.activeChatScripts = (loaded.activeChatScripts || []).filter((activeId) => activeId !== scriptId);
+        }
+        loaded.storyRevision = 20;
       }
       return loaded;
     } catch (_) {

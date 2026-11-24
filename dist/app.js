@@ -70,7 +70,8 @@
     { speaker: "You", text: "Yes, I trust you more than anyone", duration: 3000 },
     { speaker: "Dirga", text: "Then tell me", duration: 1700 },
     { speaker: "Dirga", text: "Apa yang membuat kamu berpikir seperti itu?", duration: 2800 },
-    { speaker: "You", text: "Nothing, Dirga\nAku cuma berjaga-jaga", duration: 3000 },
+    { speaker: "You", text: "Nothing, Dirga", duration: 1700 },
+    { speaker: "You", text: "Aku cuma berjaga-jaga", duration: 2200 },
     { speaker: "Dirga", text: "Okay then\nI promise", duration: 2800 }
   ];
 
